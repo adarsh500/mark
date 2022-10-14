@@ -24,3 +24,221 @@ a {
     background: black;
   }
 }
+
+.icon {
+  height: 22px;
+  width: 22px;
+  vertical-align: middle;
+}
+
+.left {
+  margin-left: 6px;
+}
+
+.right {
+  margin-right: 6px;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  //transition: background-color 0.3s ease-in-out;
+}
+ul,
+ol {
+  margin: 0;
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  outline: none;
+  &:hover {
+    text-decoration: none;
+    outline: none;
+    color: inherit;
+  }
+}
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+ul,
+ol,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+}
+
+html,
+body {
+  min-height: 100vh;
+  font-weight: normal;
+  font-size: 14px !important;
+  line-height: 1.42857143 !important;
+}
+
+// Address
+address {
+  font-style: normal;
+}
+
+// SVG
+svg {
+  display: block;
+}
+
+:root {
+  --primary: hwb(212 0% 5%);
+  --color-light: #a6a6a6;
+  --color-dark: #484848;
+  --border-light: #dedede;
+  --border-dark: #444;
+  --error: rgb(216, 96, 96);
+  --border-small: 4px;
+  --border-medium: 6px;
+  --border-large: 8px;
+  --border-radius-small: 4px;
+  --border-radius-medium: 6px;
+  --border-radius-large: 8px;
+  --primary-gradient: linear-gradient(to right, #007fff, #0059b2);
+
+  --shadow-color: 0deg 0% 61%;
+  --shadow-elevation-low: 0px 0.3px 0.3px hsl(var(--shadow-color) / 0.35),
+    0px 0.5px 0.6px -1.2px hsl(var(--shadow-color) / 0.35),
+    0px 1.2px 1.3px -2.5px hsl(var(--shadow-color) / 0.35);
+  --shadow-elevation-medium: 0px 0.3px 0.3px hsl(var(--shadow-color) / 0.3),
+    0px 0.8px 0.9px -0.6px hsl(var(--shadow-color) / 0.3),
+    0px 1.6px 1.8px -1.2px hsl(var(--shadow-color) / 0.3),
+    -0.1px 3.2px 3.6px -1.9px hsl(var(--shadow-color) / 0.3),
+    -0.1px 6.1px 6.9px -2.5px hsl(var(--shadow-color) / 0.3);
+  --shadow-elevation-high: 0px 0.3px 0.3px hsl(var(--shadow-color) / 0.28),
+    0px 1.5px 1.7px -0.3px hsl(var(--shadow-color) / 0.28),
+    -0.1px 2.6px 2.9px -0.6px hsl(var(--shadow-color) / 0.28),
+    -0.1px 4px 4.5px -0.8px hsl(var(--shadow-color) / 0.28),
+    -0.1px 5.9px 6.6px -1.1px hsl(var(--shadow-color) / 0.28),
+    -0.2px 8.4px 9.5px -1.4px hsl(var(--shadow-color) / 0.28),
+    -0.3px 12px 13.5px -1.7px hsl(var(--shadow-color) / 0.28),
+    -0.4px 16.8px 18.9px -1.9px hsl(var(--shadow-color) / 0.28),
+    -0.6px 23.1px 26px -2.2px hsl(var(--shadow-color) / 0.28),
+    -0.7px 31.1px 35px -2.5px hsl(var(--shadow-color) / 0.28);
+}

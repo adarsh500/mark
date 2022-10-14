@@ -1,0 +1,59 @@
+@import '@styles/mixins';
+
+.left {
+  margin-left: 6px;
+}
+
+.right {
+  margin-right: 6px;
+}
+
+.home {
+  display: flex;
+
+  .sidebar {
+    padding: 2rem 1.2rem;
+    width: 25%;
+    background-color: #e3e3e3;
+
+    @include dark-mode {
+      background-color: #111;
+    }
+    //   min-height: 100vh;
+
+    .user {
+      display: flex;
+    }
+
+    .menu {
+      padding: 1rem 0;
+      height: 100%;
+    }
+
+    .collection {
+      margin: 8px;
+      display: flex;
+      justify-content: space-between;
+
+      &Info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      &Name {
+        @include font-size-weight(16, 14, 400);
+      }
+    }
+
+    .subMenu {
+      color: var(--color-light);
+      margin: 24px 0 14px 6px;
+      @include font-size-weight(16, 10, 400);
+    }
+  }
+
+  .mainContent {
+    width: 100%;
+  }
+}

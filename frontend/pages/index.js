@@ -4,7 +4,8 @@ import styles from '../styles/Home.module.scss';
 import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function Home() {
-  const { data: session } = useSession();
+  const { data: session } = useSession({required: true});
+  console.log(session);
 
   if (!session) {
     return (

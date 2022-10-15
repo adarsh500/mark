@@ -76,10 +76,12 @@ const Layout = ({ children }) => {
             </span>
 
             <span className={styles.collection}>
-              <div className={styles.collectionInfo}>
-                <HiOutlineHeart className={styles.right} />
-                <p className={styles.collectionName}>Favourites</p>
-              </div>
+              <Link href={`/favourites`}>
+                <div className={styles.collectionInfo}>
+                  <HiOutlineHeart className={styles.right} />
+                  <p className={styles.collectionName}>Favourites</p>
+                </div>
+              </Link>
               <Badge isSquared color="primary" variant="bordered">
                 43
               </Badge>

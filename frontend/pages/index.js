@@ -10,8 +10,6 @@ import { HiXMark } from 'react-icons/hi2';
 import {
   Modal,
   Input,
-  Row,
-  Checkbox,
   Button,
   Text,
   Badge,
@@ -108,6 +106,8 @@ export default function Home() {
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
 
+  console.log(query)
+
   console.log(tags);
   console.log(link);
 
@@ -168,7 +168,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar handler={handler} closeHandler={closeHandler} />
+      <Navbar handler={handler} closeHandler={closeHandler} query={query} setQuery={setQuery} />
       <main className={styles.main}>
         <div className={styles.cardWrapper}>
           {cards.map((card) => (

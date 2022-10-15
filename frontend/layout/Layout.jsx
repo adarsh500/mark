@@ -15,6 +15,19 @@ import {
   HiRectangleStack,
 } from 'react-icons/hi2';
 
+export const collections = [
+  {
+    id: 12312,
+    name: 'collectionName',
+    size: 7,
+  },
+  {
+    id: 123312,
+    name: 'collectionN',
+    size: 9,
+  },
+];
+
 const Layout = ({ children }) => {
   const { data: session } = useSession();
 
@@ -22,19 +35,6 @@ const Layout = ({ children }) => {
   const changeHandler = (next) => {
     setVisible(next);
   };
-
-  const collections = [
-    {
-      id: 12312,
-      name: 'collectionName',
-      size: 7,
-    },
-    {
-      id: 123312,
-      name: 'collectionN',
-      size: 9,
-    },
-  ];
 
   return (
     <div>

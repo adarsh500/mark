@@ -69,6 +69,13 @@
       @include line-clamp(3);
     }
 
+    .tags {
+      margin: 6px 0;
+      .badge {
+        margin-right: 6px;
+      }
+    }
+
     .info {
       display: flex;
       justify-content: space-between;

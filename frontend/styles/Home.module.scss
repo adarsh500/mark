@@ -134,3 +134,17 @@
   justify-content: flex-start;
   flex-wrap: wrap;
 }
+
+.select {
+  width: 100%;
+  padding: 10px 6px;
+  border-radius: 14px;
+  background-color: transparent;
+}
+
+.tags {
+  margin: 6px 0;
+  .badge {
+    margin-right: 6px;
+  }
+}

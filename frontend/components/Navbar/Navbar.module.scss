@@ -5,15 +5,16 @@
 }
 
 .navbar {
-  border: 1px solid var(--border-dark);
-  border-bottom: 0;
+  border: 1px solid var(--border-light);
+  // border-bottom: 0;
   display: flex;
   padding: 2rem;
   justify-content: space-between;
   align-items: center;
 
   @include dark-mode {
-    border: 1px solid var(--border-light);
+    border: 1px solid var(--border-dark);
+    // border-bottom: 0;
   }
 
   .search {
@@ -21,8 +22,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #16181a;
+    background-color: var(--background-light);
     border-radius: var(--border-radius-large);
+
+    @include dark-mode {
+      background-color: var(--background-dark);
+      background-color: #16181a;
+    }
   }
 
   .right {
@@ -32,7 +38,6 @@
     }
 
     .new {
-        
     }
   }
 }

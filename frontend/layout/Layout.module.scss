@@ -47,6 +47,9 @@
     }
 
     .subMenu {
+      display: flex;
+      // justify-content: center;
+      align-items: center;
       color: var(--color-light);
       margin: 24px 0 14px 6px;
       @include font-size-weight(16, 10, 400);

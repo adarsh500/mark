@@ -5,21 +5,19 @@ import { useRouter } from 'next/router';
 import { useSession, getSession } from 'next-auth/react';
 import Card from '@components/Card';
 
-
 const Collection = (props) => {
+  const { data: session } = useSession({ required: true });
   console.log(props);
   const router = useRouter();
   const { collection } = router.query;
 
   return (
     <main className={styles.main}>
-      <main className={styles.main}>
-        <div className={styles.cardWrapper}>
-          {props?.cards?.map((card) => (
-            <Card key={card.id} {...card} />
-          ))}
-        </div>
-      </main>
+      <div className={styles.cardWrapper}>
+        {props?.cards?.map((card) => (
+          <Card key={card.id} {...card} />
+        ))}
+      </div>
     </main>
   );
 };

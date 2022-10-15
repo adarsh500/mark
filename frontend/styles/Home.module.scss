@@ -1,3 +1,4 @@
+@import '@styles/mixins';
 .container {
   padding: 0 2rem;
 }
@@ -146,5 +147,34 @@
   margin: 6px 0;
   .badge {
     margin-right: 6px;
+  }
+}
+
+.subNav {
+  border: 1px solid var(--border-light);
+  border-top: 0;
+  display: flex;
+  padding: 2rem 3rem;
+  justify-content: flex-start;
+  align-items: center;
+
+  @include dark-mode {
+    border: 1px solid var(--border-dark);
+    border-top: 0;
+  }
+
+  .search {
+    margin-right: 12px;
+    padding: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-light);
+    border-radius: var(--border-radius-large);
+
+    @include dark-mode {
+      background-color: var(--background-dark);
+      background-color: #16181a;
+    }
   }
 }

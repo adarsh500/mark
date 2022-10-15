@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Navbar.module.scss';
-import { Button } from '@nextui-org/react';
+import { Button, Text } from '@nextui-org/react';
 import { Input, Spacer } from '@nextui-org/react';
 import { HiOutlineSearch } from 'react-icons/hi';
 
@@ -10,15 +10,7 @@ const Navbar = (props) => {
 
   return (
     <nav className={styles.navbar}>
-      <div className={styles.search}>
-        <HiOutlineSearch className={styles.right} />
-        <Input
-          size="xl"
-          placeholder="Search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-      </div>
+      <Text h2>mark3</Text>
 
       <div className={styles.right}>
         <div className={styles.share}>

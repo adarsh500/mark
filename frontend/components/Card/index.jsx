@@ -8,19 +8,34 @@ import {
   HiOutlineClipboardCopy,
   HiOutlineTrash,
   HiOutlineHeart,
+  HiHeart,
 } from 'react-icons/hi';
 // import { Image } from '@nextui-org/react';
 
 const Card = (props) => {
-  const { image, title, description, url, date, tags } = props;
+  console.log(props);
+  const { _id, image, title, description, url, date, tags, favourite } = props;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(url);
   };
 
-  const deleteBookmark = () => {};
+  const deleteBookmark = async () => {
+    const res = await fetch(`api/bookmarks/${_id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+  };
 
-  const addToFavourite = () => {};
+  const addToFavourite = async () => {
+    const res = await fetch(`api/bookmarks/${_id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        favourite: true,
+      }),
+    });
+  };
 
   return (
     // <Link href={`/abc`}>
@@ -41,9 +56,7 @@ const Card = (props) => {
       ></Image>
 
       <div className={styles.subContent}>
-        <Text h4 bold>
-          {title}
-        </Text>
+        <p className={styles.title}>{title}</p>
         <Text size={14} className={styles.description}>
           {description}
         </Text>
@@ -87,7 +100,13 @@ const Card = (props) => {
           flat
           color="error"
           onClick={addToFavourite}
-          icon={<HiOutlineHeart className={styles.icons} />}
+          icon={
+            !favourite ? (
+              <HiOutlineHeart className={styles.icons} />
+            ) : (
+              <HiHeart className={styles.icons} />
+            )
+          }
         ></Button>
 
         <Button

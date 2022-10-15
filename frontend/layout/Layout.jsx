@@ -15,6 +15,8 @@ import {
   HiOutlineRectangleStack,
   HiRectangleStack,
   HiXMark,
+  HiChevronDown,
+  HiChevronUp,
 } from 'react-icons/hi2';
 
 const Layout = (props) => {
@@ -27,10 +29,12 @@ const Layout = (props) => {
   const [collection, setCollection] = useState('');
   const [tags, setTags] = useState([]);
   const [input, setInput] = useState('');
-
+  const [visible, setVisible] = useState(false);
   const [collections, setCollections] = useState([]);
+  const [displayCollections, setDisplayCollections] = useState(false);
+  const [sortValue, setSortValue] = useState('id');
   const [fetching, setFetching] = useState(false);
-  console.log(collections);
+  // console.log('idl', collections);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getCollection = useCallback(async () => {
@@ -74,17 +78,17 @@ const Layout = (props) => {
         }),
       });
       // console.log('colls', data);
+      setDisplayCollections(true);
     },
     [newCollection, session]
   );
 
   useEffect(() => {
     getCollection();
-  }, [newCollection]);
+  }, [displayCollections, visible]);
 
   const handler = () => setVisible(true);
 
-  const [visible, setVisible] = useState(false);
   const changeHandler = (next) => {
     setVisible(next);
   };
@@ -156,10 +160,12 @@ const Layout = (props) => {
 
           <menu className={styles.menu}>
             <span className={styles.collection}>
-              <div className={styles.collectionInfo}>
-                <HiOutlineGlobeAlt className={styles.right} />
-                <p className={styles.collectionName}>All</p>
-              </div>
+              <Link href={`/`}>
+                <div className={styles.collectionInfo}>
+                  <HiOutlineGlobeAlt className={styles.right} />
+                  <p className={styles.collectionName}>All</p>
+                </div>
+              </Link>
               <Badge isSquared color="primary" variant="bordered">
                 1
               </Badge>
@@ -177,28 +183,39 @@ const Layout = (props) => {
               </Badge>
             </span>
 
-            <p className={styles.subMenu}>collections</p>
+            <p
+              className={styles.subMenu}
+              onClick={() => setDisplayCollections(!displayCollections)}
+            >
+              collections
+              {displayCollections ? (
+                <HiChevronUp className={styles.left} />
+              ) : (
+                <HiChevronDown className={styles.left} />
+              )}
+            </p>
 
-            {collections.map((collection) => {
-              return (
-                <>
-                  <Link href={`/${collection.collection}`}>
-                    <a className={styles.collection}>
-                      <div className={styles.collectionInfo}>
-                        <HiOutlineRectangleStack className={styles.right} />
+            {displayCollections &&
+              collections.map((collection) => {
+                return (
+                  <>
+                    <Link href={`/${collection.collection}`}>
+                      <a className={styles.collection}>
+                        <div className={styles.collectionInfo}>
+                          <HiOutlineRectangleStack className={styles.right} />
 
-                        <p className={styles.collectionName}>
-                          {collection?.collection}
-                        </p>
-                      </div>
-                      <Badge isSquared color="primary" variant="bordered">
-                        {/* {collection.size} */}
-                      </Badge>
-                    </a>
-                  </Link>
-                </>
-              );
-            })}
+                          <p className={styles.collectionName}>
+                            {collection?.collection}
+                          </p>
+                        </div>
+                        <Badge isSquared color="primary" variant="bordered">
+                          {/* {collection.size} */}
+                        </Badge>
+                      </a>
+                    </Link>
+                  </>
+                );
+              })}
 
             <Input
               clearable

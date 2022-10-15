@@ -8,16 +8,17 @@
   border: 1px solid var(--border-light);
   // border-bottom: 0;
   display: flex;
-  padding: 2rem;
+  padding: 2rem 3rem 0 3rem;
   justify-content: space-between;
   align-items: center;
 
   @include dark-mode {
     border: 1px solid var(--border-dark);
-    // border-bottom: 0;
+    border-bottom: 0;
   }
 
   .search {
+    width: 25% !important;
     padding: 0 10px;
     display: flex;
     justify-content: center;
@@ -26,6 +27,7 @@
     border-radius: var(--border-radius-large);
 
     @include dark-mode {
+      width: 25% !important;
       background-color: var(--background-dark);
       background-color: #16181a;
     }
@@ -35,6 +37,10 @@
     display: flex;
     .share {
       margin-right: 12px;
+    }
+
+    .input {
+      width: 300px;
     }
 
     .new {

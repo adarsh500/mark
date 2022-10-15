@@ -3,25 +3,26 @@ import clientPromise from 'lib/clientPromise';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/Home.module.scss';
 import { useSession, signIn, signOut } from 'next-auth/react';
-import Navbar from '@components/Navbar';
 import Card from '@components/Card';
 import { getSession } from 'next-auth/react';
+import { HiOutlineSearch } from 'react-icons/hi';
+import { Input, Popover, Text, Button } from '@nextui-org/react';
+
+const obj = {
+  tag: 'tags',
+  title: 'title',
+  description: 'description',
+};
 
 export default function Home(props) {
-  console.log('home', props);
   const { data: session } = useSession({ required: true });
   const [collections, setCollections] = useState([]);
   const [input, setInput] = useState('');
   const [tags, setTags] = useState([]);
   const [collection, setCollection] = useState('');
   const [query, setQuery] = useState('');
-  const [sortValue, setSortValue] = useState('id');
-  const [cards, setCards] = useState([]);
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
-  console.log('cards', cards);
-  console.log(tags);
-  console.log(link);
 
   const getCollection = async () => {
     try {
@@ -33,7 +34,8 @@ export default function Home(props) {
     }
   };
 
-  console.log(collections);
+  console.log(query);
+  // console.log(collections);
 
   const createBookmark = async () => {
     const res = await fetch(`api/bookmarks`, {
@@ -65,26 +67,94 @@ export default function Home(props) {
 
   if (!session) {
     return (
-      <>
+      <main className={styles.main}>
         Not signed in <br />
         <button onClick={() => signIn()}>Sign in</button>
-      </>
+      </main>
     );
   }
 
   return (
     <>
-      <Navbar
-        handler={handler}
-        closeHandler={closeHandler}
-        query={query}
-        setQuery={setQuery}
-      />
+      <div className={styles.subNav}>
+        <div className={styles.search}>
+          <HiOutlineSearch className={styles.right} />
+          <Input
+            // className={styles.input}
+            fullWidth
+            size="xl"
+            placeholder="Search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+
+        <Popover isBordered disableShadow>
+          <Popover.Trigger>
+            <Button auto flat>
+              info
+            </Button>
+          </Popover.Trigger>
+          <Popover.Content>
+            <Text css={{ p: '$6 ' }}>
+              use {"'"}tag-{'{'}query{'}'}
+              {"'"} to search by tag
+            </Text>
+            <Text css={{ p: '$6' }}>
+              use {"'"}title-{'{'}query{'}'}
+              {"'"} to search by title
+            </Text>
+            <Text css={{ p: '$6' }}>
+              use {"'"}dsc-{'{'}query{'}'}
+              {"'"} to search by description
+            </Text>
+          </Popover.Content>
+        </Popover>
+      </div>
       <main className={styles.main}>
         <div className={styles.cardWrapper}>
-          {props?.cards?.map((card) => (
-            <Card key={card.id} {...card} />
-          ))}
+          {props?.cards
+            ?.filter((card) => {
+              const delimiter = query.indexOf('-');
+              const token = query.slice(0, delimiter);
+              const value = query.slice(delimiter + 1);
+              console.log('token', obj[token]);
+              console.log('value', value);
+
+              if (value === '' || delimiter === -1) {
+                return true;
+              }
+
+              if (token === 'tag') {
+                if (card.tags.includes(value.toLowerCase())) {
+                  // if (card.tags.includes(value)) {
+                  return true;
+                }
+              } else if (token === 'title') {
+                if (
+                  card.title
+                    .split(' ')
+                    .map((item) => item.toLowerCase())
+                    .includes(value.toLowerCase())
+                ) {
+                  // if (card.tags.includes(value)) {
+                  return true;
+                }
+              } else if (token === 'dsc') {
+                if (
+                  card.description
+                    .split(' ')
+                    .map((item) => item.toLowerCase())
+                    .includes(value.toLowerCase())
+                ) {
+                  // if (card.tags.includes(value)) {
+                  return true;
+                }
+              }
+            })
+            .map((card) => {
+              return <Card key={card.id} {...card} />;
+            })}
         </div>
       </main>
     </>

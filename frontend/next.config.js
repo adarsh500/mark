@@ -3,7 +3,12 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['www.gravatar.com', 'lh3.googleusercontent.com', 'localhost'],
+    domains: [
+      'www.gravatar.com',
+      'lh3.googleusercontent.com',
+      'localhost',
+      'og-image.vercel.app',
+    ],
     remotePatterns: [
       {
         protocol: 'https',

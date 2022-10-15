@@ -5,14 +5,19 @@ import { Input, Spacer } from '@nextui-org/react';
 import { HiOutlineSearch } from 'react-icons/hi';
 
 const Navbar = (props) => {
-  const [query, setQuery] = useState();
-  const { handler, closeHandler } = props;
+  // const [query, setQuery] = useState();
+  const { handler, closeHandler, query, setQuery } = props;
 
   return (
     <nav className={styles.navbar}>
       <div className={styles.search}>
         <HiOutlineSearch className={styles.right} />
-        <Input size="xl" placeholder="Search" />
+        <Input
+          size="xl"
+          placeholder="Search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
       </div>
 
       <div className={styles.right}>

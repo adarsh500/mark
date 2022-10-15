@@ -1,11 +1,12 @@
 import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
-import React, { useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styles from './Layout.module.scss';
-import classNames from 'classnames';
 import Link from 'next/link';
 import { Dropdown } from '@nextui-org/react';
-import { Badge, Grid } from '@nextui-org/react';
+import Navbar from '@components/Navbar';
+import { HiPlus } from 'react-icons/hi2';
+import { Modal, Input, Button, Text, Badge } from '@nextui-org/react';
 
 import {
   HiOutlineUserCircle,
@@ -13,27 +14,117 @@ import {
   HiOutlineHeart,
   HiOutlineRectangleStack,
   HiRectangleStack,
+  HiXMark,
 } from 'react-icons/hi2';
 
-export const collections = [
-  {
-    id: 12312,
-    name: 'collectionName',
-    size: 7,
-  },
-  {
-    id: 123312,
-    name: 'collectionN',
-    size: 9,
-  },
-];
+const Layout = (props) => {
+  const { data: session } = useSession({ required: true });
+  const [query, setQuery] = useState('');
+  const [newCollection, setNewCollection] = useState('');
+  const [isKeyReleased, setIsKeyReleased] = useState(false);
+  const [state, setState] = useState('');
+  const [link, setLink] = useState('');
+  const [collection, setCollection] = useState('');
+  const [tags, setTags] = useState([]);
+  const [input, setInput] = useState('');
 
-const Layout = ({ children }) => {
-  const { data: session } = useSession();
+  const [collections, setCollections] = useState([]);
+  const [fetching, setFetching] = useState(false);
+  console.log(collections);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getCollection = useCallback(async () => {
+    // setFetching(true);
+    try {
+      const res = await fetch(`api/collections/${session?.user?.email}`);
+      const data = await res.json();
+      setCollections(data);
+      // setFetching(false);
+    } catch (e) {
+      console.log(e);
+      // setFetching(false);
+    }
+  });
+
+  const createBookmark = async () => {
+    const res = await fetch(`api/bookmarks`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: session.user.email,
+        collection: collection,
+        tags: tags,
+        url: `https://${link}`,
+        favourite: false,
+        tags: tags,
+      }),
+    });
+    closeHandler();
+  };
+
+  const createCollection = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const res = await fetch(`api/collections`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: session.user.email,
+          collection: newCollection,
+        }),
+      });
+      // console.log('colls', data);
+    },
+    [newCollection, session]
+  );
+
+  useEffect(() => {
+    getCollection();
+  }, [newCollection]);
+
+  const handler = () => setVisible(true);
 
   const [visible, setVisible] = useState(false);
   const changeHandler = (next) => {
     setVisible(next);
+  };
+
+  const handleLink = (e) => {
+    setLink(e.target.value);
+  };
+
+  const onChange = (e) => {
+    const { value } = e.target;
+    setInput(value);
+  };
+
+  const onKeyDown = (e) => {
+    const { key } = e;
+    const trimmedInput = input.trim();
+
+    if (key === ',' && trimmedInput.length && !tags.includes(trimmedInput)) {
+      e.preventDefault();
+      setTags((prevState) => [...prevState, trimmedInput]);
+      setInput('');
+    }
+
+    if (key === 'Backspace' && !input.length && tags.length && isKeyReleased) {
+      const tagsCopy = [...tags];
+      const poppedTag = tagsCopy.pop();
+      e.preventDefault();
+      setTags(tagsCopy);
+      setInput(poppedTag);
+    }
+
+    setIsKeyReleased(false);
+  };
+
+  const onKeyUp = () => {
+    setIsKeyReleased(true);
+  };
+
+  const closeHandler = () => {
+    setVisible(false);
   };
 
   return (
@@ -49,7 +140,6 @@ const Layout = ({ children }) => {
             <Dropdown.Button flat>
               <span className={styles.user}>
                 <HiOutlineUserCircle className={styles.right} />
-
                 <p>{session?.user?.name}</p>
               </span>
             </Dropdown.Button>
@@ -76,10 +166,12 @@ const Layout = ({ children }) => {
             </span>
 
             <span className={styles.collection}>
-              <div className={styles.collectionInfo}>
-                <HiOutlineHeart className={styles.right} />
-                <p className={styles.collectionName}>Favourites</p>
-              </div>
+              <Link href={`/favourites`}>
+                <div className={styles.collectionInfo}>
+                  <HiOutlineHeart className={styles.right} />
+                  <p className={styles.collectionName}>Favourites</p>
+                </div>
+              </Link>
               <Badge isSquared color="primary" variant="bordered">
                 43
               </Badge>
@@ -87,25 +179,123 @@ const Layout = ({ children }) => {
 
             <p className={styles.subMenu}>collections</p>
 
-            {collections.map((collection) => (
-              <>
-                <Link href={`/${collection.id}`}>
-                  <a className={styles.collection}>
-                    <div className={styles.collectionInfo}>
-                      <HiOutlineRectangleStack className={styles.right} />
+            {collections.map((collection) => {
+              return (
+                <>
+                  <Link href={`/${collection.collection}`}>
+                    <a className={styles.collection}>
+                      <div className={styles.collectionInfo}>
+                        <HiOutlineRectangleStack className={styles.right} />
 
-                      <p className={styles.collectionName}>{collection.name}</p>
-                    </div>
-                    <Badge isSquared color="primary" variant="bordered">
-                      {collection.size}
-                    </Badge>
-                  </a>
-                </Link>
-              </>
-            ))}
+                        <p className={styles.collectionName}>
+                          {collection?.collection}
+                        </p>
+                      </div>
+                      <Badge isSquared color="primary" variant="bordered">
+                        {/* {collection.size} */}
+                      </Badge>
+                    </a>
+                  </Link>
+                </>
+              );
+            })}
+
+            <Input
+              clearable
+              contentRightStyling={false}
+              label="Create collection"
+              fullWidth
+              contentRight={<HiPlus onClick={createCollection} />}
+              value={newCollection}
+              onChange={(e) => setNewCollection(e.target.value)}
+            />
           </menu>
         </aside>
-        <div className={styles.mainContent}>{children}</div>
+
+        <div className={styles.mainContent}>
+          <Navbar
+            handler={handler}
+            closeHandler={closeHandler}
+            query={query}
+            setQuery={setQuery}
+          />
+          <Modal
+            closeButton
+            aria-labelledby="modal-title"
+            open={visible}
+            onClose={closeHandler}
+          >
+            <Modal.Header>
+              <Text id="modal-title" size={18}>
+                Create a bookmark
+              </Text>
+            </Modal.Header>
+            <Modal.Body>
+              <Input
+                label="Enter URL"
+                clearable
+                bordered
+                fullWidth
+                color="primary"
+                size="lg"
+                labelLeft="https://"
+                placeholder="github.com/adarsh500"
+                value={link}
+                onChange={handleLink}
+              />
+
+              <Text>Select collection</Text>
+              <select
+                className={styles.select}
+                value={collection}
+                onChange={(e) => setCollection(e.target.value)}
+              >
+                {collections?.map((collection) => (
+                  <option key={collection._id} value={collection.name}>
+                    {collection.collection}
+                  </option>
+                ))}
+              </select>
+
+              <div className={styles.tags}>
+                {tags?.map((tag, index) => (
+                  <Badge
+                    isSquared
+                    className={styles.badge}
+                    color="warning"
+                    variant="flat"
+                    key={index}
+                    disableOutline
+                    onClick={() => deleteTag(index)}
+                  >
+                    # {tag}
+                    <HiXMark className={styles.icon} />
+                  </Badge>
+                ))}
+              </div>
+              <Input
+                clearable
+                bordered
+                label="Add Tags"
+                color="primary"
+                placeholder="comma seperated tags"
+                onKeyDown={onKeyDown}
+                onChange={onChange}
+                onKeyUp={onKeyUp}
+                value={input}
+              />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button auto flat color="error" onClick={closeHandler}>
+                Cancel
+              </Button>
+              <Button auto onClick={createBookmark}>
+                Create
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          {props.children}
+        </div>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import Head from 'next/head';
 import React, { useState } from 'react';
 import styles from './Layout.module.scss';
 import classNames from 'classnames';
+import Link from 'next/link';
 import { Dropdown } from '@nextui-org/react';
 import { Badge, Grid } from '@nextui-org/react';
 
@@ -21,6 +22,19 @@ const Layout = ({ children }) => {
   const changeHandler = (next) => {
     setVisible(next);
   };
+
+  const collections = [
+    {
+      id: 12312,
+      name: 'collectionName',
+      size: 7,
+    },
+    {
+      id: 123312,
+      name: 'collectionN',
+      size: 9,
+    },
+  ];
 
   return (
     <div>
@@ -71,42 +85,24 @@ const Layout = ({ children }) => {
               </Badge>
             </span>
 
-            <p className={styles.subMenu}>collection</p>
+            <p className={styles.subMenu}>collections</p>
 
-            <span className={styles.collection}>
-              <div className={styles.collectionInfo}>
-                <HiOutlineRectangleStack className={styles.right} />
+            {collections.map((collection) => (
+              <>
+                <Link href={`/${collection.id}`}>
+                  <a className={styles.collection}>
+                    <div className={styles.collectionInfo}>
+                      <HiOutlineRectangleStack className={styles.right} />
 
-                <p className={styles.collectionName}>CollectionName</p>
-              </div>
-              <Badge isSquared color="primary" variant="bordered">
-                9
-              </Badge>
-            </span>
-
-            <span className={styles.collection}>
-              <div className={styles.collectionInfo}>
-                <HiOutlineRectangleStack className={styles.right} />
-
-                <p className={styles.collectionName}>CollectionName</p>
-              </div>
-              <Badge isSquared color="primary" variant="bordered">
-                9
-              </Badge>
-            </span>
-
-            <p className={styles.subMenu}>collection</p>
-
-            <span className={styles.collection}>
-              <div className={styles.collectionInfo}>
-                <HiOutlineRectangleStack className={styles.right} />
-
-                <p className={styles.collectionName}>CollectionName</p>
-              </div>
-              <Badge isSquared color="primary" variant="bordered">
-                9
-              </Badge>
-            </span>
+                      <p className={styles.collectionName}>{collection.name}</p>
+                    </div>
+                    <Badge isSquared color="primary" variant="bordered">
+                      {collection.size}
+                    </Badge>
+                  </a>
+                </Link>
+              </>
+            ))}
           </menu>
         </aside>
         <div className={styles.mainContent}>{children}</div>

@@ -1,0 +1,15 @@
+.card {
+  border: 1px solid var(--border-dark);
+  border-radius: var(--border-radius-large);
+  width: calc(calc(100% - 96px) / 4);
+  max-width: 100%;
+  margin: 12px;
+  position: relative;
+
+  .image {
+  }
+
+  .subContent {
+    background-color: var(--background-dark);
+  }
+}

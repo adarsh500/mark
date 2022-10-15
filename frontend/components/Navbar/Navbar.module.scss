@@ -1,0 +1,38 @@
+@import '@styles/mixins';
+
+.right {
+  margin-right: 6px;
+}
+
+.navbar {
+  border: 1px solid var(--border-dark);
+  border-bottom: 0;
+  display: flex;
+  padding: 2rem;
+  justify-content: space-between;
+  align-items: center;
+
+  @include dark-mode {
+    border: 1px solid var(--border-light);
+  }
+
+  .search {
+    padding: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #16181a;
+    border-radius: var(--border-radius-large);
+  }
+
+  .right {
+    display: flex;
+    .share {
+      margin-right: 12px;
+    }
+
+    .new {
+        
+    }
+  }
+}

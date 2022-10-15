@@ -1,0 +1,43 @@
+@import '@styles/mixins';
+
+.right {
+  margin-right: 6px;
+}
+
+.navbar {
+  border: 1px solid var(--border-light);
+  // border-bottom: 0;
+  display: flex;
+  padding: 2rem;
+  justify-content: space-between;
+  align-items: center;
+
+  @include dark-mode {
+    border: 1px solid var(--border-dark);
+    // border-bottom: 0;
+  }
+
+  .search {
+    padding: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-light);
+    border-radius: var(--border-radius-large);
+
+    @include dark-mode {
+      background-color: var(--background-dark);
+      background-color: #16181a;
+    }
+  }
+
+  .right {
+    display: flex;
+    .share {
+      margin-right: 12px;
+    }
+
+    .new {
+    }
+  }
+}

@@ -1,0 +1,82 @@
+@import '@styles/mixins';
+
+.card {
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-large);
+  width: calc(calc(100% - 96px) / 4);
+  max-width: 100%;
+  margin: 12px;
+  position: relative;
+
+  &:hover {
+    .overlay {
+      opacity: 1;
+    }
+  }
+
+  @include dark-mode {
+    border: 1px solid var(--border-dark);
+  }
+
+  .image {
+    border-radius: var(--border-radius-large);
+  }
+
+  .overlay {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: 0.3s ease;
+    background-color: #434343a7;
+
+    .icons {
+      height: 22px;
+      width: 22px;
+      // padding: 6px 0;
+    }
+
+    .button {
+      margin: 6px;
+      // height: 22px;
+    }
+  }
+
+  .subContent {
+    padding: 16px 12px;
+    background-color: var(--background-light);
+
+    @include dark-mode {
+      background-color: var(--background-dark);
+    }
+
+    .title {
+      // margin:
+      // height: auto;
+      @include line-clamp(2);
+    }
+
+    .description {
+      margin: 6px 0;
+      // @include font-size-weight(14, 10, 500);
+      line-height: 1.5;
+      @include line-clamp(3);
+    }
+
+    .info {
+      display: flex;
+      justify-content: space-between;
+      color: var(--color-light);
+
+      .site {
+        // margin-right: ;
+      }
+    }
+  }
+}

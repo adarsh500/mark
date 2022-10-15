@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     const { email } = req.query;
     const favourites = await db
       .collection('collection')
-      .find({ email: email, favourite: true })
+      .find({ email: email })
       .toArray();
     res.status(200).json(favourites);
   }

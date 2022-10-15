@@ -83,6 +83,7 @@
 
       .site {
         // margin-right: ;
+        @include line-clamp(1);
       }
     }
   }

@@ -1,8 +1,8 @@
 import React from 'react';
-import styles from 'Favourites.module.scss';
+import styles from './Favourites.module.scss';
 
 const Favourites = () => {
-  return <div>Favourites</div>;
+  return <main className={styles.main}>Favourites</main>;
 };
 
 export default Favourites;

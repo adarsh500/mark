@@ -10,12 +10,12 @@
 
 .home {
   display: flex;
+  min-height: 100vh;
 
   .sidebar {
     padding: 2rem 1.2rem;
     width: 25%;
     background-color: var(--background-light);
-    min-height: 100vh;
 
     @include dark-mode {
       background-color: #111;

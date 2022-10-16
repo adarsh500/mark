@@ -50,16 +50,16 @@ const post = async (req, res) => {
           console.log('resss', collection);
         }
 
-        const body = Object.create({ email });
+        const body = Object.create({ email, collection: coll });
         const metaData = await getMetaData(url);
         body.title = metaData.title;
         body.image = metaData.image;
         body.description = metaData.description;
         body.section = metaData.section;
+        body.url = url;
         body.date = new Date().toLocaleDateString();
 
-        console.log('boiiii', body);
-        // const bookmark = await db.collection('bookmarks').insertOne(body);
+        const bookmark = await db.collection('bookmarks').insertOne(body);
         // res.status(200).json(bookmark);
       });
     });
@@ -78,7 +78,6 @@ const post = async (req, res) => {
 };
 
 const saveFile = async (file) => {
-  // console.log('ssfile', file);
   const data = fs.readFileSync(file.path);
   fs.writeFileSync(`./public/${file.name}`, data);
 

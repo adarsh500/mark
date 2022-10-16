@@ -13,7 +13,6 @@ import {
 // import { Image } from '@nextui-org/react';
 
 const Card = (props) => {
-  console.log(props);
   const { _id, image, title, description, url, date, tags, favourite } = props;
 
   const copyToClipboard = () => {
@@ -53,6 +52,7 @@ const Card = (props) => {
         layout="responsive"
         alt="Link og:image"
         objectFit="cover"
+        loading="lazy"
       ></Image>
 
       <div className={styles.subContent}>

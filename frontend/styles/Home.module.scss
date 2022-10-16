@@ -4,11 +4,17 @@
 }
 
 .main {
-  min-height: 100vh;
+  min-height: 60vh;
   padding: 2rem;
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
   // justify-content: center;
   // align-items: center;
 }
@@ -134,6 +140,14 @@
   align-items: center;
   justify-content: flex-start;
   flex-wrap: wrap;
+  overflow-y: scroll;
+  max-height: 80vh;
+
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
 }
 
 .select {
@@ -154,7 +168,7 @@
   border: 1px solid var(--border-light);
   border-top: 0;
   display: flex;
-  padding: 2rem 3rem;
+  padding: 1rem 2rem;
   justify-content: flex-start;
   align-items: center;
 

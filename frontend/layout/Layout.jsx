@@ -16,7 +16,10 @@ import {
   HiChevronDown,
   HiChevronUp,
   HiPlus,
+  HiOutlineArrowDownOnSquare,
 } from 'react-icons/hi2';
+
+import HiOutlineTrash from 'react-icons/hi';
 
 const Layout = (props) => {
   const { data: session } = useSession({ required: true });
@@ -33,31 +36,18 @@ const Layout = (props) => {
   const [visible, setVisible] = useState(false);
   const [collections, setCollections] = useState([]);
   const [displayCollections, setDisplayCollections] = useState(false);
-
-  const handleUpload = async (formData) => {
-    const config = {
-      headers: { 'content-type': 'multipart/form-data' },
-      onUploadProgress: (event) => {
-        console.log(
-          `Current progress:`,
-          Math.round((event.loaded * 100) / event.total)
-        );
-      },
-    };
-
-    console.log('formdaa', formData);
-    const response = await axios.post('/api/upload', formData, config);
-    console.log('response', response.data);
-  };
+  const [importing, setImporting] = useState(false);
 
   const uploadToServer = async (event) => {
     const body = new FormData();
     body.append('file', file);
     body.append('email', session?.user?.email);
-    const response = await fetch('/api/upload', {
+    const res = await fetch('/api/upload', {
       method: 'POST',
       body,
     });
+    const data = await res.json();
+    console.log(data);
   };
 
   const uploadToClient = (event) => {
@@ -83,7 +73,6 @@ const Layout = (props) => {
   //   console.log('resp', res.data);
   // };
 
-  console.log(file);
   // console.log('idl', collections);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -241,33 +230,40 @@ const Layout = (props) => {
                 <HiChevronDown className={styles.left} />
               )}
             </p>
-            {displayCollections &&
-              collections.map((collection) => {
-                return (
-                  <>
-                    <Link href={`/${collection.collection}`}>
-                      <a className={styles.collection}>
-                        <div className={styles.collectionInfo}>
-                          <HiOutlineRectangleStack className={styles.right} />
+            <div className={styles.scrollableMenu}>
+              {displayCollections &&
+                collections.map((collection) => {
+                  return (
+                    <span key={collection?._id}>
+                      <Link href={`/${collection.collection}`}>
+                        <a className={styles.collection}>
+                          <div className={styles.collectionInfo}>
+                            <HiOutlineRectangleStack className={styles.right} />
 
-                          <p className={styles.collectionName}>
-                            {collection?.collection}
-                          </p>
-                        </div>
-                        <Badge isSquared color="primary" variant="bordered">
-                          {/* {collection.size} */}
-                        </Badge>
-                      </a>
-                    </Link>
-                  </>
-                );
-              })}
+                            <p className={styles.collectionName}>
+                              {collection?.collection}
+                            </p>
+                          </div>
+                          <Badge isSquared color="primary" variant="bordered">
+                            {/* {collection.size} */}
+                          </Badge>
+                        </a>
+                      </Link>
+                    </span>
+                  );
+                })}
+            </div>
+
             <Input
-              clearable
+              clearable="true"
               contentRightStyling={false}
               label="Create collection"
               fullWidth
-              contentRight={<HiPlus onClick={createCollection} />}
+              // color="default"
+              bordered
+              contentRight={
+                <HiPlus onClick={createCollection} className={styles.right} />
+              }
               value={newCollection}
               onChange={(e) => setNewCollection(e.target.value)}
             />
@@ -276,14 +272,31 @@ const Layout = (props) => {
               uploadFileName="theFiles"
               onChange={handleUpload}
             /> */}
-            <input type="file" name="myImage" onChange={uploadToClient} />
-            <button
-              className="btn btn-primary"
-              type="submit"
-              onClick={uploadToServer}
-            >
-              Send to server
-            </button>
+
+            <div className={styles.uploadSection}>
+              <Text>Upload bookmarks from other browser</Text>
+              <div className={styles.upload}>
+                <input
+                  type="file"
+                  clearable="true"
+                  // contentRightStyling={false}
+                  // label="Import Bookmarks"
+                  name="myImage"
+                  onChange={uploadToClient}
+                  className={styles.inputFile}
+                />
+
+                <Button
+                  className={styles.send}
+                  auto
+                  flat
+                  type="submit"
+                  color="success"
+                  onClick={uploadToServer}
+                  icon={<HiOutlineArrowDownOnSquare />}
+                ></Button>
+              </div>
+            </div>
           </menu>
         </aside>
 
@@ -308,7 +321,7 @@ const Layout = (props) => {
             <Modal.Body>
               <Input
                 label="Enter URL"
-                clearable
+                clearable="true"
                 bordered
                 fullWidth
                 color="primary"
@@ -349,7 +362,7 @@ const Layout = (props) => {
                 ))}
               </div>
               <Input
-                clearable
+                clearable="true"
                 bordered
                 label="Add Tags"
                 color="primary"

@@ -15,6 +15,7 @@
     padding: 2rem 1.2rem;
     width: 25%;
     background-color: var(--background-light);
+    min-height: 100vh;
 
     @include dark-mode {
       background-color: #111;
@@ -27,7 +28,40 @@
 
     .menu {
       padding: 1rem 0;
-      height: 100%;
+      // height: 100%;
+
+      .scrollableMenu {
+        max-height: 60vh;
+        overflow: scroll;
+        -ms-overflow-style: none; /* Internet Explorer 10+ */
+        scrollbar-width: none; /* Firefox */
+        &::-webkit-scrollbar {
+          display: none; /* Safari and Chrome */
+        }
+      }
+
+      .upload {
+        display: flex;
+        margin: 8px 0 18px 0;
+        justify-content: center;
+        align-items: center;
+
+        &Section {
+          margin: 14px 0;
+        }
+
+        input::file-selector-button {
+          color: #0072f5;
+          background-color: #cde4fe;
+          padding: 10px 14px;
+          border: 0;
+          border-radius: 8px;
+
+          @include dark-mode {
+            background-color: #10253e;
+          }
+        }
+      }
     }
 
     .collection {

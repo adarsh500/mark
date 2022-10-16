@@ -1,24 +1,39 @@
 import clientPromise from 'lib/clientPromise';
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '@styles/Home.module.scss';
 import { useRouter } from 'next/router';
 import { useSession, getSession } from 'next-auth/react';
 import Card from '@components/Card';
+import { HiOutlineSearch } from 'react-icons/hi';
+import { Input } from '@nextui-org/react';
 
 const Collection = (props) => {
   const { data: session } = useSession({ required: true });
-  console.log(props);
+  const [query, setQuery] = useState('');
   const router = useRouter();
   const { collection } = router.query;
 
   return (
-    <main className={styles.main}>
-      <div className={styles.cardWrapper}>
-        {props?.cards?.map((card) => (
-          <Card key={card.id} {...card} />
-        ))}
+    <>
+      <div className={styles.subNav}>
+        <div className={styles.search}>
+          <HiOutlineSearch className={styles.right} />
+          <Input
+            size="xl"
+            placeholder="Search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
       </div>
-    </main>
+      <main className={styles.main}>
+        <div className={styles.cardWrapper}>
+          {props?.cards?.map((card) => (
+            <Card key={card.id} {...card} />
+          ))}
+        </div>
+      </main>
+    </>
   );
 };
 
@@ -39,6 +54,8 @@ export async function getServerSideProps(context) {
         collection: context.params.collection,
       })
       .toArray();
+
+    console.log(coll);
 
     return {
       props: {

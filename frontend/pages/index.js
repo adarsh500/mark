@@ -22,7 +22,8 @@ export default function Home(props) {
   const [collection, setCollection] = useState('');
   const [query, setQuery] = useState('');
   const [visible, setVisible] = React.useState(false);
-  const handler = () => setVisible(true);
+
+  console.log(query);
 
   const getCollection = async () => {
     try {
@@ -33,8 +34,6 @@ export default function Home(props) {
       console.log(e);
     }
   };
-
-  console.log(query);
   // console.log(collections);
 
   const createBookmark = async () => {
@@ -91,7 +90,7 @@ export default function Home(props) {
 
         <Popover isBordered disableShadow>
           <Popover.Trigger>
-            <Button auto flat>
+            <Button auto flat color="">
               info
             </Button>
           </Popover.Trigger>
@@ -118,8 +117,6 @@ export default function Home(props) {
               const delimiter = query.indexOf('-');
               const token = query.slice(0, delimiter);
               const value = query.slice(delimiter + 1);
-              console.log('token', obj[token]);
-              console.log('value', value);
 
               if (value === '' || delimiter === -1) {
                 return true;
@@ -153,7 +150,7 @@ export default function Home(props) {
               }
             })
             .map((card) => {
-              return <Card key={card.id} {...card} />;
+              return <Card key={card._id} {...card} />;
             })}
         </div>
       </main>

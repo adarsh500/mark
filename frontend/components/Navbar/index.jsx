@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Navbar.module.scss';
 import { Button, Text } from '@nextui-org/react';
-import { Input, Spacer } from '@nextui-org/react';
-import { HiOutlineSearch } from 'react-icons/hi';
 
 const Navbar = (props) => {
   // const [query, setQuery] = useState();

@@ -91,7 +91,14 @@
     .info {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       color: var(--color-light);
+
+      .fav {
+        height: 18px;
+        width: 18px;
+        color: rgb(167, 73, 73);
+      }
 
       .site {
         // margin-right: ;

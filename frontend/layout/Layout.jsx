@@ -1,26 +1,27 @@
 import { signOut, useSession } from 'next-auth/react';
+import axios from 'axios';
 import Head from 'next/head';
 import React, { useEffect, useState, useCallback } from 'react';
 import styles from './Layout.module.scss';
 import Link from 'next/link';
 import { Dropdown } from '@nextui-org/react';
 import Navbar from '@components/Navbar';
-import { HiPlus } from 'react-icons/hi2';
 import { Modal, Input, Button, Text, Badge } from '@nextui-org/react';
-
 import {
   HiOutlineUserCircle,
   HiOutlineGlobeAlt,
   HiOutlineHeart,
   HiOutlineRectangleStack,
-  HiRectangleStack,
   HiXMark,
   HiChevronDown,
   HiChevronUp,
+  HiPlus,
 } from 'react-icons/hi2';
 
 const Layout = (props) => {
   const { data: session } = useSession({ required: true });
+  const [createObjectURL, setCreateObjectURL] = useState(null);
+  const [file, setFile] = React.useState('');
   const [query, setQuery] = useState('');
   const [newCollection, setNewCollection] = useState('');
   const [isKeyReleased, setIsKeyReleased] = useState(false);
@@ -32,8 +33,57 @@ const Layout = (props) => {
   const [visible, setVisible] = useState(false);
   const [collections, setCollections] = useState([]);
   const [displayCollections, setDisplayCollections] = useState(false);
-  const [sortValue, setSortValue] = useState('id');
-  const [fetching, setFetching] = useState(false);
+
+  const handleUpload = async (formData) => {
+    const config = {
+      headers: { 'content-type': 'multipart/form-data' },
+      onUploadProgress: (event) => {
+        console.log(
+          `Current progress:`,
+          Math.round((event.loaded * 100) / event.total)
+        );
+      },
+    };
+
+    console.log('formdaa', formData);
+    const response = await axios.post('/api/upload', formData, config);
+    console.log('response', response.data);
+  };
+
+  const uploadToServer = async (event) => {
+    const body = new FormData();
+    body.append('file', file);
+    body.append('email', session?.user?.email);
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body,
+    });
+  };
+
+  const uploadToClient = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0];
+      setFile(i);
+      setCreateObjectURL(URL.createObjectURL(i));
+    }
+  };
+
+  // const handleUpload = async (e) => {
+  //   setFile(e.target.files[0]);
+  //   const formData = new FormData();
+  //   formData.append('name', 'bookmark');
+  //   formData.append('file', file);
+
+  //   const res = await fetch(`api/upload`, {
+  //     method: 'POST',
+  //     headers: { 'content-type': 'multipart/form-data' },
+  //     body: formData,
+  //   });
+
+  //   console.log('resp', res.data);
+  // };
+
+  console.log(file);
   // console.log('idl', collections);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,7 +110,6 @@ const Layout = (props) => {
         tags: tags,
         url: `https://${link}`,
         favourite: false,
-        tags: tags,
       }),
     });
     closeHandler();
@@ -170,7 +219,6 @@ const Layout = (props) => {
                 1
               </Badge>
             </span>
-
             <span className={styles.collection}>
               <Link href={`/favourites`}>
                 <div className={styles.collectionInfo}>
@@ -182,7 +230,6 @@ const Layout = (props) => {
                 43
               </Badge>
             </span>
-
             <p
               className={styles.subMenu}
               onClick={() => setDisplayCollections(!displayCollections)}
@@ -194,7 +241,6 @@ const Layout = (props) => {
                 <HiChevronDown className={styles.left} />
               )}
             </p>
-
             {displayCollections &&
               collections.map((collection) => {
                 return (
@@ -216,7 +262,6 @@ const Layout = (props) => {
                   </>
                 );
               })}
-
             <Input
               clearable
               contentRightStyling={false}
@@ -226,6 +271,19 @@ const Layout = (props) => {
               value={newCollection}
               onChange={(e) => setNewCollection(e.target.value)}
             />
+            {/* <UiFileInputButton
+              label="Upload Single File"
+              uploadFileName="theFiles"
+              onChange={handleUpload}
+            /> */}
+            <input type="file" name="myImage" onChange={uploadToClient} />
+            <button
+              className="btn btn-primary"
+              type="submit"
+              onClick={uploadToServer}
+            >
+              Send to server
+            </button>
           </menu>
         </aside>
 

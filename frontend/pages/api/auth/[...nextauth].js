@@ -17,6 +17,7 @@ export const authOptions = {
       },
     }),
   ],
+  // secret: process.env.NEXT_PUBLIC_SECRET,
   debug: true,
 };
 

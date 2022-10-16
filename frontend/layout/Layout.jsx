@@ -19,7 +19,7 @@ import {
   HiOutlineArrowDownOnSquare,
 } from 'react-icons/hi2';
 
-import HiOutlineTrash from 'react-icons/hi';
+import { HiOutlineTrash } from 'react-icons/hi';
 
 const Layout = (props) => {
   const { data: session } = useSession({ required: true });
@@ -89,6 +89,13 @@ const Layout = (props) => {
     }
   });
 
+  const deleteCollection = async (_id) => {
+    const res = await fetch(`api/collections/${_id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+  };
+
   const createBookmark = async () => {
     const res = await fetch(`api/bookmarks`, {
       method: 'POST',
@@ -129,6 +136,10 @@ const Layout = (props) => {
 
   const changeHandler = (next) => {
     setVisible(next);
+  };
+
+  const deleteTag = (index) => {
+    setTags((prevState) => prevState.filter((tag, i) => i !== index));
   };
 
   const handleLink = (e) => {
@@ -186,12 +197,10 @@ const Layout = (props) => {
               </span>
             </Dropdown.Button>
             <Dropdown.Menu>
-              <Dropdown.Item
-                key="delete"
-                color="error"
-                onClick={() => signOut()}
-              >
-                Sign Out
+              <Dropdown.Item key="delete" color="error">
+                <Button color="error" flat onClick={() => signOut()}>
+                  Sign Out
+                </Button>
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
@@ -234,7 +243,7 @@ const Layout = (props) => {
               {displayCollections &&
                 collections.map((collection) => {
                   return (
-                    <span key={collection?._id}>
+                    <span key={collection?._id} className={styles.coll}>
                       <Link href={`/${collection.collection}`}>
                         <a className={styles.collection}>
                           <div className={styles.collectionInfo}>
@@ -244,11 +253,18 @@ const Layout = (props) => {
                               {collection?.collection}
                             </p>
                           </div>
-                          <Badge isSquared color="primary" variant="bordered">
-                            {/* {collection.size} */}
-                          </Badge>
                         </a>
                       </Link>
+                      <Badge
+                        isSquared
+                        color="error"
+                        variant="bordered"
+                        auto
+                        onClick={() => deleteCollection(collection?._id)}
+                        className={styles.smallBadge}
+                      >
+                        <HiOutlineTrash className={styles.small} />
+                      </Badge>
                     </span>
                   );
                 })}

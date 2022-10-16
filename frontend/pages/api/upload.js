@@ -16,13 +16,13 @@ const post = async (req, res) => {
   const db = client.db('test');
   const form = new formidable.IncomingForm();
   // const uploadFolder = path.join(__dirname, 'public', 'files');
-  console.log('bodiii', form);
+  // console.log('bodiii', form);
   form.parse(req, async function (err, fields, files) {
-    console.log('fields', fields);
+    // console.log('fields', fields);
     const email = fields.email;
     await saveFile(files.file);
     const filepath = path.join(`./public/${files.file.name}`);
-    console.log('fpfpf', filepath);
+    // console.log('fpfpf', filepath);
     fs.readFile(filepath, 'utf-8', function read(err, data) {
       if (err) {
         throw err;
@@ -47,7 +47,7 @@ const post = async (req, res) => {
           const collection = await db
             .collection('collection')
             .insertOne({ email, collection: coll });
-          console.log('resss', collection);
+          // console.log('resss', collection);
         }
 
         const body = Object.create({ email, collection: coll });

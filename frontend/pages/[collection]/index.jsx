@@ -8,6 +8,7 @@ import { HiOutlineSearch } from 'react-icons/hi';
 import { Input } from '@nextui-org/react';
 
 const Collection = (props) => {
+  const { cards } = props;
   const { data: session } = useSession({ required: true });
   const [query, setQuery] = useState('');
   const router = useRouter();
@@ -28,7 +29,7 @@ const Collection = (props) => {
       </div>
       <main className={styles.main}>
         <div className={styles.cardWrapper}>
-          {props?.cards?.map((card) => (
+          {cards?.map((card) => (
             <Card key={card.id} {...card} />
           ))}
         </div>
@@ -44,7 +45,7 @@ export async function getServerSideProps(context) {
   const session = await getSession({ req });
   const client = await clientPromise;
   const db = client.db('test');
-  console.log('req', context.params.collection);
+  // console.log('req', context.params.collection);
 
   if (session) {
     const coll = await db
@@ -66,7 +67,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      cards: {},
+      cards: [],
     },
   };
 }

@@ -64,8 +64,21 @@
       }
     }
 
+    .coll {
+      display: flex;
+      justify-content: space-between;
+      margin: px 0;
+    }
+    .small {
+      @include content-size(16, 16);
+
+      &Badge {
+        // @include content-size(40, 40);
+      }
+    }
+
     .collection {
-      margin: 8px;
+      margin: 10px 0;
       display: flex;
       justify-content: space-between;
 
@@ -73,10 +86,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        // width: 100%
+        // height: 100%;
       }
 
       &Name {
-        @include font-size-weight(16, 14, 400);
+        @include font-size-weight(18, 8, 400);
       }
     }
 

@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     const { collection } = req.query;
     const size = collection.length;
 
-    console.log('slut', req.query);
+    // console.log('slut', req.query);
     if (size === 1) {
       const coll = await db
         .collection('bookmarks')
@@ -25,8 +25,8 @@ export default async function handler(req, res) {
       .toArray();
     return res.status(200).json(coll);
   } else if (req.method === 'PUT') {
-    console.log(req.query);
-    console.log('patching');
+    // console.log(req.query);
+    // console.log('patching');
     const operation = await db.collection('bookmarks').findOneAndUpdate(
       {
         _id: new ObjectId(req.query.collection[0]),

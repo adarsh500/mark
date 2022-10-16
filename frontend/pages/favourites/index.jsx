@@ -8,6 +8,7 @@ import { Input } from '@nextui-org/react';
 import { useSession, getSession } from 'next-auth/react';
 
 const Favourites = (props) => {
+  const { cards } = props;
   const { data: session } = useSession({ required: true });
   const [query, setQuery] = useState('');
 
@@ -26,7 +27,7 @@ const Favourites = (props) => {
       </div>
       <main className={styles.main}>
         <div className={styles.cardWrapper}>
-          {props?.cards?.map((card) => (
+          {cards?.map((card) => (
             <Card key={card.id} {...card} />
           ))}
         </div>
@@ -61,7 +62,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      cards: {},
+      cards: [],
     },
   };
 }

@@ -7,14 +7,11 @@ import Card from '@components/Card';
 import { getSession } from 'next-auth/react';
 import { HiOutlineSearch } from 'react-icons/hi';
 import { Input, Popover, Text, Button } from '@nextui-org/react';
-
-const obj = {
-  tag: 'tags',
-  title: 'title',
-  description: 'description',
-};
+import { useIsTyping } from 'use-is-typing';
 
 export default function Home(props) {
+  const [isTyping, register] = useIsTyping();
+  const { cards } = props;
   const { data: session } = useSession({ required: true });
   const [collections, setCollections] = useState([]);
   const [input, setInput] = useState('');
@@ -22,8 +19,9 @@ export default function Home(props) {
   const [collection, setCollection] = useState('');
   const [query, setQuery] = useState('');
   const [visible, setVisible] = React.useState(false);
+  const [searchData, setSearchData] = useState();
 
-  console.log(query);
+  console.log(isTyping);
 
   const getCollection = async () => {
     try {
@@ -64,6 +62,10 @@ export default function Home(props) {
     setVisible(false);
   };
 
+  const filter = () => {
+    // set;
+  };
+
   if (!session) {
     return (
       <main className={styles.main}>
@@ -80,14 +82,17 @@ export default function Home(props) {
           <HiOutlineSearch className={styles.right} />
           <Input
             // className={styles.input}
+            // ref={register}
             fullWidth
             size="xl"
-            placeholder="Search"
+            placeholder="Search query"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
+          {/* <Button onClick={filter(cards)} auto>
+            Search
+          </Button> */}
         </div>
-
         <Popover isBordered disableShadow>
           <Popover.Trigger>
             <Button auto flat color="">
@@ -112,44 +117,51 @@ export default function Home(props) {
       </div>
       <main className={styles.main}>
         <div className={styles.cardWrapper}>
-          {props?.cards
+          {cards
             ?.filter((card) => {
               const delimiter = query.indexOf('-');
               const token = query.slice(0, delimiter);
               const value = query.slice(delimiter + 1);
 
-              if (value === '' || delimiter === -1) {
-                return true;
+              if (
+                isTyping ||
+                token === '' ||
+                delimiter === -1 ||
+                value.length < 4
+              ) {
+                return card;
               }
 
               if (token === 'tag') {
-                if (card.tags.includes(value.toLowerCase())) {
+                if (card.tags?.includes(value.toLowerCase())) {
                   // if (card.tags.includes(value)) {
-                  return true;
+                  return card;
                 }
               } else if (token === 'title') {
                 if (
-                  card.title
-                    .split(' ')
-                    .map((item) => item.toLowerCase())
-                    .includes(value.toLowerCase())
+                  card?.title
+                    ?.split(' ')
+                    ?.some(
+                      (element) => element.toLowerCase() == value.toLowerCase()
+                    )
                 ) {
                   // if (card.tags.includes(value)) {
-                  return true;
+                  return card;
                 }
               } else if (token === 'dsc') {
                 if (
-                  card.description
-                    .split(' ')
-                    .map((item) => item.toLowerCase())
-                    .includes(value.toLowerCase())
+                  card?.description
+                    ?.split(' ')
+                    ?.some(
+                      (element) => element.toLowerCase() == value.toLowerCase()
+                    )
                 ) {
                   // if (card.tags.includes(value)) {
-                  return true;
+                  return card;
                 }
               }
             })
-            .map((card) => {
+            ?.map((card) => {
               return <Card key={card._id} {...card} />;
             })}
         </div>
@@ -179,7 +191,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      cards: {},
+      cards: [],
     },
   };
 }

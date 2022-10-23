@@ -1,7 +1,9 @@
 # mark3
 
 [![Run on Repl.it](https://replit.com/badge/github/adarsh500/mark)](https://replit.com/new/github/adarsh500/mark)
+
 replit link: https://replit.com/@AdarshSulegai1/mark
+
 deployed link: mark3.vercel.app
 
 # What is mark3

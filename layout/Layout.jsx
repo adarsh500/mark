@@ -1,5 +1,4 @@
 import { signOut, useSession } from 'next-auth/react';
-import axios from 'axios';
 import Head from 'next/head';
 import React, { useEffect, useState, useCallback } from 'react';
 import styles from './Layout.module.scss';
@@ -28,7 +27,6 @@ const Layout = (props) => {
   const [query, setQuery] = useState('');
   const [newCollection, setNewCollection] = useState('');
   const [isKeyReleased, setIsKeyReleased] = useState(false);
-  const [state, setState] = useState('');
   const [link, setLink] = useState('');
   const [collection, setCollection] = useState('');
   const [tags, setTags] = useState([]);
@@ -36,7 +34,6 @@ const Layout = (props) => {
   const [visible, setVisible] = useState(false);
   const [collections, setCollections] = useState([]);
   const [displayCollections, setDisplayCollections] = useState(false);
-  const [importing, setImporting] = useState(false);
 
   const uploadToServer = async (event) => {
     const body = new FormData();
@@ -57,23 +54,6 @@ const Layout = (props) => {
       setCreateObjectURL(URL.createObjectURL(i));
     }
   };
-
-  // const handleUpload = async (e) => {
-  //   setFile(e.target.files[0]);
-  //   const formData = new FormData();
-  //   formData.append('name', 'bookmark');
-  //   formData.append('file', file);
-
-  //   const res = await fetch(`api/upload`, {
-  //     method: 'POST',
-  //     headers: { 'content-type': 'multipart/form-data' },
-  //     body: formData,
-  //   });
-
-  //   console.log('resp', res.data);
-  // };
-
-  // console.log('idl', collections);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getCollection = useCallback(async () => {

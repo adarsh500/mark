@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import clientPromise from 'lib/clientPromise';
+import Head from 'next/head';
 import React, { useState, useEffect } from 'react';
 import styles from '@styles/Home.module.scss';
 import { useSession, signIn, signOut } from 'next-auth/react';
@@ -44,6 +45,10 @@ export default function Home(props) {
 
   return (
     <>
+      <Head>
+        <title>Mark3</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <div className={styles.subNav}>
         <div className={styles.search}>
           <HiOutlineSearch className={styles.right} />

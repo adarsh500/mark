@@ -79,7 +79,7 @@ const Card = (props) => {
         <div className={styles.info}>
           {favourite && <HiHeart className={styles.fav} />}
           <p className={styles.site}>
-            {url.length > 25 ? url.slice(0, 25) + '...' : url}
+            {url.length > 22 ? url.slice(0, 22) + '...' : url}
           </p>
           <p className={styles.date}>{date}</p>
         </div>

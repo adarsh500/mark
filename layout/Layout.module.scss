@@ -22,6 +22,11 @@
     }
     //   min-height: 100vh;
 
+    .hamburger {
+      @include display-flex;
+      justify-content: space-between;
+    }
+
     .user {
       display: flex;
     }
@@ -67,7 +72,7 @@
     .coll {
       display: flex;
       justify-content: space-between;
-      margin: px 0;
+      margin: 10px 0;
     }
     .small {
       @include content-size(16, 16);
@@ -78,7 +83,7 @@
     }
 
     .collection {
-      margin: 10px 0;
+      margin: 3px 0;
       display: flex;
       justify-content: space-between;
 

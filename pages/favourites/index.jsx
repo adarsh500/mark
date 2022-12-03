@@ -14,6 +14,10 @@ const Favourites = (props) => {
 
   return (
     <>
+      <Head>
+        <title>Mark3</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <div className={styles.subNav}>
         <div className={styles.search}>
           <HiOutlineSearch className={styles.right} />

@@ -1,6 +1,6 @@
 import { SessionProvider } from 'next-auth/react';
 import { IconContext } from 'react-icons';
-import Layout from '../layout/Layout';
+import Layout from '../components/layout/Layout';
 import { NextUIProvider, createTheme } from '@nextui-org/react';
 
 import '../styles/globals.scss';

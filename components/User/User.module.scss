@@ -1,0 +1,27 @@
+@import '@styles/mixins';
+
+.dropdown {
+  @include mobile {
+    display: none;
+  }
+}
+
+.right {
+  margin-right: 6px;
+}
+
+.dropdownButton {
+  &Minimized {
+    margin-top: 20px;
+  }
+}
+
+.user {
+  display: flex;
+
+  @include mobile {
+    // &Hidden {
+    //   display: none;
+    // }
+  }
+}

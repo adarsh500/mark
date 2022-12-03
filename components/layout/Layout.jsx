@@ -1,13 +1,13 @@
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import React, { useEffect, useState, useCallback } from 'react';
 import styles from './Layout.module.scss';
 import Link from 'next/link';
-import { Dropdown } from '@nextui-org/react';
 import Navbar from '@components/Navbar';
-import { Input, Button, Text, Badge } from '@nextui-org/react';
+import { Input, Button, Text } from '@nextui-org/react';
 import BookmarkModal from '@components/Modal';
+import User from '@components/User';
+import useWindowSize from '@hooks/useWindowSize';
 import {
-  HiOutlineUserCircle,
   HiOutlineGlobeAlt,
   HiOutlineHeart,
   HiOutlineRectangleStack,
@@ -20,15 +20,20 @@ import {
 import { HiOutlineTrash } from 'react-icons/hi';
 
 const Layout = (props) => {
+  // const { width } = useWindowSize();
+  const isMobile = useWindowSize();
+
   const [visible, setVisible] = useState(false);
   const { data: session } = useSession({ required: true });
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [createObjectURL, setCreateObjectURL] = useState(null);
   const [file, setFile] = React.useState('');
   const [query, setQuery] = useState('');
   const [newCollection, setNewCollection] = useState('');
   const [collections, setCollections] = useState([]);
   const [displayCollections, setDisplayCollections] = useState(false);
+
+  console.log('ismob', isMobile);
 
   const uploadToServer = async (event) => {
     const body = new FormData();
@@ -104,29 +109,7 @@ const Layout = (props) => {
       <div className={styles.home}>
         <aside className={expanded ? styles.sidebar : styles.sidebarClose}>
           <div className={styles.hamburger}>
-            <Dropdown color={'default'}>
-              <Dropdown.Button flat className={styles.dropdownButton}>
-                {expanded ? (
-                  <span className={styles.user}>
-                    <>
-                      <HiOutlineUserCircle className={styles.right} />
-                      <p>{session?.user?.name}</p>
-                    </>
-                  </span>
-                ) : null}
-              </Dropdown.Button>
-              <Dropdown.Menu>
-                <Dropdown.Item
-                  key="delete"
-                  color="error"
-                  auto
-                  flat
-                  onClick={() => signOut()}
-                >
-                  Sign Out
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <User expanded={expanded} userName={session?.user?.name} />
 
             <Button
               icon={<HiBars3 />}
@@ -250,7 +233,9 @@ const Layout = (props) => {
           </menu>
         </aside>
 
-        <div className={styles.mainContent}>
+        <div
+          className={expanded ? styles.mainContentHidden : styles.mainContent}
+        >
           <Navbar handler={handler} query={query} setQuery={setQuery} />
           <BookmarkModal
             collections={collections}

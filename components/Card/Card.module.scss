@@ -9,6 +9,8 @@
   margin: 12px;
   position: relative;
   background-color: var(--background-light);
+  box-shadow: var(--shadow-elevation-medium);
+
 
   &:hover {
     .overlay {

@@ -165,12 +165,16 @@
 }
 
 .subNav {
-  border: 1px solid var(--border-light);
+  // border: 1px solid var(--border-light);
   border-top: 0;
   display: flex;
-  padding: 1rem 2rem;
+  padding: 1.25rem 2rem;
   justify-content: flex-start;
   align-items: center;
+  border-bottom-left-radius: var(--border-radius-large);
+  border-bottom-right-radius: var(--border-radius-large);
+  box-shadow: var(--shadow-elevation-medium);
+
 
   @include dark-mode {
     border: 1px solid var(--border-dark);

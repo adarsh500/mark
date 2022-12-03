@@ -4,7 +4,6 @@ import { Button, Text } from '@nextui-org/react';
 import { HiOutlinePlusCircle } from 'react-icons/hi2';
 
 const Navbar = (props) => {
-  // const [query, setQuery] = useState();
   const { handler, closeHandler, query, setQuery } = props;
 
   return (

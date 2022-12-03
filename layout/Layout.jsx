@@ -102,25 +102,39 @@ const Layout = (props) => {
   return (
     <div>
       <div className={styles.home}>
-        <aside className={styles.sidebar}>
+        <aside className={expanded ? styles.sidebar : styles.sidebarClose}>
           <div className={styles.hamburger}>
             <Dropdown color={'default'}>
-              <Dropdown.Button flat>
-                <span className={styles.user}>
-                  <HiOutlineUserCircle className={styles.right} />
-                  <p>{session?.user?.name}</p>
-                </span>
+              <Dropdown.Button flat className={styles.dropdownButton}>
+                {expanded ? (
+                  <span className={styles.user}>
+                    <>
+                      <HiOutlineUserCircle className={styles.right} />
+                      <p>{session?.user?.name}</p>
+                    </>
+                  </span>
+                ) : null}
               </Dropdown.Button>
               <Dropdown.Menu>
-                <Dropdown.Item key="delete" color="error">
-                  <Button color="error" flat onClick={() => signOut()}>
-                    Sign Out
-                  </Button>
+                <Dropdown.Item
+                  key="delete"
+                  color="error"
+                  auto
+                  flat
+                  onClick={() => signOut()}
+                >
+                  Sign Out
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
 
-            <Button icon={<HiBars3 />} auto flat></Button>
+            <Button
+              icon={<HiBars3 />}
+              auto
+              flat
+              className={styles.hamburgerIcon}
+              onClick={(e) => setExpanded(!expanded)}
+            ></Button>
           </div>
 
           <menu className={styles.menu}>

@@ -88,44 +88,44 @@ export default function Home(props) {
       <main className={styles.main}>
         <div className={styles.cardWrapper}>
           {cards
-            // ?.filter((card) => {
-            //   const delimiter = query.indexOf('-');
-            //   const token = query.slice(0, delimiter);
-            //   const value = query.slice(delimiter + 1);
+            ?.filter((card) => {
+              const delimiter = query.indexOf('-');
+              const token = query.slice(0, delimiter);
+              const value = query.slice(delimiter + 1);
 
-            //   if (token === '' || delimiter === -1 || value.length < 4) {
-            //     return card;
-            //   }
+              if (token === '' || delimiter === -1 || value.length < 4) {
+                return card;
+              }
 
-            //   if (token === 'tag') {
-            //     if (card.tags?.includes(value.toLowerCase())) {
-            //       // if (card.tags.includes(value)) {
-            //       return card;
-            //     }
-            //   } else if (token === 'title') {
-            //     if (
-            //       card?.title
-            //         ?.split(' ')
-            //         ?.some(
-            //           (element) => element.toLowerCase() == value.toLowerCase()
-            //         )
-            //     ) {
-            //       // if (card.tags.includes(value)) {
-            //       return card;
-            //     }
-            //   } else if (token === 'dsc') {
-            //     if (
-            //       card?.description
-            //         ?.split(' ')
-            //         ?.some(
-            //           (element) => element.toLowerCase() == value.toLowerCase()
-            //         )
-            //     ) {
-            //       // if (card.tags.includes(value)) {
-            //       return card;
-            //     }
-            //   }
-            // })
+              if (token === 'tag') {
+                if (card.tags?.includes(value.toLowerCase())) {
+                  // if (card.tags.includes(value)) {
+                  return card;
+                }
+              } else if (token === 'title') {
+                if (
+                  card?.title
+                    ?.split(' ')
+                    ?.some(
+                      (element) => element.toLowerCase() == value.toLowerCase()
+                    )
+                ) {
+                  // if (card.tags.includes(value)) {
+                  return card;
+                }
+              } else if (token === 'dsc') {
+                if (
+                  card?.description
+                    ?.split(' ')
+                    ?.some(
+                      (element) => element.toLowerCase() == value.toLowerCase()
+                    )
+                ) {
+                  // if (card.tags.includes(value)) {
+                  return card;
+                }
+              }
+            })
             ?.map((card) => {
               return <Card key={card._id} {...card} />;
             })}

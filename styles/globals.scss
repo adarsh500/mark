@@ -78,7 +78,6 @@ table {
 
 html,
 body,
-div,
 span,
 applet,
 object,
@@ -164,7 +163,6 @@ video {
   border: 0;
 }
 
-/* HTML5 display-role reset for older browsers */
 article,
 aside,
 details,
@@ -178,6 +176,8 @@ nav,
 section {
   display: block;
 }
+
+
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,

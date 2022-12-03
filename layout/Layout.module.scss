@@ -20,10 +20,43 @@
     @include dark-mode {
       background-color: #111;
     }
+
+    &Close {
+      width: 60px;
+      border-right: 1px solid var(--border-light);
+
+      @include dark-mode {
+        border-right: 1px solid var(--border-dark);
+      }
+
+      .menu {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+        flex-direction: column !important;
+        height: 100%;
+        align-items: center;
+        justify-content: spac;
+
+        &Icon {
+          margin-top: 20px;
+        }
+
+        .dropdownButton {
+          margin-top: 20px;
+        }
+      }
+
+      .user {
+      }
+    }
     //   min-height: 100vh;
 
     .hamburger {
-      @include display-flex;
+      // @include display-flex;
+      display: flex;
       justify-content: space-between;
     }
 

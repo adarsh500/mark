@@ -21,8 +21,10 @@
       background-color: #111;
     }
 
-    &Close {
-      width: 60px;
+    @include mobile {
+      width: 0;
+      padding: 0;
+
       border-right: 1px solid var(--border-light);
 
       @include dark-mode {
@@ -32,7 +34,9 @@
       .menu {
         display: none;
       }
+    }
 
+    &Close {
       .hamburger {
         display: flex;
         flex-direction: column !important;

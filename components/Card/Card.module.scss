@@ -9,12 +9,14 @@
   margin: 12px;
   position: relative;
   background-color: var(--background-light);
-  box-shadow: var(--shadow-elevation-medium);
-
+  color: var(--color-dark);
 
   &:hover {
     .overlay {
       opacity: 1;
+      box-shadow: var(--shadow-elevation-medium);
+
+      border-radius: var(--border-radius-large);
     }
   }
 
@@ -54,9 +56,10 @@
   }
 
   .subContent {
+    min-height: 160px !important;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 16px 12px;
     background-color: var(--background-light);
 
@@ -70,17 +73,16 @@
       align-items: flex-start;
       min-height: 30px;
       @include font-size-weight(16, 24, 600);
-      @include line-clamp(2);
+      @include line-clamp(1);
     }
 
     .description {
       margin: 8px 0;
-      min-height: 70px;
       display: flex;
-      // justify-content: ;
       align-items: center;
       line-height: 1.7;
       @include line-clamp(2);
+      color: var(--light-secondary);
     }
 
     .tags {

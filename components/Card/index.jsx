@@ -1,14 +1,12 @@
-import React from 'react';
+import { Badge, Button, Text } from '@nextui-org/react';
 import Image from 'next/image';
-import Link from 'next/link';
 import styles from './Card.module.scss';
-import { Button, Text, Badge } from '@nextui-org/react';
 
 import {
-  HiOutlineClipboardCopy,
-  HiOutlineTrash,
-  HiOutlineHeart,
   HiHeart,
+  HiOutlineClipboardCopy,
+  HiOutlineHeart,
+  HiOutlineTrash,
 } from 'react-icons/hi';
 // import { Image } from '@nextui-org/react';
 

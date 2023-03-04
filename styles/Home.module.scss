@@ -4,8 +4,9 @@
 }
 
 .main {
-  min-height: 60vh;
+  min-height: 80vh;
   padding: 2rem;
+  padding-bottom: 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -141,7 +142,7 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   overflow-y: scroll;
-  max-height: 80vh;
+  max-height: 89vh;
 
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */

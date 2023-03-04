@@ -4,6 +4,10 @@
   margin-left: 6px;
 }
 
+.sidebarClose {
+  background-color: var(--background-light);
+}
+
 .right {
   margin-right: 6px;
 }
@@ -16,6 +20,7 @@
     padding: 2rem 1.2rem;
     width: 25%;
     background-color: var(--background-light);
+    border-right: 1px solid var(--border-light);
 
     @include dark-mode {
       background-color: #111;

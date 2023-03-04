@@ -13,17 +13,16 @@ export default async function handler(req, res) {
       .toArray();
 
     let collTree = [];
-    let collMap = collections.map((coll) => ({...coll, children: []}));
+    let collMap = collections.map((coll) => ({ ...coll, children: [] }));
     collMap
-      .filter((coll) => (coll.parent == ''))
-      .forEach((coll) => { collTree.push(coll); });
+      .filter((coll) => coll?.parent == '')
+      ?.forEach((coll) => {
+        collTree.push(coll);
+      });
     collMap
-      .filter((coll) => (coll.parent != ''))
-      .forEach((coll) => {
-        collTree
-          .find((item) => (item._id == coll?.parent))?
-          .children
-          .push(coll);
+      ?.filter((coll) => coll?.parent != '')
+      ?.forEach((coll) => {
+        collTree?.find((item) => item._id == coll?.parent)?.children.push(coll);
       });
 
     res.status(200).json(collTree);

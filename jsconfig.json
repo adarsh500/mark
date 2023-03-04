@@ -5,7 +5,8 @@
       "@components/*": ["components/*"],
       "@styles/*": ["styles/*"],
       "@utils/*": ["utils/*"],
-      "@icons/*": ["components/icons/*"]
+      "@icons/*": ["components/icons/*"],
+      "@hooks/*": ["hooks/*"]
     }
   }
 }

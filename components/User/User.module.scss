@@ -1,0 +1,45 @@
+@import '@styles/mixins';
+
+.nextui-popover-content {
+  width: 100px !important;
+}
+
+.dropdown {
+  width: 120px !important;
+
+  @include mobile {
+    display: none;
+  }
+}
+
+.right {
+  margin-right: 6px;
+}
+
+.dropdownButton {
+  &Minimized {
+    // margin-top: 20px;
+  }
+}
+
+.user {
+  display: flex;
+
+  @include mobile {
+    // &Hidden {
+    //   display: none;
+    // }
+  }
+}
+
+.dropdownItem {
+  width: min-content !important;
+}
+
+.dropdownMenu {
+  width: 120px !important;
+}
+
+.button {
+  width: 100% !important;
+}

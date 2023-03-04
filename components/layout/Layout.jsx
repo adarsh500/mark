@@ -1,28 +1,27 @@
-import { signOut, useSession } from 'next-auth/react';
-import React, { useEffect, useState, useCallback } from 'react';
-import styles from './Layout.module.scss';
-import Link from 'next/link';
-import { Dropdown } from '@nextui-org/react';
-import Navbar from '@components/Navbar';
-import { Input, Button, Text, Badge } from '@nextui-org/react';
 import BookmarkModal from '@components/Modal';
+import Navbar from '@components/Navbar';
+import User from '@components/User';
+import { Button, Input, Text } from '@nextui-org/react';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import React, { useCallback, useEffect, useState } from 'react';
+import { HiOutlineTrash } from 'react-icons/hi';
 import {
-  HiOutlineUserCircle,
+  HiBars3,
+  HiChevronDown,
+  HiChevronUp,
+  HiOutlineArrowDownOnSquare,
   HiOutlineGlobeAlt,
   HiOutlineHeart,
   HiOutlineRectangleStack,
-  HiChevronDown,
-  HiChevronUp,
   HiPlus,
-  HiOutlineArrowDownOnSquare,
-  HiBars3,
 } from 'react-icons/hi2';
-import { HiOutlineTrash } from 'react-icons/hi';
+import styles from './Layout.module.scss';
 
 const Layout = (props) => {
   const [visible, setVisible] = useState(false);
   const { data: session } = useSession({ required: true });
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [createObjectURL, setCreateObjectURL] = useState(null);
   const [file, setFile] = React.useState('');
   const [query, setQuery] = useState('');
@@ -39,7 +38,6 @@ const Layout = (props) => {
       body,
     });
     const data = await res.json();
-    console.log(data);
   };
 
   const uploadToClient = (event) => {
@@ -102,26 +100,19 @@ const Layout = (props) => {
   return (
     <div>
       <div className={styles.home}>
-        <aside className={styles.sidebar}>
+        <aside className={expanded ? styles.sidebar : styles.sidebarClose}>
           <div className={styles.hamburger}>
-            <Dropdown color={'default'}>
-              <Dropdown.Button flat>
-                <span className={styles.user}>
-                  <HiOutlineUserCircle className={styles.right} />
-                  <p>{session?.user?.name}</p>
-                </span>
-              </Dropdown.Button>
-              <Dropdown.Menu>
-                <Dropdown.Item key="delete" color="error">
-                  <Button color="error" flat onClick={() => signOut()}>
-                    Sign Out
-                  </Button>
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-
-            <Button icon={<HiBars3 />} auto flat></Button>
+            <User expanded={expanded} userName={session?.user?.name} />
+            <Button
+              icon={<HiBars3 />}
+              auto
+              flat
+              className={styles.hamburgerIcon}
+              onClick={(e) => setExpanded(!expanded)}
+            ></Button>
           </div>
+
+          <div className={styles.hamburger}></div>
 
           <menu className={styles.menu}>
             <span className={styles.coll}>
@@ -177,14 +168,11 @@ const Layout = (props) => {
                           </div>
                         </a>
                       </Link>
-                      <Button
-                        flat
-                        color="error"
-                        auto
+                      <HiOutlineTrash
+                        className={styles.small}
+                        color="red"
                         onClick={() => deleteCollection(collection?._id)}
-                        // className={styles.smallBadge}
-                        icon={<HiOutlineTrash className={styles.small} />}
-                      ></Button>
+                      />
                     </span>
                   );
                 })}
@@ -237,7 +225,13 @@ const Layout = (props) => {
         </aside>
 
         <div className={styles.mainContent}>
-          <Navbar handler={handler} query={query} setQuery={setQuery} />
+          <Navbar
+            handler={handler}
+            query={query}
+            setQuery={setQuery}
+            expanded={expanded}
+            setExpanded={setExpanded}
+          />
           <BookmarkModal
             collections={collections}
             visible={visible}

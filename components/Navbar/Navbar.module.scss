@@ -6,6 +6,8 @@
 
 .navbar {
   border: 1px solid var(--border-light);
+  border-top: 0;
+  border-left: 0;
   border-bottom: 0;
   display: flex;
   padding: 1rem 2rem 0 2rem;
@@ -15,6 +17,33 @@
   @include dark-mode {
     border: 1px solid var(--border-dark);
     border-bottom: 0;
+  }
+
+  @include mobile {
+    justify-content: center;
+    @include font-size-weight(11, 12, 600);
+  }
+
+  .hamburgerIconMobile {
+    display: none;
+    @include mobile {
+      display: block;
+      margin-right: 10px;
+    }
+  }
+
+  .main {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .userMobile {
+    display: none;
+    @include mobile {
+      display: block;
+    }
   }
 
   .search {
@@ -44,6 +73,10 @@
     }
 
     .new {
+    }
+
+    @include mobile {
+      display: none;
     }
   }
 }

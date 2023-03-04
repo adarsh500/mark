@@ -25,10 +25,24 @@ a {
   }
 }
 
+@media (prefers-color-scheme: light) {
+  html {
+    color-scheme: light;
+  }
+  body {
+    color: black;
+    background: white;
+  }
+}
+
 .icon {
   height: 22px;
   width: 22px;
   vertical-align: middle;
+}
+
+.nextui-popover-content {
+  width: 120px !important;
 }
 
 .left {
@@ -78,7 +92,6 @@ table {
 
 html,
 body,
-div,
 span,
 applet,
 object,
@@ -164,7 +177,6 @@ video {
   border: 0;
 }
 
-/* HTML5 display-role reset for older browsers */
 article,
 aside,
 details,
@@ -210,6 +222,7 @@ svg {
 :root {
   --background-dark: rgb(19, 19, 19);
   --background-light: #f2f3f5;
+  --primary-alternate: rgb(0, 198, 255)
 
   --primary: hwb(212 0% 5%);
   --color-light: #7e7e7e;
@@ -245,3 +258,4 @@ svg {
     -0.6px 23.1px 26px -2.2px hsl(var(--shadow-color) / 0.28),
     -0.7px 31.1px 35px -2.5px hsl(var(--shadow-color) / 0.28);
 }
+

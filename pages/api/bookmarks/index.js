@@ -10,7 +10,6 @@ export default async function handler(req, res) {
     const body = Object.create(req.body);
     const { url } = body;
 
-    console.log('boidi', req.body);
     const metaData = await getMetaData(url);
 
     body.title = metaData.title;
@@ -20,7 +19,6 @@ export default async function handler(req, res) {
     body.date = new Date().toLocaleDateString();
 
     const bookmark = await db.collection('bookmarks').insertOne(body);
-    console.log('res', bookmark);
     res.status(200).json(bookmark);
   } else if (req.method === 'DELETE') {
     const operation = await db

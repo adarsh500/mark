@@ -1,15 +1,20 @@
+import CollectionModal from '@components/CollectionModal';
 import BookmarkModal from '@components/Modal';
 import Navbar from '@components/Navbar';
 import User from '@components/User';
 import { useCreateCollection } from '@hooks/useCreateCollection';
 import { useFetchCollections } from '@hooks/useFetchCollections';
-import { Button, Input, Text } from '@nextui-org/react';
+import { Button, Input, Popover, Text } from '@nextui-org/react';
 
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { BsCaretDownFill, BsCaretRightFill } from 'react-icons/bs';
+import {
+  BsCaretDownFill,
+  BsCaretRightFill,
+  BsThreeDotsVertical,
+} from 'react-icons/bs';
 import { CgAddR } from 'react-icons/cg';
 import {
   HiBars3,
@@ -25,7 +30,7 @@ import styles from './Layout.module.scss';
 
 const Parent = (props) => {
   const [showNested, setShowNested] = useState({});
-  const { collection, path } = props;
+  const { collection, path, coll } = props;
 
   const toggleNested = (name) => {
     setShowNested({ ...showNested, [name]: !showNested[name] });
@@ -67,26 +72,44 @@ const Parent = (props) => {
                     </div>
                   </a>
                 </Link>
-                <div className={styles.flex}>
-                  <CgAddR
-                    className={styles.actionIcon}
-                    // onClick={() => deleteCollection(collection?._id)}
-                  />
-                  <HiOutlineTrash
-                    className={styles.actionIcon}
-                    color="red"
-                    // onClick={() => deleteCollection(collection?._id)}
-                  />
-                </div>
+                <Popover>
+                  <Popover.Trigger>
+                    <button className={styles.noStyle}>
+                      <BsThreeDotsVertical />
+                    </button>
+                  </Popover.Trigger>
+                  <Popover.Content className={styles.popover}>
+                    <span
+                      className={styles.popoverButtons}
+                      // onClick={() => deleteCollection(collection?._id)}
+                    >
+                      <CgAddR className={styles.actionIcon} />
+                      Add
+                    </span>
+                    <span
+                      className={styles.popoverButtons}
+                      onClick={() => deleteCollection(collection?._id)}
+                    >
+                      <HiOutlineTrash
+                        className={styles.actionIcon}
+                        color="red"
+                      />
+                      Delete
+                    </span>
+                  </Popover.Content>
+                </Popover>
               </span>
-              
             </div>
             <div
               className={styles.children}
               style={{ display: !showNested[collection?._id] && 'none' }}
             >
               {collection?.children && (
-                <Parent collection={collection?.children} path={path} />
+                <Parent
+                  collection={collection?.children}
+                  path={path}
+                  coll={coll}
+                />
               )}
             </div>
           </>
@@ -99,6 +122,7 @@ const Parent = (props) => {
 const Layout = (props) => {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
+  const [visibleCollection, setVisibleCollection] = useState(false);
   const { data: session } = useSession({ required: true });
   const [expanded, setExpanded] = useState(true);
   const [createObjectURL, setCreateObjectURL] = useState(null);
@@ -225,6 +249,7 @@ const Layout = (props) => {
                 <Parent
                   collection={collectionsList?.data}
                   path={router?.asPath}
+                  coll={coll}
                 />
               ) : null}
             </div>
@@ -279,7 +304,13 @@ const Layout = (props) => {
             collections={collectionsList?.data}
             visible={visible}
             setVisible={setVisible}
-            email={session?.user.email}
+            email={session?.user?.email}
+          />
+          <CollectionModal
+            collections={collectionsList?.data}
+            visible={visibleCollection}
+            setVisible={setVisibleCollection}
+            email={session?.user?.email}
           />
           {props.children}
         </div>

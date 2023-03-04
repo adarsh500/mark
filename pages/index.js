@@ -84,7 +84,10 @@ export default function Home(props) {
                 .filter((key) => key !== 'currentPage')
                 .map((key) => {
                   return (
-                    <Card key={page?.data[key]?._id} {...page?.data[key]} />
+                    <Card
+                      key={page?.data[key]?._id}
+                      {...page?.data[key]}
+                    />
                   );
                 });
             })

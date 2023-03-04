@@ -9,6 +9,15 @@ import {
   HiOutlineTrash,
 } from 'react-icons/hi';
 // import { Image } from '@nextui-org/react';
+import { QueryClient } from 'react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+    },
+  },
+});
 
 const Card = (props) => {
   const { _id, image, title, description, url, date, tags, favourite } = props;
@@ -18,20 +27,35 @@ const Card = (props) => {
   };
 
   const deleteBookmark = async () => {
-    const res = await fetch(`api/bookmarks/${_id}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-    });
+    try {
+      const res = await fetch(`api/bookmarks/${_id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      await queryClient.refetchQueries({
+        queryKey: ['bookmarks'],
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const addToFavourite = async () => {
-    const res = await fetch(`api/bookmarks/${_id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        favourite: true,
-      }),
-    });
+    try {
+      const res = await fetch(`api/bookmarks/${_id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          favourite: !favourite,
+        }),
+      });
+      await queryClient.refetchQueries({
+        queryKey: ['bookmarks'],
+        type: 'active',
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

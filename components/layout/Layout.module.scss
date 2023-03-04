@@ -173,7 +173,7 @@
 
     .collection {
       margin: 4px 0;
-      margin-right: 6px;
+      // margin-right: 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -204,7 +204,7 @@
         width: 100%;
 
         margin: 4px 0;
-        margin-right: 6px;
+        // margin-right: 6px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -262,6 +262,15 @@
   justify-content: space-between;
 }
 
+.popover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--border-radius-medium) !important;
+  padding: 6px;
+}
+
 .noStyle {
   background-color: transparent;
   border: none;
@@ -272,18 +281,26 @@
     border-radius: var(--border-radius-medium);
     color: var(--color-dark);
   }
+  &:active {
+    color: #0072f5;
+    background-color: #cee4fe;
+  }
 }
 
 .popoverButtons {
+  @include display-flex;
+  justify-content: flex-start;
+
   margin: 4px 0;
   width: 100%;
   padding: 4px 8px;
+  border-radius: var(--border-radius-medium);
   background-color: transparent;
-  @include font-size-weight(12, 20, 400);
+  @include font-size-weight(14, 20, 400);
   border: none;
   &:hover {
     transition: all 0.2s ease-in-out;
-    background-color: #dadada;
+    background-color: var(--background-light);
     box-shadow: 0 0 0 1px var(--border-light);
     border-radius: var(--border-radius-medium);
     color: var(--color-dark);
@@ -292,7 +309,7 @@
 
 .actionIcon {
   cursor: pointer;
-  margin-right: 10px;
+  margin-right: 12px !important;
   &:last-child {
     margin-right: 0;
   }

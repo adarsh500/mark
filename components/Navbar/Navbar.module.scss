@@ -5,12 +5,10 @@
 }
 
 .navbar {
-  border: 1px solid var(--border-light);
-  border-top: 0;
-  border-left: 0;
-  border-bottom: 0;
+  background-color: var(--background-light);
+  border-bottom: 1px solid var(--border-light);
   display: flex;
-  padding: 1rem 2rem 0 2rem;
+  padding: 1rem 2rem;
   justify-content: space-between;
   align-items: center;
 
@@ -34,9 +32,13 @@
 
   .main {
     width: 100%;
-    display: flex;
+    display: none;
     justify-content: space-between;
     align-items: center;
+
+    @include mobile {
+      display: flex;
+    }
   }
 
   .userMobile {
@@ -46,12 +48,40 @@
     }
   }
 
+  .searchContainer {
+    display: flex;
+    align-items: center;
+  }
+
   .search {
-    width: 25% !important;
+    margin-right: 12px;
+    padding: 10px 16px;
+    width: 400px;
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+    border: 1px solid var(--border-light);
+    background-color: var(--background-light);
+    border-radius: var(--border-radius-large);
+
+    @include dark-mode {
+      background-color: var(--background-dark);
+      background-color: #16181a;
+    }
+
+    &:hover {
+      border: 1px solid var(--light-secondary);
+      transition: all 0.2s ease-in-out;
+    }
+  }
+
+  .searchBox {
+    width: 100%;
     padding: 0 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+    border: none;
     background-color: var(--background-light);
     border-radius: var(--border-radius-large);
 

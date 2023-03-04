@@ -53,10 +53,10 @@ $dark-mode: true;
   }
 }
 
-@mixin line-clamp($lines: 1) {
+@mixin line-clamp($lines) {
   display: -webkit-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: $lines;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: $lines !important;
 }

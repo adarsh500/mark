@@ -5,8 +5,43 @@ const getMetaData = require('metadata-scraper');
 export default async function handler(req, res) {
   const client = await clientPromise;
   const db = client.db('test');
-
-  if (req.method === 'POST') {
+  if (req.method === 'GET') {
+    const { email, page = 0, limit = 28, collection } = req.query;
+    console.log(email, page, limit, collection);
+    if (collection === '/favourite') {
+      const bookmark = await db
+        .collection('bookmarks')
+        .find({
+          email,
+          favourite: true,
+        })
+        .skip(limit * page)
+        .limit(parseInt(limit))
+        .toArray();
+      res.status(200).json({ ...bookmark, currentPage: page });
+      return;
+    } else if (collection) {
+      const bookmark = await db
+        .collection('bookmarks')
+        .find({
+          email,
+          collection: collection.slice(1),
+        })
+        .skip(limit * page)
+        .limit(parseInt(limit))
+        .toArray();
+      res.status(200).json({ ...bookmark, currentPage: page });
+      return;
+    } else {
+      const bookmark = await db
+        .collection('bookmarks')
+        .find({ email })
+        .skip(limit * page)
+        .limit(parseInt(limit))
+        .toArray();
+      res.status(200).json({ ...bookmark, currentPage: page });
+    }
+  } else if (req.method === 'POST') {
     const body = Object.create(req.body);
     const { url } = body;
 

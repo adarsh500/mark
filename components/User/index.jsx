@@ -25,7 +25,13 @@ const User = (props) => {
       </Dropdown.Button>
       <Dropdown.Menu className={styles.dropdownMenu}>
         <Dropdown.Item className={styles.dropdownItem}>
-          <Button color="error" auto flat onClick={() => signOut()} className={styles.button}>
+          <Button
+            color="error"
+            auto
+            flat
+            onClick={() => signOut()}
+            className={styles.button}
+          >
             Sign out
           </Button>
         </Dropdown.Item>

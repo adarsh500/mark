@@ -4,6 +4,10 @@
   margin-left: 6px;
 }
 
+.sidebarClose {
+  background-color: var(--background-light);
+}
+
 .right {
   margin-right: 6px;
 }
@@ -16,6 +20,7 @@
     padding: 2rem 1.2rem;
     width: 25%;
     background-color: var(--background-light);
+    border-right: 1px solid var(--border-light);
 
     @include dark-mode {
       background-color: #111;
@@ -86,8 +91,9 @@
       // height: 100%;
 
       .scrollableMenu {
-        max-height: 60vh;
+        height: 59vh;
         overflow: scroll;
+        margin-bottom: 14px;
         -ms-overflow-style: none; /* Internet Explorer 10+ */
         scrollbar-width: none; /* Firefox */
         &::-webkit-scrollbar {
@@ -120,10 +126,33 @@
     }
 
     .coll {
+      margin-top: 6px;
+
       display: flex;
       justify-content: space-between;
-      margin: 10px 0;
+      color: var(--color-dark);
+      padding: 6px 6px;
+
+      &:hover {
+        transition: all 0.2s ease-in-out;
+        background-color: #dadada;
+        box-shadow: 0 0 0 1px var(--border-light);
+        border-radius: var(--border-radius-medium);
+        color: var(--color-dark);
+      }
+
+      &Active {
+        margin-top: 6px;
+        display: flex;
+        justify-content: space-between;
+        color: var(--color-dark);
+        color: #0072f5;
+        background-color: #cee4fe;
+        border-radius: var(--border-radius-medium);
+        padding: 6px 6px;
+      }
     }
+
     .small {
       padding: 2px;
       @include content-size(24, 24);
@@ -134,10 +163,13 @@
     }
 
     .collection {
-      margin: 8px 0;
+      margin: 4px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      color: var(--color-dark);
+      padding: 6px 6px;
 
       &Info {
         display: flex;
@@ -146,18 +178,37 @@
       }
 
       &Name {
-        @include font-size-weight(18, 26, 400);
+        @include font-size-weight(16, 24, 400);
         @include line-clamp(1);
+      }
+
+      &:hover {
+        transition: all 0.2s ease-in-out;
+        background-color: #dadada;
+        box-shadow: 0 0 0 1px var(--border-light);
+        border-radius: var(--border-radius-medium);
+        color: var(--color-dark);
+      }
+
+      &Active {
+        margin: 4px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--color-dark);
+        color: #0072f5;
+        background-color: #cee4fe;
+        border-radius: var(--border-radius-medium);
+        padding: 6px 6px;
       }
     }
 
     .subMenu {
       display: flex;
-      // justify-content: center;
       align-items: center;
-      color: var(--color-light);
-      margin: 24px 0 14px 6px;
-      @include font-size-weight(16, 10, 400);
+      color: var(--color-dark);
+      margin: 14px 0 14px 0px;
+      @include font-size-weight(16, 10, 600);
     }
   }
 
@@ -185,4 +236,9 @@
   .badge {
     margin-right: 6px;
   }
+}
+
+.text {
+  margin-bottom: 16px;
+  @include font-size-weight(16, 12, 500);
 }

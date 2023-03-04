@@ -25,6 +25,18 @@ export const authOptions = {
       authorization: GOOGLE_AUTHORIZATION_URL,
     }),
   ],
+  callbacks: {
+    async session({ session, user, token }) {
+      session.user.id = token.id;
+      return session;
+    },
+    async jwt({ token, user, account, profile, isNewUser }) {
+      if (account) {
+        token.id = profile.id;
+      }
+      return token;
+    },
+  },
 };
 
 export default NextAuth(authOptions);

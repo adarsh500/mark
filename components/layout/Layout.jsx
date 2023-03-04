@@ -1,11 +1,12 @@
 import BookmarkModal from '@components/Modal';
 import Navbar from '@components/Navbar';
 import User from '@components/User';
+import { useFetchCollections } from '@hooks/useFetchCollections';
 import { Button, Input, Text } from '@nextui-org/react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import React, { useCallback, useEffect, useState } from 'react';
-import { HiOutlineTrash } from 'react-icons/hi';
+import { useRouter } from 'next/router';
+import React, { useCallback, useState } from 'react';
 import {
   HiBars3,
   HiChevronDown,
@@ -14,11 +15,13 @@ import {
   HiOutlineGlobeAlt,
   HiOutlineHeart,
   HiOutlineRectangleStack,
+  HiOutlineTrash,
   HiPlus,
 } from 'react-icons/hi2';
 import styles from './Layout.module.scss';
 
 const Layout = (props) => {
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
   const { data: session } = useSession({ required: true });
   const [expanded, setExpanded] = useState(false);
@@ -26,8 +29,7 @@ const Layout = (props) => {
   const [file, setFile] = React.useState('');
   const [query, setQuery] = useState('');
   const [newCollection, setNewCollection] = useState('');
-  const [collections, setCollections] = useState([]);
-  const [displayCollections, setDisplayCollections] = useState(false);
+  const [displayCollections, setDisplayCollections] = useState(true);
 
   const uploadToServer = async (event) => {
     const body = new FormData();
@@ -48,27 +50,24 @@ const Layout = (props) => {
     }
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const getCollection = useCallback(async () => {
-    // setFetching(true);
-    try {
-      const res = await fetch(`api/collections/${session?.user?.email}`);
-      const data = await res.json();
-      setCollections(data);
-      // setFetching(false);
-    } catch (e) {
-      console.log(e);
-      // setFetching(false);
-    }
-  });
-
   const deleteCollection = async (_id) => {
     const res = await fetch(`api/collections/${_id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     });
-    getCollection();
+    refetchCollections();
   };
+
+  const { data: collectionsList, refetch: refetchCollections } =
+    useFetchCollections({
+      email: session?.user?.email,
+      configs: [
+        {
+          enabled: !!session?.user?.email,
+          refetchOnWindowFocus: false,
+        },
+      ],
+    });
 
   const createCollection = useCallback(
     async (e) => {
@@ -81,21 +80,13 @@ const Layout = (props) => {
           collection: newCollection,
         }),
       });
-      // console.log('colls', data);
       setDisplayCollections(true);
+      refetchCollections();
     },
     [newCollection, session]
   );
 
-  useEffect(() => {
-    getCollection();
-  }, [displayCollections, visible]);
-
   const handler = () => setVisible(true);
-
-  const changeHandler = (next) => {
-    setVisible(next);
-  };
 
   return (
     <div>
@@ -115,35 +106,39 @@ const Layout = (props) => {
           <div className={styles.hamburger}></div>
 
           <menu className={styles.menu}>
-            <span className={styles.coll}>
+            <span
+              className={
+                '/' === router.pathname ? styles.collActive : styles.coll
+              }
+            >
               <Link href={`/`}>
                 <div className={styles.collectionInfo}>
                   <HiOutlineGlobeAlt className={styles.right} />
                   <p className={styles.collectionName}>All</p>
                 </div>
               </Link>
-              {/* <Badge isSquared color="primary" variant="bordered">
-                1
-              </Badge> */}
             </span>
 
-            <span className={styles.coll}>
+            <span
+              className={
+                '/favourites' === router.pathname
+                  ? styles.collActive
+                  : styles.coll
+              }
+            >
               <Link href={`/favourites`}>
                 <div className={styles.collectionInfo}>
                   <HiOutlineHeart className={styles.right} />
                   <p className={styles.collectionName}>Favourites</p>
                 </div>
               </Link>
-              {/* <Badge isSquared color="primary" variant="bordered">
-                43
-              </Badge> */}
             </span>
 
             <p
               className={styles.subMenu}
               onClick={() => setDisplayCollections(!displayCollections)}
             >
-              collections
+              Collections
               {displayCollections ? (
                 <HiChevronUp className={styles.left} />
               ) : (
@@ -152,9 +147,17 @@ const Layout = (props) => {
             </p>
             <div className={styles.scrollableMenu}>
               {displayCollections &&
-                collections.map((collection) => {
+                collectionsList?.data?.map((collection) => {
                   return (
-                    <span key={collection?._id} className={styles.collection}>
+                    <span
+                      key={collection?._id}
+                      className={
+                        '/' + encodeURIComponent(collection?.collection) ===
+                        router?.asPath
+                          ? styles.collectionActive
+                          : styles.collection
+                      }
+                    >
                       <Link href={`/${collection.collection}`}>
                         <a
                         // className={styles.collection}
@@ -178,12 +181,11 @@ const Layout = (props) => {
                 })}
             </div>
 
+            <Text className={styles.text}>Add a new collection</Text>
             <Input
               clearable="true"
               contentRightStyling={false}
-              label="Create collection"
               fullWidth
-              // color="default"
               bordered
               contentRight={
                 <HiPlus onClick={createCollection} className={styles.right} />
@@ -191,20 +193,13 @@ const Layout = (props) => {
               value={newCollection}
               onChange={(e) => setNewCollection(e.target.value)}
             />
-            {/* <UiFileInputButton
-              label="Upload Single File"
-              uploadFileName="theFiles"
-              onChange={handleUpload}
-            /> */}
 
             <div className={styles.uploadSection}>
-              <Text>Upload bookmarks from other browser</Text>
+              <Text className={styles.text}>Import bookmarks </Text>
               <div className={styles.upload}>
                 <input
                   type="file"
                   clearable="true"
-                  // contentRightStyling={false}
-                  // label="Import Bookmarks"
                   name="myImage"
                   onChange={uploadToClient}
                   className={styles.inputFile}
@@ -233,7 +228,7 @@ const Layout = (props) => {
             setExpanded={setExpanded}
           />
           <BookmarkModal
-            collections={collections}
+            collections={collectionsList?.data}
             visible={visible}
             setVisible={setVisible}
             email={session?.user.email}

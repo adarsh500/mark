@@ -1,4 +1,6 @@
 import Layout from '@components/layout/Layout';
+import { ReactQueryDevtools } from 'react-query/devtools';
+
 import { createTheme, NextUIProvider } from '@nextui-org/react';
 import '@styles/globals.scss';
 import { SessionProvider } from 'next-auth/react';
@@ -47,6 +49,7 @@ export default function App({
               </IconContext.Provider>
             </NextUIProvider>
           </NextThemesProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
         </Hydrate>
       </QueryClientProvider>
     </SessionProvider>

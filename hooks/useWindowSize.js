@@ -12,8 +12,6 @@ export default function useWindowSize() {
     };
   }, []);
 
-  console.log('ssr', isSSR, width);
-
   function changeWindowSize() {
     setWidth(window.innerWidth);
   }

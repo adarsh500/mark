@@ -1,11 +1,12 @@
 import BookmarkModal from '@components/Modal';
 import Navbar from '@components/Navbar';
 import User from '@components/User';
+import { useFetchCollections } from '@hooks/useFetchCollections';
 import { Button, Input, Text } from '@nextui-org/react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   HiBars3,
   HiChevronDown,
@@ -28,8 +29,7 @@ const Layout = (props) => {
   const [file, setFile] = React.useState('');
   const [query, setQuery] = useState('');
   const [newCollection, setNewCollection] = useState('');
-  const [collections, setCollections] = useState([]);
-  const [displayCollections, setDisplayCollections] = useState(false);
+  const [displayCollections, setDisplayCollections] = useState(true);
 
   const uploadToServer = async (event) => {
     const body = new FormData();
@@ -50,27 +50,24 @@ const Layout = (props) => {
     }
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const getCollection = useCallback(async () => {
-    // setFetching(true);
-    try {
-      const res = await fetch(`api/collections/${session?.user?.email}`);
-      const data = await res.json();
-      setCollections(data);
-      // setFetching(false);
-    } catch (e) {
-      console.log(e);
-      // setFetching(false);
-    }
-  });
-
   const deleteCollection = async (_id) => {
     const res = await fetch(`api/collections/${_id}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     });
-    getCollection();
+    refetchCollections();
   };
+
+  const { data: collectionsList, refetch: refetchCollections } =
+    useFetchCollections({
+      email: session?.user?.email,
+      configs: [
+        {
+          enabled: !!session?.user?.email,
+          refetchOnWindowFocus: false,
+        },
+      ],
+    });
 
   const createCollection = useCallback(
     async (e) => {
@@ -83,21 +80,13 @@ const Layout = (props) => {
           collection: newCollection,
         }),
       });
-      // console.log('colls', data);
       setDisplayCollections(true);
+      refetchCollections();
     },
     [newCollection, session]
   );
 
-  useEffect(() => {
-    getCollection();
-  }, [displayCollections, visible]);
-
   const handler = () => setVisible(true);
-
-  const changeHandler = (next) => {
-    setVisible(next);
-  };
 
   return (
     <div>
@@ -158,12 +147,7 @@ const Layout = (props) => {
             </p>
             <div className={styles.scrollableMenu}>
               {displayCollections &&
-                collections?.map((collection) => {
-                  console.log(
-                    'coll',
-                    encodeURIComponent(collection?.collection),
-                    router?.asPath
-                  );
+                collectionsList?.data?.map((collection) => {
                   return (
                     <span
                       key={collection?._id}
@@ -197,10 +181,10 @@ const Layout = (props) => {
                 })}
             </div>
 
+            <Text className={styles.text}>Add a new collection</Text>
             <Input
               clearable="true"
               contentRightStyling={false}
-              label="Create collection"
               fullWidth
               bordered
               contentRight={
@@ -211,7 +195,7 @@ const Layout = (props) => {
             />
 
             <div className={styles.uploadSection}>
-              <Text>Upload bookmarks from other browser</Text>
+              <Text className={styles.text}>Import bookmarks </Text>
               <div className={styles.upload}>
                 <input
                   type="file"
@@ -244,7 +228,7 @@ const Layout = (props) => {
             setExpanded={setExpanded}
           />
           <BookmarkModal
-            collections={collections}
+            collections={collectionsList?.data}
             visible={visible}
             setVisible={setVisible}
             email={session?.user.email}

@@ -91,7 +91,7 @@
       // height: 100%;
 
       .scrollableMenu {
-        max-height: 60vh;
+        height: 59vh;
         overflow: scroll;
         margin-bottom: 14px;
         -ms-overflow-style: none; /* Internet Explorer 10+ */
@@ -207,7 +207,7 @@
       display: flex;
       align-items: center;
       color: var(--color-dark);
-      margin: 24px 0 14px 6px;
+      margin: 14px 0 14px 0px;
       @include font-size-weight(16, 10, 600);
     }
   }
@@ -236,4 +236,9 @@
   .badge {
     margin-right: 6px;
   }
+}
+
+.text {
+  margin-bottom: 16px;
+  @include font-size-weight(16, 12, 500);
 }

@@ -15,7 +15,6 @@ export const authOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       profile(profile) {
-        // console.log('this is prof', profile);
         return {
           id: profile.sub,
           name: profile.name,
@@ -26,8 +25,6 @@ export const authOptions = {
       authorization: GOOGLE_AUTHORIZATION_URL,
     }),
   ],
-  // secret: process.env.NEXT_PUBLIC_SECRET,
-  debug: true,
 };
 
 export default NextAuth(authOptions);

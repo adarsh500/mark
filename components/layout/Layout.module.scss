@@ -14,7 +14,7 @@
 
   .sidebar {
     padding: 2rem 1.2rem;
-    width: 20%;
+    width: 25%;
     background-color: var(--background-light);
 
     @include dark-mode {
@@ -22,6 +22,10 @@
     }
 
     @include mobile {
+      // display: flex;
+      // flex-direction: column-reverse;
+      width: 0;
+      padding: 0;
       position: absolute;
       z-index: 1;
       min-height: 100vh;
@@ -37,16 +41,21 @@
         border-right: 1px solid var(--border-dark);
       }
 
+      @include mobile {
+        display: none;
+      }
+
       .menu {
         display: none;
       }
 
       .hamburger {
         display: flex;
-        flex-direction: column !important;
+        flex-direction: column;
         height: 100%;
         align-items: center;
         justify-content: spac;
+        margin-top: 20px;
 
         &Icon {
           margin-top: 20px;
@@ -116,7 +125,8 @@
       margin: 10px 0;
     }
     .small {
-      @include content-size(16, 16);
+      padding: 2px;
+      @include content-size(24, 24);
 
       &Badge {
         // @include content-size(40, 40);
@@ -124,9 +134,10 @@
     }
 
     .collection {
-      margin: 3px 0;
+      margin: 8px 0;
       display: flex;
       justify-content: space-between;
+      align-items: center;
 
       &Info {
         display: flex;

@@ -1,28 +1,24 @@
-import { useSession } from 'next-auth/react';
-import React, { useEffect, useState, useCallback } from 'react';
-import styles from './Layout.module.scss';
-import Link from 'next/link';
-import Navbar from '@components/Navbar';
-import { Input, Button, Text } from '@nextui-org/react';
 import BookmarkModal from '@components/Modal';
+import Navbar from '@components/Navbar';
 import User from '@components/User';
-import useWindowSize from '@hooks/useWindowSize';
+import { Button, Input, Text } from '@nextui-org/react';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import React, { useCallback, useEffect, useState } from 'react';
+import { HiOutlineTrash } from 'react-icons/hi';
 import {
+  HiBars3,
+  HiChevronDown,
+  HiChevronUp,
+  HiOutlineArrowDownOnSquare,
   HiOutlineGlobeAlt,
   HiOutlineHeart,
   HiOutlineRectangleStack,
-  HiChevronDown,
-  HiChevronUp,
   HiPlus,
-  HiOutlineArrowDownOnSquare,
-  HiBars3,
 } from 'react-icons/hi2';
-import { HiOutlineTrash } from 'react-icons/hi';
+import styles from './Layout.module.scss';
 
 const Layout = (props) => {
-  // const { width } = useWindowSize();
-  const isMobile = useWindowSize();
-
   const [visible, setVisible] = useState(false);
   const { data: session } = useSession({ required: true });
   const [expanded, setExpanded] = useState(false);
@@ -33,8 +29,6 @@ const Layout = (props) => {
   const [collections, setCollections] = useState([]);
   const [displayCollections, setDisplayCollections] = useState(false);
 
-  console.log('ismob', isMobile);
-
   const uploadToServer = async (event) => {
     const body = new FormData();
     body.append('file', file);
@@ -44,7 +38,6 @@ const Layout = (props) => {
       body,
     });
     const data = await res.json();
-    console.log(data);
   };
 
   const uploadToClient = (event) => {
@@ -110,7 +103,6 @@ const Layout = (props) => {
         <aside className={expanded ? styles.sidebar : styles.sidebarClose}>
           <div className={styles.hamburger}>
             <User expanded={expanded} userName={session?.user?.name} />
-
             <Button
               icon={<HiBars3 />}
               auto
@@ -119,6 +111,8 @@ const Layout = (props) => {
               onClick={(e) => setExpanded(!expanded)}
             ></Button>
           </div>
+
+          <div className={styles.hamburger}></div>
 
           <menu className={styles.menu}>
             <span className={styles.coll}>
@@ -174,14 +168,11 @@ const Layout = (props) => {
                           </div>
                         </a>
                       </Link>
-                      <Button
-                        flat
-                        color="error"
-                        auto
+                      <HiOutlineTrash
+                        className={styles.small}
+                        color="red"
                         onClick={() => deleteCollection(collection?._id)}
-                        // className={styles.smallBadge}
-                        icon={<HiOutlineTrash className={styles.small} />}
-                      ></Button>
+                      />
                     </span>
                   );
                 })}
@@ -233,10 +224,14 @@ const Layout = (props) => {
           </menu>
         </aside>
 
-        <div
-          className={expanded ? styles.mainContentHidden : styles.mainContent}
-        >
-          <Navbar handler={handler} query={query} setQuery={setQuery} />
+        <div className={styles.mainContent}>
+          <Navbar
+            handler={handler}
+            query={query}
+            setQuery={setQuery}
+            expanded={expanded}
+            setExpanded={setExpanded}
+          />
           <BookmarkModal
             collections={collections}
             visible={visible}

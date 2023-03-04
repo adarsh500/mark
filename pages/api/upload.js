@@ -38,16 +38,11 @@ const post = async (req, res) => {
         var categories = getCategories($a);
         const coll = categories[0].toLowerCase();
 
-        // console.log('title', title);
-        // console.log('url', url);
-        // console.log('cat', categories[0]);
-
         if (!allCollections.includes(coll)) {
           allCollections.push(coll);
           const collection = await db
             .collection('collection')
             .insertOne({ email, collection: coll });
-          // console.log('resss', collection);
         }
 
         const body = Object.create({ email, collection: coll });

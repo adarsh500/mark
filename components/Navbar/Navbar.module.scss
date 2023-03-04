@@ -24,6 +24,28 @@
     @include font-size-weight(11, 12, 600);
   }
 
+  .hamburgerIconMobile {
+    display: none;
+    @include mobile {
+      display: block;
+      margin-right: 10px;
+    }
+  }
+
+  .main {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .userMobile {
+    display: none;
+    @include mobile {
+      display: block;
+    }
+  }
+
   .search {
     width: 25% !important;
     padding: 0 10px;

@@ -5,14 +5,11 @@ import { HiXMark } from 'react-icons/hi2';
 
 const BookmarkModal = (props) => {
   const { visible, setVisible, collections, email } = props;
-  console.log(props);
   const [collection, setCollection] = useState('');
   const [link, setLink] = useState('');
   const [isKeyReleased, setIsKeyReleased] = useState(false);
   const [input, setInput] = useState('');
   const [tags, setTags] = useState([]);
-  console.log('link', link);
-  console.log('tags', tags);
 
   const onChange = (e) => {
     const { value } = e.target;

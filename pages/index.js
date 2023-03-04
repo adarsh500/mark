@@ -1,17 +1,81 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Card from '@components/Card';
+import CardLoader from '@components/CardLoader';
+import { Button } from '@nextui-org/react';
 import styles from '@styles/Home.module.scss';
+import axios from 'axios';
 import clientPromise from 'lib/clientPromise';
 import { getSession, signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { useInfiniteQuery } from 'react-query';
 
 export default function Home(props) {
+  const { ref, inView } = useInView();
+
   const { cards } = props;
   const { data: session } = useSession({ required: true });
   const [collections, setCollections] = useState([]);
   const [query, setQuery] = useState('');
   const [visible, setVisible] = React.useState(false);
+  const [isInitial, setIsInitial] = useState(true);
+  const [page, setPage] = useState(0);
+
+  const fetchBookmarks = async (param) => {
+    console.log(param);
+    const res = await axios.get(
+      `api/bookmarks?email=${session?.user?.email}&page=${
+        param?.pageParam ?? 0
+      }&limit=${28}`
+    );
+    return res;
+  };
+
+  const {
+    status,
+    data,
+    error,
+    isLoading,
+    isFetching,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
+    fetchNextPage,
+    fetchPreviousPage,
+    hasNextPage,
+    hasPreviousPage,
+  } = useInfiniteQuery(
+    [
+      'bookmarks',
+      {
+        page,
+      },
+    ],
+    fetchBookmarks,
+    {
+      enabled: !!session?.user?.email,
+      refetechOnWindowFocus: false,
+      onSuccess: (data) => {
+        if (isInitial) {
+          setIsInitial(false);
+        }
+        console.log('data', data);
+      },
+      getNextPageParam: (lastPage, pages) => {
+        console.log('last page', lastPage.data.currentPage);
+        return parseInt(lastPage?.data?.currentPage) + 1;
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (inView) {
+      // setPage(page + 1);
+      fetchNextPage();
+    }
+  }, [inView]);
 
   const getCollection = async () => {
     try {
@@ -26,10 +90,6 @@ export default function Home(props) {
   useEffect(() => {
     getCollection();
   }, [visible]);
-
-  const closeHandler = () => {
-    setVisible(false);
-  };
 
   if (!session) {
     return (
@@ -48,49 +108,58 @@ export default function Home(props) {
       </Head>
 
       <main className={styles.main}>
-        <div className={styles.cardWrapper}>
-          {cards
-            ?.filter((card) => {
-              const delimiter = query.indexOf('-');
-              const token = query.slice(0, delimiter);
-              const value = query.slice(delimiter + 1);
-
-              if (token === '' || delimiter === -1 || value.length < 4) {
-                return card;
-              }
-
-              if (token === 'tag') {
-                if (card.tags?.includes(value.toLowerCase())) {
-                  // if (card.tags.includes(value)) {
-                  return card;
-                }
-              } else if (token === 'title') {
-                if (
-                  card?.title
-                    ?.split(' ')
-                    ?.some(
-                      (element) => element.toLowerCase() == value.toLowerCase()
-                    )
-                ) {
-                  // if (card.tags.includes(value)) {
-                  return card;
-                }
-              } else if (token === 'dsc') {
-                if (
-                  card?.description
-                    ?.split(' ')
-                    ?.some(
-                      (element) => element.toLowerCase() == value.toLowerCase()
-                    )
-                ) {
-                  // if (card.tags.includes(value)) {
-                  return card;
-                }
-              }
+        <div className={styles.cardWrapper} ref={ref}>
+          {isLoading ? (
+            <>
+              <div className={styles.loaderBlock}>
+                <CardLoader />
+                <CardLoader />
+                <CardLoader />
+                <CardLoader />
+              </div>
+              <div className={styles.loaderBlock}>
+                <CardLoader />
+                <CardLoader />
+                <CardLoader />
+                <CardLoader />
+              </div>
+            </>
+          ) : null}
+          {data ? (
+            data?.pages?.map((page) => {
+              return Object.keys(page?.data)
+                .filter((key) => key !== 'currentPage')
+                .map((key) => {
+                  return (
+                    <Card key={page?.data[key]?._id} {...page?.data[key]} />
+                  );
+                });
             })
-            ?.map((card) => {
-              return <Card key={card._id} {...card} />;
-            })}
+          ) : (
+            <Skeleton />
+          )}
+          <div className="btn-container">
+            <Button
+              onClick={() => fetchNextPage()}
+              ref={ref}
+              disabled={!hasNextPage || isFetchingNextPage}
+              className={styles.loadMore}
+            >
+              {isFetchingNextPage
+                ? 'Loading more...'
+                : hasNextPage
+                ? 'Load Newer'
+                : 'Nothing more to load'}
+            </Button>
+            {isFetchingNextPage ? (
+              <div className={styles.loaderBlock}>
+                <CardLoader />
+                <CardLoader />
+                <CardLoader />
+                <CardLoader />
+              </div>
+            ) : null}
+          </div>
         </div>
       </main>
     </>

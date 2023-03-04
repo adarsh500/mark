@@ -1,0 +1,9 @@
+.cardLoader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .content {
+    margin-top: 12px;
+  }
+}

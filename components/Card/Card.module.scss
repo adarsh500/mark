@@ -9,7 +9,7 @@
   margin: 12px;
   position: relative;
   background-color: var(--background-light);
-  color: var(--color-dark);
+  color: var(--color-dark) !important;
 
   &:hover {
     .overlay {
@@ -82,7 +82,6 @@
       align-items: center;
       line-height: 1.7;
       @include line-clamp(2);
-      color: var(--light-secondary);
     }
 
     .tags {
@@ -96,7 +95,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      color: var(--color-light);
 
       .fav {
         height: 18px;

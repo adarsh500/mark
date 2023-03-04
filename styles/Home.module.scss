@@ -4,7 +4,7 @@
 }
 
 .main {
-  min-height: 80vh;
+  min-height: 78vh;
   padding: 2rem;
   padding-bottom: 0;
   flex: 1;
@@ -163,4 +163,16 @@
   .badge {
     margin-right: 6px;
   }
+}
+
+.loadMore {
+  visibility: hidden;
+}
+
+.loaderBlock {
+  padding: 18px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

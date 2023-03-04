@@ -14,6 +14,7 @@ import {
   HiOutlineGlobeAlt,
   HiOutlineHeart,
   HiOutlineRectangleStack,
+  HiOutlineTrash,
   HiPlus,
 } from 'react-icons/hi2';
 import styles from './Layout.module.scss';
@@ -22,7 +23,7 @@ const Layout = (props) => {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
   const { data: session } = useSession({ required: true });
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [createObjectURL, setCreateObjectURL] = useState(null);
   const [file, setFile] = React.useState('');
   const [query, setQuery] = useState('');
@@ -186,11 +187,11 @@ const Layout = (props) => {
                           </div>
                         </a>
                       </Link>
-                      {/* <HiOutlineTrash
+                      <HiOutlineTrash
                         className={styles.small}
                         color="red"
                         onClick={() => deleteCollection(collection?._id)}
-                      /> */}
+                      />
                     </span>
                   );
                 })}

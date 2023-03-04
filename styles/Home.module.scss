@@ -163,36 +163,3 @@
     margin-right: 6px;
   }
 }
-
-.subNav {
-  // border: 1px solid var(--border-light);
-  border-top: 0;
-  display: flex;
-  padding: 1.25rem 2rem;
-  justify-content: flex-start;
-  align-items: center;
-  border-bottom-left-radius: var(--border-radius-large);
-  border-bottom-right-radius: var(--border-radius-large);
-  box-shadow: var(--shadow-elevation-medium);
-
-
-  @include dark-mode {
-    border: 1px solid var(--border-dark);
-    border-top: 0;
-  }
-
-  .search {
-    margin-right: 12px;
-    padding: 0 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--background-light);
-    border-radius: var(--border-radius-large);
-
-    @include dark-mode {
-      background-color: var(--background-dark);
-      background-color: #16181a;
-    }
-  }
-}

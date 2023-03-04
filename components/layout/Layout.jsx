@@ -4,8 +4,8 @@ import User from '@components/User';
 import { Button, Input, Text } from '@nextui-org/react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
-import { HiOutlineTrash } from 'react-icons/hi';
 import {
   HiBars3,
   HiChevronDown,
@@ -19,9 +19,10 @@ import {
 import styles from './Layout.module.scss';
 
 const Layout = (props) => {
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
   const { data: session } = useSession({ required: true });
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const [createObjectURL, setCreateObjectURL] = useState(null);
   const [file, setFile] = React.useState('');
   const [query, setQuery] = useState('');
@@ -115,35 +116,39 @@ const Layout = (props) => {
           <div className={styles.hamburger}></div>
 
           <menu className={styles.menu}>
-            <span className={styles.coll}>
+            <span
+              className={
+                '/' === router.pathname ? styles.collActive : styles.coll
+              }
+            >
               <Link href={`/`}>
                 <div className={styles.collectionInfo}>
                   <HiOutlineGlobeAlt className={styles.right} />
                   <p className={styles.collectionName}>All</p>
                 </div>
               </Link>
-              {/* <Badge isSquared color="primary" variant="bordered">
-                1
-              </Badge> */}
             </span>
 
-            <span className={styles.coll}>
+            <span
+              className={
+                '/favourites' === router.pathname
+                  ? styles.collActive
+                  : styles.coll
+              }
+            >
               <Link href={`/favourites`}>
                 <div className={styles.collectionInfo}>
                   <HiOutlineHeart className={styles.right} />
                   <p className={styles.collectionName}>Favourites</p>
                 </div>
               </Link>
-              {/* <Badge isSquared color="primary" variant="bordered">
-                43
-              </Badge> */}
             </span>
 
             <p
               className={styles.subMenu}
               onClick={() => setDisplayCollections(!displayCollections)}
             >
-              collections
+              Collections
               {displayCollections ? (
                 <HiChevronUp className={styles.left} />
               ) : (
@@ -152,9 +157,22 @@ const Layout = (props) => {
             </p>
             <div className={styles.scrollableMenu}>
               {displayCollections &&
-                collections.map((collection) => {
+                collections?.map((collection) => {
+                  console.log(
+                    'coll',
+                    encodeURIComponent(collection?.collection),
+                    router?.asPath
+                  );
                   return (
-                    <span key={collection?._id} className={styles.collection}>
+                    <span
+                      key={collection?._id}
+                      className={
+                        '/' + encodeURIComponent(collection?.collection) ===
+                        router?.asPath
+                          ? styles.collectionActive
+                          : styles.collection
+                      }
+                    >
                       <Link href={`/${collection.collection}`}>
                         <a
                         // className={styles.collection}
@@ -168,11 +186,11 @@ const Layout = (props) => {
                           </div>
                         </a>
                       </Link>
-                      <HiOutlineTrash
+                      {/* <HiOutlineTrash
                         className={styles.small}
                         color="red"
                         onClick={() => deleteCollection(collection?._id)}
-                      />
+                      /> */}
                     </span>
                   );
                 })}
@@ -183,7 +201,6 @@ const Layout = (props) => {
               contentRightStyling={false}
               label="Create collection"
               fullWidth
-              // color="default"
               bordered
               contentRight={
                 <HiPlus onClick={createCollection} className={styles.right} />
@@ -191,11 +208,6 @@ const Layout = (props) => {
               value={newCollection}
               onChange={(e) => setNewCollection(e.target.value)}
             />
-            {/* <UiFileInputButton
-              label="Upload Single File"
-              uploadFileName="theFiles"
-              onChange={handleUpload}
-            /> */}
 
             <div className={styles.uploadSection}>
               <Text>Upload bookmarks from other browser</Text>
@@ -203,8 +215,6 @@ const Layout = (props) => {
                 <input
                   type="file"
                   clearable="true"
-                  // contentRightStyling={false}
-                  // label="Import Bookmarks"
                   name="myImage"
                   onChange={uploadToClient}
                   className={styles.inputFile}

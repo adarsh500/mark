@@ -1,13 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import clientPromise from 'lib/clientPromise';
-import Head from 'next/head';
-import React, { useState, useEffect } from 'react';
-import styles from '@styles/Home.module.scss';
-import { useSession, signIn, signOut } from 'next-auth/react';
 import Card from '@components/Card';
-import { getSession } from 'next-auth/react';
-import { HiOutlineSearch } from 'react-icons/hi';
-import { Input, Popover, Text, Button } from '@nextui-org/react';
+import styles from '@styles/Home.module.scss';
+import clientPromise from 'lib/clientPromise';
+import { getSession, signIn, useSession } from 'next-auth/react';
+import Head from 'next/head';
+import React, { useEffect, useState } from 'react';
 
 export default function Home(props) {
   const { cards } = props;
@@ -49,42 +46,7 @@ export default function Home(props) {
         <title>Mark3</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <div className={styles.subNav}>
-        <div className={styles.search}>
-          <HiOutlineSearch className={styles.right} />
-          <Input
-            fullWidth
-            size="xl"
-            placeholder="Search query"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          {/* <Button onClick={filter(cards)} auto>
-            Search
-          </Button> */}
-        </div>
-        <Popover isBordered disableShadow>
-          <Popover.Trigger>
-            <Button auto flat color="">
-              info
-            </Button>
-          </Popover.Trigger>
-          <Popover.Content>
-            <Text css={{ p: '$6 ' }}>
-              use {"'"}tag-{'{'}query{'}'}
-              {"'"} to search by tag
-            </Text>
-            <Text css={{ p: '$6' }}>
-              use {"'"}title-{'{'}query{'}'}
-              {"'"} to search by title
-            </Text>
-            <Text css={{ p: '$6' }}>
-              use {"'"}dsc-{'{'}query{'}'}
-              {"'"} to search by description
-            </Text>
-          </Popover.Content>
-        </Popover>
-      </div>
+
       <main className={styles.main}>
         <div className={styles.cardWrapper}>
           {cards

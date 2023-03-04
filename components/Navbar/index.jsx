@@ -1,5 +1,7 @@
 import User from '@components/User';
-import { Button } from '@nextui-org/react';
+
+import { Button, Input, Popover, Text } from '@nextui-org/react';
+import { HiOutlineSearch } from 'react-icons/hi';
 import { HiBars3, HiOutlinePlusCircle } from 'react-icons/hi2';
 import styles from './Navbar.module.scss';
 
@@ -21,6 +23,40 @@ const Navbar = (props) => {
           <User />
         </div>
       </div>
+      <div className={styles.search}>
+        <HiOutlineSearch className={styles.right} />
+        <Input
+          fullWidth
+          size="xl"
+          placeholder="Search query"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        {/* <Button onClick={filter(cards)} auto>
+            Search
+          </Button> */}
+      </div>
+      <Popover isBordered disableShadow>
+        <Popover.Trigger>
+          <Button auto flat color="">
+            info
+          </Button>
+        </Popover.Trigger>
+        <Popover.Content>
+          <Text css={{ p: '$6 ' }}>
+            use {"'"}tag-{'{'}query{'}'}
+            {"'"} to search by tag
+          </Text>
+          <Text css={{ p: '$6' }}>
+            use {"'"}title-{'{'}query{'}'}
+            {"'"} to search by title
+          </Text>
+          <Text css={{ p: '$6' }}>
+            use {"'"}dsc-{'{'}query{'}'}
+            {"'"} to search by description
+          </Text>
+        </Popover.Content>
+      </Popover>
 
       <div className={styles.right}>
         <div className={styles.share}>

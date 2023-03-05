@@ -9,6 +9,8 @@ import {
   HiOutlineTrash,
 } from 'react-icons/hi';
 // import { Image } from '@nextui-org/react';
+import { toast } from 'sonner';
+
 import { QueryClient } from 'react-query';
 
 const queryClient = new QueryClient({
@@ -24,6 +26,7 @@ const Card = (props) => {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(url);
+    toast.success('Copied to clipboard');
   };
 
   const deleteBookmark = async () => {
@@ -35,7 +38,9 @@ const Card = (props) => {
       await queryClient.refetchQueries({
         queryKey: ['bookmarks'],
       });
+      toast.error('Deleted a bookmark');
     } catch (e) {
+      toast.error('Something went wrong');
       console.log(e);
     }
   };
@@ -53,7 +58,13 @@ const Card = (props) => {
         queryKey: ['bookmarks'],
         type: 'active',
       });
+      if (!favourite) {
+        toast.success('Added to favourites');
+      } else {
+        toast('Removed from favourites');
+      }
     } catch (e) {
+      toast.error('Something went wrong');
       console.log(e);
     }
   };

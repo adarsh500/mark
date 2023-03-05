@@ -2,6 +2,7 @@ import ParentPreview from '@components/ParentPreview';
 import { Badge, Button, Input, Modal, Text } from '@nextui-org/react';
 import { useState } from 'react';
 import { HiXMark } from 'react-icons/hi2';
+import { toast } from 'sonner';
 import styles from './Modal.module.scss';
 
 const BookmarkModal = (props) => {
@@ -64,6 +65,7 @@ const BookmarkModal = (props) => {
         favourite: false,
       }),
     });
+    toast.success('Created bookmark successfully!');
     closeHandler();
     setSelectedCollection('');
     setTags([]);

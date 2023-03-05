@@ -20,6 +20,7 @@ import {
   HiOutlineHeart,
   HiPlus,
 } from 'react-icons/hi2';
+import { toast, Toaster } from 'sonner';
 import styles from './Layout.module.scss';
 
 const Layout = (props) => {
@@ -69,6 +70,7 @@ const Layout = (props) => {
       headers: { 'Content-Type': 'application/json' },
     });
     refetchCollections();
+    toast.error('Deleted a collection');
   };
 
   const { data: collectionsList, refetch: refetchCollections } =
@@ -86,9 +88,10 @@ const Layout = (props) => {
     coll.mutate({
       email: session?.user?.email,
       collection: newCollection,
-      parent: ''
-      
+      parent: '',
     });
+    setNewCollection('');
+    toast.success('New collection has been created');
   };
 
   const handler = () => setVisible(true);
@@ -223,6 +226,7 @@ const Layout = (props) => {
             setVisible={setVisibleCollection}
             email={session?.user?.email}
           />
+          <Toaster position="top-right" richColors />
           {props.children}
         </div>
       </div>

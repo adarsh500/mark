@@ -27,7 +27,7 @@ const Parent = (props) => {
     setShowNested({ ...showNested, [name]: !showNested[name] });
   };
 
-  const handleCreateCollection = async (parent) => {
+  const handleCreateCollection = (parent) => {
     setParent(parent);
     setVisibleCollection(true);
   };

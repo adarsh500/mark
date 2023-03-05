@@ -1,8 +1,8 @@
-import clientPromise from 'lib/clientPromise';
+import cheerio from 'cheerio';
 import formidable from 'formidable';
 import fs from 'fs';
+import clientPromise from 'lib/clientPromise';
 import path from 'path';
-import cheerio from 'cheerio';
 const getMetaData = require('metadata-scraper');
 
 export const config = {
@@ -42,7 +42,7 @@ const post = async (req, res) => {
           allCollections.push(coll);
           const collection = await db
             .collection('collection')
-            .insertOne({ email, collection: coll });
+            .insertOne({ email, collection: coll, parent: '' });
         }
 
         const body = Object.create({ email, collection: coll });

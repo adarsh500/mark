@@ -3012,6 +3012,11 @@ socks@^2.7.0:
     ip "^2.0.0"
     smart-buffer "^4.2.0"
 
+sonner@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/sonner/-/sonner-0.1.6.tgz#da0193c8675a0ed497883bf4eac637de459deb80"
+  integrity sha512-nLoVOKCcSusA7VY/nlrttZmOdNbPrE3v8C+t3Ac6z/bW6G0ReabXqhPLqjIc1mFcI7twwzpKb5thzF+qak29Kw==
+
 "source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/source-map-js/-/source-map-js-1.0.2.tgz"

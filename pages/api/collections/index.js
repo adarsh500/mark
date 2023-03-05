@@ -9,14 +9,3 @@ export default async function handler(req, res) {
     res.status(200).json(collection);
   }
 }
-
-// _id: 634bd01e09508354bc90e05a
-// email: "gamerbloody99@gmail.com"
-// collection: "bookmarks bar"
-// children: []
-
-// _id: 634bd01e09508354bc90e05a
-// email: "gamerbloody99@gmail.com"
-// collection: "bookmarks bar"
-// parent: "634bd01e09508354bc90e05a"
-// children: []

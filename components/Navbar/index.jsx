@@ -59,11 +59,11 @@ const Navbar = (props) => {
       </div>
 
       <div className={styles.right}>
-        <div className={styles.share}>
+        {/* <div className={styles.share}>
           <Button color="primary" auto flat>
             Share
           </Button>
-        </div>
+        </div> */}
         <div className={styles.new}>
           <Button
             color="primary"

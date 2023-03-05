@@ -2,8 +2,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  .content {
-    margin-top: 12px;
-  }
+  margin: 12px;
+  width: calc(calc(100% - 96px) / 4);
+  border-radius: var(--border-radius-large);
+  max-width: 100%;
+  margin: 12px;
+  position: relative;
 }

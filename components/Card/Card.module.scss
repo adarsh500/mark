@@ -51,12 +51,11 @@
 
     .button {
       margin: 6px;
-      // height: 22px;
     }
   }
 
   .subContent {
-    min-height: 160px !important;
+    min-height: 180px !important;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

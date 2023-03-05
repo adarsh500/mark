@@ -37,8 +37,6 @@
     }
 
     @include mobile {
-      // display: flex;
-      // flex-direction: column-reverse;
       width: 0;
       padding: 0;
       position: absolute;

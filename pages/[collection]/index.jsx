@@ -13,9 +13,10 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 const Collection = (props) => {
   const router = useRouter();
+  const { query } = props;
+
   const { ref, inView } = useInView();
   const { data: session } = useSession({ required: true });
-  const [query, setQuery] = useState('');
   const [page, setPage] = useState(0);
 
   const {
@@ -28,6 +29,8 @@ const Collection = (props) => {
   } = useFetchBookmarks({
     page,
     email: session?.user?.email,
+    query,
+
     collection: router?.asPath,
     configs: [
       {
@@ -67,16 +70,22 @@ const Collection = (props) => {
           {isLoading ? (
             <>
               <div className={styles.loaderBlock}>
-                <CardLoader />
-                <CardLoader />
-                <CardLoader />
-                <CardLoader />
+                {[1, 2, 3, 4].map((item) => (
+                  <CardLoader
+                    style={{
+                      width: 'calc(calc(100% - 96px) / 4)',
+                    }}
+                  />
+                ))}
               </div>
               <div className={styles.loaderBlock}>
-                <CardLoader />
-                <CardLoader />
-                <CardLoader />
-                <CardLoader />
+                {[1, 2, 3, 4].map((item) => (
+                  <CardLoader
+                    style={{
+                      width: 'calc(calc(100% - 96px) / 4)',
+                    }}
+                  />
+                ))}
               </div>
             </>
           ) : null}
@@ -93,26 +102,43 @@ const Collection = (props) => {
           ) : (
             <Skeleton />
           )}
-          <div className="btn-container">
-            <Button
-              onClick={() => fetchNextPage()}
-              ref={ref}
-              disabled={!hasNextPage || isFetchingNextPage}
-              className={styles.loadMore}
-            >
-              {isFetchingNextPage
-                ? 'Loading more...'
-                : hasNextPage
-                ? 'Load Newer'
-                : 'Nothing more to load'}
-            </Button>
+          <div className={styles.fw}>
+            {hasNextPage ? (
+              <Button
+                onClick={() => fetchNextPage()}
+                ref={ref}
+                disabled={!hasNextPage || isFetchingNextPage}
+                className={styles.loadMore}
+              >
+                {isFetchingNextPage
+                  ? 'Loading more...'
+                  : hasNextPage
+                  ? 'Load Newer'
+                  : 'Nothing more to load'}
+              </Button>
+            ) : null}
+
             {isFetchingNextPage ? (
-              <div className={styles.loaderBlock}>
-                <CardLoader />
-                <CardLoader />
-                <CardLoader />
-                <CardLoader />
-              </div>
+              <>
+                <div className={styles.loaderBlock}>
+                  {[1, 2, 3, 4].map((item) => (
+                    <CardLoader
+                      style={{
+                        width: 'calc(calc(100% - 96px) / 4)',
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className={styles.loaderBlock}>
+                  {[1, 2, 3, 4].map((item) => (
+                    <CardLoader
+                      style={{
+                        width: 'calc(calc(100% - 96px) / 4)',
+                      }}
+                    />
+                  ))}
+                </div>
+              </>
             ) : null}
           </div>
         </div>

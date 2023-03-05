@@ -54,6 +54,14 @@ const Layout = (props) => {
       body,
     });
     const data = await res.json();
+
+    const promise = () => new Promise((resolve) => setTimeout(resolve, 4000));
+
+    toast.promise(promise, {
+      loading: 'Importing bookmarks...',
+      success: 'Successfully imported bookmarks',
+      error: 'Could not import bookmarks',
+    });
   };
 
   const uploadToClient = (event) => {

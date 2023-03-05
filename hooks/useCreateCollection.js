@@ -2,12 +2,11 @@ import axios from 'axios';
 import { useMutation } from 'react-query';
 
 const createCollection = async (inputs) => {
-  const { email, collection, children = [], parentId = '' } = inputs;
+  const { email, collection, parent = '' } = inputs;
   const response = await axios.post('api/collections', {
     email,
     collection,
-    children,
-    parentId,
+    parent,
   });
   return response;
 };

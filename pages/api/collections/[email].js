@@ -13,29 +13,30 @@ export default async function handler(req, res) {
       .toArray();
 
     let collTree = [];
-    let collMap = collections.map((coll) => ({...coll, children: []}));
+    let collMap = collections?.map((coll) => ({ ...coll, children: [] }));
     collMap
-      .filter((coll) => (coll?.parent == ''))
-      .forEach((coll) => {
-        collTree.push(coll);
-        collMap.splice(collMap.indexOf(coll), 1);
+      ?.filter((coll) => coll?.parent == '')
+      ?.forEach((coll) => {
+        collTree?.push(coll);
+        collMap?.splice(collMap?.indexOf(coll), 1);
       });
 
-    while (collMap.length !== 0) {
-      collMap
-        .forEach((coll, i) => {
-            findParent(collTree, coll.parent)?
-            .children
-            .push(coll);
-          collMap.splice(i, 1);
-       });
+    while (collMap?.length !== 0) {
+      collMap?.forEach((coll, i) => {
+        findParent(collTree, coll?.parent)?.children?.push(coll);
+        collMap?.splice(i, 1);
+      });
     }
 
     function findParent(arr, id) {
       for (let item of arr) {
-        if (item._id == id) { return item; }
-        let p = findParent(item.children, id);
-        if (p) { return p; }
+        if (item?._id == id) {
+          return item;
+        }
+        let p = findParent(item?.children, id);
+        if (p) {
+          return p;
+        }
       }
     }
 

@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
-import styles from './Modal.module.scss';
-import { Modal, Input, Button, Text, Badge } from '@nextui-org/react';
+import ParentPreview from '@components/ParentPreview';
+import { Badge, Button, Input, Modal, Text } from '@nextui-org/react';
+import { useState } from 'react';
 import { HiXMark } from 'react-icons/hi2';
+import styles from './Modal.module.scss';
 
 const BookmarkModal = (props) => {
   const { visible, setVisible, collections, email } = props;
-  const [collection, setCollection] = useState('');
   const [link, setLink] = useState('');
   const [isKeyReleased, setIsKeyReleased] = useState(false);
   const [input, setInput] = useState('');
   const [tags, setTags] = useState([]);
+  const [selectedCollection, setSelectedCollection] = useState('');
+
+  console.log(selectedCollection);
 
   const onChange = (e) => {
     const { value } = e.target;
@@ -55,13 +58,17 @@ const BookmarkModal = (props) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email,
-        collection: collection,
+        collection: selectedCollection,
         tags: tags,
-        url: `https://${link}`,
+        url: link,
         favourite: false,
       }),
     });
     closeHandler();
+    setSelectedCollection('');
+    setTags([]);
+    setLink('');
+    setInput('');
   };
 
   const handleLink = (e) => {
@@ -82,30 +89,27 @@ const BookmarkModal = (props) => {
       </Modal.Header>
       <Modal.Body>
         <Input
-          label="Enter URL"
+          label="URL"
           clearable="true"
           bordered
           fullWidth
           color="primary"
           size="lg"
-          labelLeft="https://"
-          placeholder="github.com/adarsh500"
+          placeholder="https://github.com"
           value={link}
           onChange={handleLink}
         />
+        <Text color="primary" size="lg">
+          Select collection
+        </Text>
 
-        <Text>Select collection</Text>
-        <select
-          className={styles.select}
-          value={collection}
-          onChange={(e) => setCollection(e.target.value)}
-        >
-          {collections?.map((collection) => (
-            <option key={collection._id} value={collection.name}>
-              {collection.collection}
-            </option>
-          ))}
-        </select>
+        <div className={styles.treeContainer}>
+          <ParentPreview
+            collection={collections}
+            selectedCollection={selectedCollection}
+            setSelectedCollection={setSelectedCollection}
+          />
+        </div>
 
         <div className={styles.tags}>
           {tags?.map((tag, index) => (
@@ -128,6 +132,7 @@ const BookmarkModal = (props) => {
           bordered
           label="Add Tags"
           color="primary"
+          size="lg"
           placeholder="comma seperated tags"
           onKeyDown={onKeyDown}
           onChange={onChange}

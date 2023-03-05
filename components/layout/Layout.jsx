@@ -4,18 +4,13 @@ import Navbar from '@components/Navbar';
 import User from '@components/User';
 import { useCreateCollection } from '@hooks/useCreateCollection';
 import { useFetchCollections } from '@hooks/useFetchCollections';
-import { Button, Input, Popover, Text } from '@nextui-org/react';
+import { Button, Input, Text } from '@nextui-org/react';
 
+import Parent from '@components/Parent';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import {
-  BsCaretDownFill,
-  BsCaretRightFill,
-  BsThreeDotsVertical,
-} from 'react-icons/bs';
-import { CgAddR } from 'react-icons/cg';
 import {
   HiBars3,
   HiChevronDown,
@@ -23,108 +18,9 @@ import {
   HiOutlineArrowDownOnSquare,
   HiOutlineGlobeAlt,
   HiOutlineHeart,
-  HiOutlineTrash,
   HiPlus,
 } from 'react-icons/hi2';
 import styles from './Layout.module.scss';
-
-const Parent = (props) => {
-  const [showNested, setShowNested] = useState({});
-  const { collection, path, coll, setVisibleCollection, setParent } = props;
-
-  const toggleNested = (name) => {
-    setShowNested({ ...showNested, [name]: !showNested[name] });
-  };
-
-  const handleCreateCollection = async (parent) => {
-    setParent(parent);
-    setVisibleCollection(true);
-  };
-
-  return (
-    <>
-      {collection?.map((collection) => {
-        return (
-          <>
-            <div className={styles.flex}>
-              {!!collection?.children?.length ? (
-                showNested[collection?._id] ? (
-                  <BsCaretDownFill
-                    className={styles.rootFolder}
-                    onClick={() => toggleNested(collection?._id)}
-                  />
-                ) : (
-                  <BsCaretRightFill
-                    className={styles.rootFolder}
-                    onClick={() => toggleNested(collection?._id)}
-                  />
-                )
-              ) : null}
-              <span
-                key={collection?._id}
-                className={
-                  '/' + encodeURIComponent(collection?.collection) === path
-                    ? styles.collectionActive
-                    : styles.collection
-                }
-              >
-                <Link href={`/${collection?.collection}`}>
-                  <a>
-                    <div className={styles.collectionInfo}>
-                      <p className={styles.collectionName}>
-                        {collection?.collection}
-                      </p>
-                    </div>
-                  </a>
-                </Link>
-                <Popover>
-                  <Popover.Trigger>
-                    <button className={styles.noStyle}>
-                      <BsThreeDotsVertical />
-                    </button>
-                  </Popover.Trigger>
-                  <Popover.Content className={styles.popover}>
-                    <span
-                      className={styles.popoverButtons}
-                      onClick={() => handleCreateCollection(collection?._id)}
-                    >
-                      <CgAddR className={styles.actionIcon} />
-                      Add
-                    </span>
-                    <span
-                      className={styles.popoverButtons}
-                      onClick={() => deleteCollection(collection?._id)}
-                    >
-                      <HiOutlineTrash
-                        className={styles.actionIcon}
-                        color="red"
-                      />
-                      Delete
-                    </span>
-                  </Popover.Content>
-                </Popover>
-              </span>
-            </div>
-            <div
-              className={styles.children}
-              style={{ display: !showNested[collection?._id] && 'none' }}
-            >
-              {collection?.children && (
-                <Parent
-                  collection={collection?.children}
-                  path={path}
-                  coll={coll}
-                  setVisibleCollection={setVisibleCollection}
-                  setParent={setParent}
-                />
-              )}
-            </div>
-          </>
-        );
-      })}
-    </>
-  );
-};
 
 const Layout = (props) => {
   const router = useRouter();
@@ -190,6 +86,8 @@ const Layout = (props) => {
     coll.mutate({
       email: session?.user?.email,
       collection: newCollection,
+      parent: ''
+      
     });
   };
 
@@ -260,6 +158,7 @@ const Layout = (props) => {
                   coll={coll}
                   setVisibleCollection={setVisibleCollection}
                   setParent={setParent}
+                  deleteCollection={deleteCollection}
                 />
               ) : null}
             </div>

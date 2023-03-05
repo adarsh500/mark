@@ -30,10 +30,15 @@ import styles from './Layout.module.scss';
 
 const Parent = (props) => {
   const [showNested, setShowNested] = useState({});
-  const { collection, path, coll } = props;
+  const { collection, path, coll, setVisibleCollection, setParent } = props;
 
   const toggleNested = (name) => {
     setShowNested({ ...showNested, [name]: !showNested[name] });
+  };
+
+  const handleCreateCollection = async (parent) => {
+    setParent(parent);
+    setVisibleCollection(true);
   };
 
   return (
@@ -81,7 +86,7 @@ const Parent = (props) => {
                   <Popover.Content className={styles.popover}>
                     <span
                       className={styles.popoverButtons}
-                      // onClick={() => deleteCollection(collection?._id)}
+                      onClick={() => handleCreateCollection(collection?._id)}
                     >
                       <CgAddR className={styles.actionIcon} />
                       Add
@@ -109,6 +114,8 @@ const Parent = (props) => {
                   collection={collection?.children}
                   path={path}
                   coll={coll}
+                  setVisibleCollection={setVisibleCollection}
+                  setParent={setParent}
                 />
               )}
             </div>
@@ -129,6 +136,7 @@ const Layout = (props) => {
   const [file, setFile] = React.useState('');
   const [query, setQuery] = useState('');
   const [newCollection, setNewCollection] = useState('');
+  const [parent, setParent] = useState('');
   const [displayCollections, setDisplayCollections] = useState(true);
   const coll = useCreateCollection({
     configs: [
@@ -250,6 +258,8 @@ const Layout = (props) => {
                   collection={collectionsList?.data}
                   path={router?.asPath}
                   coll={coll}
+                  setVisibleCollection={setVisibleCollection}
+                  setParent={setParent}
                 />
               ) : null}
             </div>
@@ -307,7 +317,9 @@ const Layout = (props) => {
             email={session?.user?.email}
           />
           <CollectionModal
-            collections={collectionsList?.data}
+            parent={parent}
+            refetchCollections={refetchCollections}
+            setParent={setParent}
             visible={visibleCollection}
             setVisible={setVisibleCollection}
             email={session?.user?.email}

@@ -8,6 +8,16 @@
   background-color: var(--background-light);
 }
 
+.rootFolder {
+  margin-right: 4px;
+  height: 16px !important;
+  width: 16px !important;
+  cursor: pointer;
+}
+
+.children {
+  margin-left: 18px;
+}
 .right {
   margin-right: 6px;
 }
@@ -164,10 +174,11 @@
 
     .collection {
       margin: 4px 0;
+      // margin-right: 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-
+      width: 100%;
       color: var(--color-dark);
       padding: 6px 6px;
 
@@ -191,7 +202,10 @@
       }
 
       &Active {
+        width: 100%;
+
         margin: 4px 0;
+        // margin-right: 6px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -241,4 +255,66 @@
 .text {
   margin-bottom: 16px;
   @include font-size-weight(16, 12, 500);
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.popover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--border-radius-medium) !important;
+  padding: 6px;
+  z-index: 3 !important;
+}
+
+.noStyle {
+  background-color: transparent;
+  border: none;
+  cursor: pointer !important;
+
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    background-color: #dadada;
+    box-shadow: 0 0 0 1px var(--border-light);
+    border-radius: var(--border-radius-medium);
+    color: var(--color-dark);
+  }
+  &:active {
+    color: #0072f5;
+    background-color: #cee4fe;
+  }
+}
+
+.popoverButtons {
+  @include display-flex;
+  justify-content: flex-start;
+  cursor: pointer !important;
+
+  margin: 4px 0;
+  width: 100%;
+  padding: 4px 8px;
+  border-radius: var(--border-radius-medium);
+  background-color: transparent;
+  @include font-size-weight(14, 20, 400);
+  border: none;
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    background-color: var(--background-light);
+    box-shadow: 0 0 0 1px var(--border-light);
+    border-radius: var(--border-radius-medium);
+    color: var(--color-dark);
+  }
+}
+
+.actionIcon {
+  margin-right: 12px !important;
+  &:last-child {
+    margin-right: 0;
+  }
 }

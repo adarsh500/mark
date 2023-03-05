@@ -1,19 +1,27 @@
 import clientPromise from 'lib/clientPromise';
-import { ObjectId } from 'mongodb';
+import {ObjectId} from 'mongodb';
 
 export default async function handler(req, res) {
   const client = await clientPromise;
   const db = client.db('test');
 
   if (req.method === 'GET') {
-    const { email } = req.query;
-    const collections = await db
+    const {email} = req.query;
+    const collList = await db
       .collection('collection')
-      .find({ email: email })
+      .find({email: email})
       .toArray();
+    const collections = collList
+      .filter((item, i) => {
+        return collList
+          .findIndex((coll) => {
+            return coll.collection == item.collection;
+          }
+          ) == i;
+      });
 
     let collTree = [];
-    let collMap = collections?.map((coll) => ({ ...coll, children: [] }));
+    let collMap = collections?.map((coll) => ({...coll, children: []}));
     collMap
       ?.filter((coll) => coll?.parent == '')
       ?.forEach((coll) => {
@@ -44,15 +52,15 @@ export default async function handler(req, res) {
   } else if (req.method === 'DELETE') {
     const coll = await db
       .collection('collection')
-      .find({ _id: new ObjectId(req.query.email) });
+      .find({_id: new ObjectId(req.query.email)});
 
     const op = await db
       .collection('collection')
-      .deleteOne({ _id: new ObjectId(req.query.email) });
+      .deleteOne({_id: new ObjectId(req.query.email)});
 
     const _ = await db
       .collection('collection')
-      .deleteMany({ parent: coll._id });
+      .deleteMany({parent: coll._id});
 
     return res.status(200).json(op);
   }

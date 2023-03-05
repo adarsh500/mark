@@ -12,9 +12,9 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { useFetchBookmarks } from '../hooks/useFetchBookmarks';
 
 export default function Home(props) {
+  const { query } = props;
   const { ref, inView } = useInView();
   const { data: session } = useSession({ required: true });
-  const [query, setQuery] = useState('');
   const [page, setPage] = useState(0);
 
   const {
@@ -27,6 +27,7 @@ export default function Home(props) {
   } = useFetchBookmarks({
     page,
     email: session?.user?.email,
+    query,
     configs: [
       {
         enabled: !!session?.user?.email,

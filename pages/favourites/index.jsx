@@ -12,8 +12,8 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 const Favourites = (props) => {
   const { ref, inView } = useInView();
+  const { query } = props;
   const { data: session } = useSession({ required: true });
-  const [query, setQuery] = useState('');
   const [page, setPage] = useState(0);
 
   const {
@@ -26,13 +26,14 @@ const Favourites = (props) => {
   } = useFetchBookmarks({
     page,
     email: session?.user?.email,
-    collection: '/favourite',
+    collection: '/favourites',
+    query,
     configs: [
       {
         enabled: !!session?.user?.email,
         refetechOnWindowFocus: false,
-        getNextPageParam: (lastPage, pages) => {
-          return parseInt(lastPage?.data?.currentPage) + 1;
+        getNextPageParam: (lastPage, page) => {
+          return parseInt(lastPage?.data?.currentPage) + 1 ?? undefined;
         },
       },
     ],
@@ -65,16 +66,22 @@ const Favourites = (props) => {
           {isLoading ? (
             <>
               <div className={styles.loaderBlock}>
-                <CardLoader />
-                <CardLoader />
-                <CardLoader />
-                <CardLoader />
+                {[1, 2, 3, 4].map((item) => (
+                  <CardLoader
+                    style={{
+                      width: 'calc(calc(100% - 96px) / 4)',
+                    }}
+                  />
+                ))}
               </div>
               <div className={styles.loaderBlock}>
-                <CardLoader />
-                <CardLoader />
-                <CardLoader />
-                <CardLoader />
+                {[1, 2, 3, 4].map((item) => (
+                  <CardLoader
+                    style={{
+                      width: 'calc(calc(100% - 96px) / 4)',
+                    }}
+                  />
+                ))}
               </div>
             </>
           ) : null}
@@ -91,26 +98,42 @@ const Favourites = (props) => {
           ) : (
             <Skeleton />
           )}
-          <div className="btn-container">
-            <Button
-              onClick={() => fetchNextPage()}
-              ref={ref}
-              disabled={!hasNextPage || isFetchingNextPage}
-              className={styles.loadMore}
-            >
-              {isFetchingNextPage
-                ? 'Loading more...'
-                : hasNextPage
-                ? 'Load Newer'
-                : 'Nothing more to load'}
-            </Button>
+          <div className={styles.fw}>
+            {hasNextPage ? (
+              <Button
+                onClick={() => fetchNextPage()}
+                ref={ref}
+                disabled={!hasNextPage || isFetchingNextPage}
+                className={styles.loadMore}
+              >
+                {isFetchingNextPage
+                  ? 'Loading more...'
+                  : hasNextPage
+                  ? 'Load Newer'
+                  : 'Nothing more to load'}
+              </Button>
+            ) : null}
             {isFetchingNextPage ? (
-              <div className={styles.loaderBlock}>
-                <CardLoader />
-                <CardLoader />
-                <CardLoader />
-                <CardLoader />
-              </div>
+              <>
+                <div className={styles.loaderBlock}>
+                  {[1, 2, 3, 4].map((item) => (
+                    <CardLoader
+                      style={{
+                        width: 'calc(calc(100% - 96px) / 4)',
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className={styles.loaderBlock}>
+                  {[1, 2, 3, 4].map((item) => (
+                    <CardLoader
+                      style={{
+                        width: 'calc(calc(100% - 96px) / 4)',
+                      }}
+                    />
+                  ))}
+                </div>
+              </>
             ) : null}
           </div>
         </div>

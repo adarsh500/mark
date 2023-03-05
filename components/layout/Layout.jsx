@@ -10,7 +10,7 @@ import Parent from '@components/Parent';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { cloneElement, isValidElement, useState } from 'react';
 import {
   HiBars3,
   HiChevronDown,
@@ -18,17 +18,18 @@ import {
   HiOutlineArrowDownOnSquare,
   HiOutlineGlobeAlt,
   HiOutlineHeart,
-  HiPlus,
+  HiPlus
 } from 'react-icons/hi2';
 import { toast, Toaster } from 'sonner';
 import styles from './Layout.module.scss';
 
 const Layout = (props) => {
+  const { children } = props;
   const router = useRouter();
   const [visible, setVisible] = useState(false);
   const [visibleCollection, setVisibleCollection] = useState(false);
   const { data: session } = useSession({ required: true });
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [createObjectURL, setCreateObjectURL] = useState(null);
   const [file, setFile] = React.useState('');
   const [query, setQuery] = useState('');
@@ -39,7 +40,12 @@ const Layout = (props) => {
     configs: [
       {
         onSuccess: () => {
+          toast.success('New collection has been created');
           refetchCollections();
+        },
+        onError: (error) => {
+          console.log(error);
+          toast.error(error.response.data.message);
         },
       },
     ],
@@ -93,16 +99,46 @@ const Layout = (props) => {
     });
 
   const createCollection = () => {
+    if (newCollection === '') {
+      toast.error('Collection name cannot be empty');
+      return;
+    }
     coll.mutate({
       email: session?.user?.email,
       collection: newCollection,
       parent: '',
     });
     setNewCollection('');
-    toast.success('New collection has been created');
   };
 
   const handler = () => setVisible(true);
+
+  function recursiveMap(children, fn) {
+    return React.Children.map(children, (child) => {
+      if (!React.isValidElement(child) || typeof child.type == 'string') {
+        return child;
+      }
+
+      if (child.props.children) {
+        child = React.cloneElement(child, {
+          children: recursiveMap(child.props.children, fn),
+        });
+      }
+
+      return fn(child);
+    });
+  }
+
+  // Add props to all child elements.
+  const childrenWithProps = recursiveMap(children, (child) => {
+    // Checking isValidElement is the safe way and avoids a TS error too.
+    if (isValidElement(child)) {
+      // Pass additional props here
+      return cloneElement(child, { lmao: true, query: query });
+    }
+
+    return child;
+  });
 
   return (
     <div>
@@ -235,7 +271,7 @@ const Layout = (props) => {
             email={session?.user?.email}
           />
           <Toaster position="top-right" richColors />
-          {props.children}
+          {childrenWithProps}
         </div>
       </div>
     </div>

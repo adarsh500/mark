@@ -1,10 +1,8 @@
 # Mark3
 
-[![Run on Repl.it](https://replit.com/badge/github/adarsh500/mark)](https://replit.com/new/github/adarsh500/mark)
+Youtube link: https://youtu.be/FkNB8NnAzI8
 
 Try it out here: https://mark3.vercel.app
-
-Repl.it: https://replit.com/@AdarshSulegai1/mark
 
 ![pika-1667375320163-1x](https://user-images.githubusercontent.com/73278151/206869198-b5ebe17c-263c-41ef-9662-3ce4627a597a.png)
 ![pika-1667375469092-1x](https://user-images.githubusercontent.com/73278151/206869208-cce1b6c5-5e86-40e1-a5fd-98fb7a6e43a6.png)

@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const db = client.db('test');
   if (req.method === 'GET') {
     const { email, page = 0, limit = 28, collection, query } = req.query;
-    console.log(email, collection, query);
+    // console.log(email, collection, query);
     const [key, value] = query?.split(':') ?? [null, null];
 
     let findObj = { email };
@@ -97,16 +97,13 @@ export default async function handler(req, res) {
         ...aggregateObj,
         { $match: { email: email, favourite: true } },
       ];
-      // isAggregate = true;
     } else if (collection) {
-      // isAggregate = true;
       aggregateObj = [
         ...aggregateObj,
-        { $match: { email: email, collection: collection } },
+        { $match: { email: email, collection: collection.slice(1) } },
       ];
     }
 
-    console.log('query', key, value);
     if (collection === '/favourites') {
       if (isAggregate) {
         const bookmark = await db
@@ -116,7 +113,6 @@ export default async function handler(req, res) {
           .limit(parseInt(limit))
           .toArray();
 
-        console.log(bookmark);
         res.status(200).json({ ...bookmark, currentPage: page });
         return;
       }

@@ -73,7 +73,7 @@ const Navbar = (props) => {
       },
     },
     {
-      key: 'default',
+      key: 'raw',
       label: 'Search in title / description',
       icon: <HiOutlineMenuAlt2 className={styles.right} />,
       action: () => {

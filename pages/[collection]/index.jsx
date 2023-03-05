@@ -34,7 +34,7 @@ const Collection = (props) => {
     collection: router?.asPath,
     configs: [
       {
-        enabled: !!session?.user?.email && !!router?.asPath.length,
+        enabled: !!session?.user?.email ,
         refetechOnWindowFocus: false,
         getNextPageParam: (lastPage, pages) => {
           return parseInt(lastPage?.data?.currentPage) + 1;

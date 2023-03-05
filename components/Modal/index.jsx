@@ -13,8 +13,6 @@ const BookmarkModal = (props) => {
   const [tags, setTags] = useState([]);
   const [selectedCollection, setSelectedCollection] = useState('');
 
-  console.log(selectedCollection);
-
   const onChange = (e) => {
     const { value } = e.target;
     setInput(value);

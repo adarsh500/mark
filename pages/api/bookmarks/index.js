@@ -7,7 +7,6 @@ export default async function handler(req, res) {
   const db = client.db('test');
   if (req.method === 'GET') {
     const { email, page = 0, limit = 28, collection } = req.query;
-    console.log(email, page, limit, collection);
     if (collection === '/favourite') {
       const bookmark = await db
         .collection('bookmarks')

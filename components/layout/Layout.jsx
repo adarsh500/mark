@@ -29,7 +29,7 @@ const Layout = (props) => {
   const [visible, setVisible] = useState(false);
   const [visibleCollection, setVisibleCollection] = useState(false);
   const { data: session } = useSession({ required: true });
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const [createObjectURL, setCreateObjectURL] = useState(null);
   const [file, setFile] = React.useState('');
   const [query, setQuery] = useState('');

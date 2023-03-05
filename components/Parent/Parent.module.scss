@@ -216,6 +216,18 @@
     color: #0072f5;
     background-color: #cee4fe;
   }
+
+  @include dark-mode {
+    color: var(--color-dark-primary);
+    background-color: transparent;
+    &:hover {
+      // padding: 2px;
+      box-shadow: none;
+      border: var(--border-dark) !important;
+      color: var(--color-dark-primary);
+      background-color: #202020 !important;
+    }
+  }
 }
 
 .popoverButtons {
@@ -237,6 +249,17 @@
     border-radius: var(--border-radius-medium);
     color: var(--color-dark);
   }
+
+  @include dark-mode {
+    &:hover {
+      color: var(--color-dark-primary) !important;
+      background-color: #202020 !important;
+      border: 1px solid var(--border-dark) !important;
+      box-shadow: none !important;
+      border-radius: var(--border-radius-medium);
+      transition: all 0.2s ease-in-out;
+    }
+  }
 }
 
 .actionIcon {
@@ -247,14 +270,14 @@
 }
 
 .collection {
-  margin: 4px 0;
+  margin: 4px 2px;
   // margin-right: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   color: var(--color-dark);
-  padding: 6px 6px;
+  padding: 6px 12px;
 
   &Info {
     display: flex;
@@ -275,11 +298,26 @@
     color: var(--color-dark);
   }
 
+  @include dark-mode {
+    color: var(--color-dark-secondary);
+    box-shadow: none !important;
+    padding: 6px 12px;
+    margin: 4px 2px;
+    border-radius: var(--border-radius-medium);
+
+    &:hover {
+      color: var(--color-dark-primary) !important;
+      background-color: #202020 !important;
+      border: 1px solid var(--border-dark) !important;
+      box-shadow: none !important;
+      border-radius: var(--border-radius-medium);
+      transition: all 0.2s ease-in-out;
+    }
+  }
+
   &Active {
     width: 100%;
-
-    margin: 4px 0;
-    // margin-right: 6px;
+    margin: 4px 2px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -287,6 +325,10 @@
     color: #0072f5;
     background-color: #cee4fe;
     border-radius: var(--border-radius-medium);
-    padding: 6px 6px;
+    padding: 6px 12px;
+
+    @include dark-mode {
+      background-color: var(--dark-background-blue);
+    }
   }
 }

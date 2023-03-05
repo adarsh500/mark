@@ -23,6 +23,7 @@
   @include dark-mode {
     border: 1px solid var(--border-dark);
     background-color: var(--background-dark);
+    color: var(--color-dark-primary) !important;
   }
 
   .image {
@@ -81,6 +82,10 @@
       align-items: center;
       line-height: 1.7;
       @include line-clamp(2);
+
+      @include dark-mode {
+        color: var(--color-dark-secondary);
+      }
     }
 
     .tags {
@@ -94,6 +99,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+
+      @include dark-mode {
+        color: var(--color-dark-secondary);
+      }
 
       .fav {
         height: 18px;

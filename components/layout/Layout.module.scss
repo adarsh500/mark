@@ -6,6 +6,10 @@
 
 .sidebarClose {
   background-color: var(--background-light);
+
+  @include dark-mode {
+    background-color: var(--background-dark);
+  }
 }
 
 .rootFolder {
@@ -33,6 +37,8 @@
     border-right: 1px solid var(--border-light);
 
     @include dark-mode {
+      border-right: 1px solid var(--border-dark);
+
       background-color: #111;
     }
 
@@ -149,6 +155,15 @@
         color: var(--color-dark);
       }
 
+      @include dark-mode {
+        color: var(--color-dark-secondary);
+        &:hover {
+          box-shadow: none;
+          color: var(--color-dark-primary) !important;
+          background-color: #202020 !important;
+        }
+      }
+
       &Active {
         margin-top: 6px;
         display: flex;
@@ -157,7 +172,11 @@
         color: #0072f5;
         background-color: #cee4fe;
         border-radius: var(--border-radius-medium);
-        padding: 6px 6px;
+        padding: 6px 12px;
+
+        @include dark-mode {
+          background-color: var(--dark-background-blue);
+        }
       }
     }
 
@@ -199,9 +218,18 @@
         color: var(--color-dark);
       }
 
+      @include dark-mode {
+        border-radius: var(--border-radius-medium);
+        color: var(--color-dark-primary);
+        background-color: var(--background-dark);
+        &:hover {
+          color: var(--color-dark-primary);
+          background-color: #5b5b5b !important;
+        }
+      }
+
       &Active {
         width: 100%;
-
         margin: 4px 0;
         // margin-right: 6px;
         display: flex;
@@ -221,6 +249,10 @@
       color: var(--color-dark);
       margin: 14px 0 14px 0px;
       @include font-size-weight(16, 10, 600);
+
+      @include dark-mode {
+        color: var(--color-dark-primary);
+      }
     }
   }
 
@@ -286,6 +318,15 @@
   &:active {
     color: #0072f5;
     background-color: #cee4fe;
+  }
+
+  @include dark-mode {
+    color: var(--color-dark-primary);
+    background-color: #202020 !important;
+    &:hover {
+      color: var(--color-dark-primary);
+      background-color: #5b5b5b !important;
+    }
   }
 }
 

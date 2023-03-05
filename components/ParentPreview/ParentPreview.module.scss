@@ -277,6 +277,23 @@
     color: var(--color-dark);
   }
 
+  @include dark-mode {
+    color: var(--color-dark-secondary);
+    box-shadow: none !important;
+    padding: 6px 12px;
+    margin: 4px 2px;
+    border-radius: var(--border-radius-medium);
+
+    &:hover {
+      color: var(--color-dark-primary) !important;
+      background-color: #202020 !important;
+      border: 1px solid var(--border-dark) !important;
+      box-shadow: none !important;
+      border-radius: var(--border-radius-medium);
+      transition: all 0.2s ease-in-out;
+    }
+  }
+
   &Active {
     width: 100%;
     margin: 4px 0;
@@ -291,5 +308,9 @@
     background-color: #cee4fe;
     border-radius: var(--border-radius-medium);
     padding: 4px 12px;
+
+     @include dark-mode {
+      background-color: var(--dark-background-blue);
+    }
   }
 }

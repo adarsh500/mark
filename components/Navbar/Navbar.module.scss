@@ -52,6 +52,10 @@
     display: flex;
     align-items: center;
   }
+  
+  .dropdownContent {
+    width: 400px !important;
+  }
 
   .search {
     margin-right: 12px;

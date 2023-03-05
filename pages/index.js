@@ -97,7 +97,7 @@ export default function Home(props) {
           ) : (
             <Skeleton />
           )}
-          <div className="btn-container">
+          <div className={styles.fw}>
             {hasNextPage ? (
               <Button
                 onClick={() => fetchNextPage()}
@@ -114,15 +114,26 @@ export default function Home(props) {
             ) : null}
 
             {isFetchingNextPage ? (
-              <div className={styles.loaderBlock}>
-                {[1, 2, 3, 4].map((item) => (
-                  <CardLoader
-                    style={{
-                      width: 'calc(calc(100% - 96px) / 4)',
-                    }}
-                  />
-                ))}
-              </div>
+              <>
+                <div className={styles.loaderBlock}>
+                  {[1, 2, 3, 4].map((item) => (
+                    <CardLoader
+                      style={{
+                        width: 'calc(calc(100% - 96px) / 4)',
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className={styles.loaderBlock}>
+                  {[1, 2, 3, 4].map((item) => (
+                    <CardLoader
+                      style={{
+                        width: 'calc(calc(100% - 96px) / 4)',
+                      }}
+                    />
+                  ))}
+                </div>
+              </>
             ) : null}
           </div>
         </div>

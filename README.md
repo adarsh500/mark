@@ -8,9 +8,9 @@ Try it out here: https://mark3.vercel.app
 
 # What is mark3?
 
-This project helps you streamline your productivity by organizing your bookmarks for you. We noticed that there is no easy way to store good articles, blogs, podcasts, or other useful resources that you come across while surfing the web. Mark3 is a one-stop solution for you to manage your knowledge base in a simple and efficient manner.
+Mark helps you streamline your productivity by organizing your bookmarks for you. We noticed that there is no easy way to store good articles, blogs, podcasts, or other useful resources that you come across while surfing the web. Mark is a one-stop solution for you to manage your knowledge base in a simple and efficient manner.
 
-You can easily import your existing bookmarks from Chrome/Firefox/Safari and start using the app. Mark3 is currently a web app, with a browser extension in the works for better integration and workflow.
+Import your existing bookmarks from Chrome/Firefox/Safari in a single click.
 
 # Top features
 

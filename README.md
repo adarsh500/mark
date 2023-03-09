@@ -16,9 +16,9 @@ Import your existing bookmarks from Chrome/Firefox/Safari in a single click.
 
 - Categorize, tag, and star your bookmarks
 - Find exactly what you're looking for with the powerful search and filter feature
-- Share your bookmarks with your friends across multiple platforms
-- Native dark mode :)
-- And many more exciting ones on the way!
+- Support for nested bookmark collections
+- Dark mode support
+- One click bookmark imports
 
 ## Getting Started
 

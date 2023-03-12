@@ -29,6 +29,22 @@ npm install
 # or
 yarn 
 ```
+### Setup google oauth
+head over to https://console.developers.google.com/ > credentials > create credentials > oauth client id create an application, and then copy the client_id and client_secret
+
+Authorized JavaScript origins - eg: http://localhost:3000
+
+Authorized redirect URIs - (the same URL as used above with /api/auth/callback/google) eg: http://localhost:3000/api/auth/callback/google
+
+create a `.env.local` file and add these to it
+```bash
+NEXTAUTH_URL = http:localhost:3000
+MONGO_URI = mongodb+srv://<your_username>:<your_password>@cluster0.mms8yge.mongodb.net/?retryWrites=true&w=majority
+NEXTAUTH_SECRET=<anything_that_you_want_to_add>
+GOOGLE_CLIENT_SECRET=
+GOOGLE_CLIENT_ID=
+```
+
 
 ```bash
 npm run dev

@@ -48,15 +48,6 @@ export default function Home(props) {
     }
   }, [inView]);
 
-  if (!session) {
-    return (
-      <main className={styles.main}>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </main>
-    );
-  }
-
   return (
     <>
       <Head>

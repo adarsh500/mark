@@ -34,10 +34,12 @@
     padding: 2rem 1.2rem;
     width: 25%;
     background-color: var(--background-light);
-    border-right: 1px solid var(--border-light);
+    // border-right: 1px solid var(--border-light);
+    border-right: none;
 
     @include dark-mode {
       border-right: 1px solid var(--border-dark);
+      border-right: none;
 
       background-color: #111;
     }

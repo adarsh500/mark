@@ -1,6 +1,6 @@
 import User from '@components/User';
 import { Button } from '@nextui-org/react';
-import { useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
   HiHeart,
   HiOutlineHashtag,
@@ -13,7 +13,7 @@ import { HiBars3, HiOutlinePlusCircle } from 'react-icons/hi2';
 import styles from './Navbar.module.scss';
 import ThemeToggle from '@components/ThemeToggle';
 
-const Navbar = (props) => {
+const Component = (props) => {
   const ref = useRef();
   const [hasFocus, setFocus] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -21,9 +21,9 @@ const Navbar = (props) => {
   const { handler, closeHandler, query, setQuery, expanded, setExpanded } =
     props;
 
-  const myFunction = () => {
+  const closeDropdown = useCallback(() => {
     setIsDropdownOpen(false);
-  };
+  }, []);
 
   useEffect(() => {
     const keyDownHandler = (event) => {
@@ -31,7 +31,7 @@ const Navbar = (props) => {
 
       if (event.key === 'Escape') {
         event.preventDefault();
-        myFunction();
+        closeDropdown();
       }
     };
 
@@ -106,7 +106,13 @@ const Navbar = (props) => {
         </div>
       </div>
 
-      <div className={styles.searchContainer}>
+      <div
+        className={styles.searchContainer}
+        onBlur={() => {
+          setFocus(false);
+          setIsDropdownOpen(false);
+        }}
+      >
         <div className={styles.search}>
           <HiOutlineSearch className={styles.searchIcon} />
           <input
@@ -115,7 +121,6 @@ const Navbar = (props) => {
               setFocus(true);
               setIsDropdownOpen(true);
             }}
-            onBlur={() => setFocus(false)}
             placeholder="Search query"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -141,7 +146,7 @@ const Navbar = (props) => {
       </div>
 
       <div className={styles.right}>
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
         <div className={styles.new}>
           <Button
             color="primary"
@@ -158,4 +163,5 @@ const Navbar = (props) => {
   );
 };
 
+const Navbar = memo(Component);
 export default Navbar;

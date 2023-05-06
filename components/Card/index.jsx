@@ -1,4 +1,5 @@
 import { Badge, Button, Text } from '@nextui-org/react';
+import { memo } from 'react';
 import Image from 'next/image';
 import styles from './Card.module.scss';
 
@@ -8,7 +9,6 @@ import {
   HiOutlineHeart,
   HiOutlineTrash,
 } from 'react-icons/hi';
-// import { Image } from '@nextui-org/react';
 import { toast } from 'sonner';
 
 import { QueryClient } from 'react-query';
@@ -21,7 +21,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const Card = (props) => {
+const Component = (props) => {
   const { _id, image, title, description, url, date, tags, favourite } = props;
 
   const copyToClipboard = () => {
@@ -159,4 +159,5 @@ const Card = (props) => {
   );
 };
 
+const Card = memo(Component);
 export default Card;

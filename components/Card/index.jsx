@@ -2,13 +2,14 @@ import { Badge, Button, Text } from '@nextui-org/react';
 import { memo } from 'react';
 import Image from 'next/image';
 import styles from './Card.module.scss';
-
+import { extractSourceName } from '@utils/extractSourceName';
 import {
   HiHeart,
   HiOutlineClipboardCopy,
   HiOutlineHeart,
   HiOutlineTrash,
 } from 'react-icons/hi';
+import { AiOutlineLink } from 'react-icons/ai';
 import { toast } from 'sonner';
 
 import { QueryClient } from 'react-query';
@@ -47,7 +48,7 @@ const Component = (props) => {
 
   const addToFavourite = async () => {
     try {
-      const res = await fetch(`api/bookmarks/${_id}`, {
+      await fetch(`api/bookmarks/${_id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -70,26 +71,61 @@ const Component = (props) => {
   };
 
   return (
-    // <Link href={`/abc`}>
     <div className={styles.card}>
-      <Image
-        className={styles.image}
-        src={
-          image ||
-          'https://og-image.vercel.app/mark3.vercel.app.png?theme=dark&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fvercel-triangle-white.svg'
-        }
-        width={250}
-        height={150}
-        placeholder="blur"
-        blurDataURL="https://og-image.vercel.app/.png?theme=dark&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-white-logo.svg"
-        layout="responsive"
-        alt="Link og:image"
-        objectFit="cover"
-        loading="lazy"
-      ></Image>
+      <div className={styles.imageContainer}>
+        <Image
+          className={styles.image}
+          src={
+            image ||
+            'https://og-image.vercel.app/mark3.vercel.app.png?theme=dark&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fvercel-triangle-white.svg'
+          }
+          // width={250}
+          // height={156}
+          layout="fill"
+          placeholder="blur"
+          blurDataURL="https://og-image.vercel.app/.png?theme=dark&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-white-logo.svg"
+          alt="Link og:image"
+          objectFit="cover"
+          loading="lazy"
+        ></Image>
+
+        <div className={styles.overlay}>
+          <Button
+            auto
+            className={styles.button}
+            flat
+            onClick={deleteBookmark}
+            icon={<HiOutlineTrash className={styles.icons} />}
+          ></Button>
+
+          <Button
+            auto
+            className={styles.button}
+            flat
+            onClick={addToFavourite}
+            icon={
+              !favourite ? (
+                <HiOutlineHeart className={styles.icons} />
+              ) : (
+                <HiHeart className={styles.icons} />
+              )
+            }
+          ></Button>
+
+          <Button
+            auto
+            className={styles.button}
+            flat
+            onClick={copyToClipboard}
+            icon={<AiOutlineLink className={styles.icons} />}
+          ></Button>
+        </div>
+      </div>
 
       <div className={styles.subContent}>
-        <p className={styles.title}>{title}</p>
+        <a href={url} className={styles.title} target="_blank">
+          {title}
+        </a>
         <Text size={14} className={styles.description}>
           {description}
         </Text>
@@ -110,52 +146,11 @@ const Component = (props) => {
         </div>
 
         <div className={styles.info}>
-          {favourite && <HiHeart className={styles.fav} />}
-          <p className={styles.site}>
-            {url.length > 22 ? url.slice(0, 22) + '...' : url}
-          </p>
+          <p className={styles.site}>{extractSourceName(url)}</p>
           <p className={styles.date}>{date}</p>
         </div>
       </div>
-
-      <div className={styles.overlay}>
-        <Button
-          auto
-          className={styles.button}
-          // size="xs"
-          flat
-          color="error"
-          onClick={deleteBookmark}
-          icon={<HiOutlineTrash className={styles.icons} />}
-        ></Button>
-
-        <Button
-          auto
-          className={styles.button}
-          // size="xs"
-          flat
-          color="error"
-          onClick={addToFavourite}
-          icon={
-            !favourite ? (
-              <HiOutlineHeart className={styles.icons} />
-            ) : (
-              <HiHeart className={styles.icons} />
-            )
-          }
-        ></Button>
-
-        <Button
-          auto
-          className={styles.button}
-          // size="xs"
-          flat
-          onClick={copyToClipboard}
-          icon={<HiOutlineClipboardCopy className={styles.icons} />}
-        ></Button>
-      </div>
     </div>
-    // </Link>
   );
 };
 

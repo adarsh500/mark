@@ -14,6 +14,7 @@ const lightTheme = createTheme({
   theme: {
     colors: {}, // optional
   },
+  
 });
 
 const darkTheme = createTheme({

@@ -1,3 +1,4 @@
+import React from 'react';
 import Card from '@components/Card';
 import CardLoader from '@components/CardLoader';
 import { useFetchBookmarks } from '@hooks/useFetchBookmarks';
@@ -10,6 +11,10 @@ import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { getServerSession } from 'next-auth';
+import { authOptions } from 'pages/api/auth/[...nextauth]';
+import Layout from '../../components/layout/Layout';
+
 
 const Collection = (props) => {
   const router = useRouter();
@@ -30,11 +35,10 @@ const Collection = (props) => {
     page,
     email: session?.user?.email,
     query,
-
     collection: router?.asPath,
     configs: [
       {
-        enabled: !!session?.user?.email ,
+        enabled: !!session?.user?.email,
         refetechOnWindowFocus: false,
         getNextPageParam: (lastPage, pages) => {
           return parseInt(lastPage?.data?.currentPage) + 1;
@@ -147,12 +151,26 @@ const Collection = (props) => {
   );
 };
 
+Collection.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
+
 export default Collection;
 
 export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  console.log(session);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
   return {
-    props: {
-      cards: [],
-    },
+    props: {},
   };
 }

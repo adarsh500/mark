@@ -11,6 +11,7 @@ import {
 
 import { HiBars3, HiOutlinePlusCircle } from 'react-icons/hi2';
 import styles from './Navbar.module.scss';
+import ThemeToggle from '@components/ThemeToggle';
 
 const Navbar = (props) => {
   const ref = useRef();
@@ -140,6 +141,7 @@ const Navbar = (props) => {
       </div>
 
       <div className={styles.right}>
+        <ThemeToggle />
         <div className={styles.new}>
           <Button
             color="primary"

@@ -155,15 +155,11 @@
 
   .right {
     display: flex;
-    .share {
+
+    .newButton {
       margin-right: 12px;
-    }
-
-    .input {
-      width: 300px;
-    }
-
-    .new {
+      @include font-size-weight(14, 20, 500);
+      border-radius: var(--border-radius-large);
     }
 
     @include mobile {

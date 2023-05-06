@@ -8,14 +8,12 @@
   min-height: 300px;
   margin: 12px;
   transition: 0.3s ease-in-out;
-
   background-color: var(--background-light);
   color: var(--color-dark) !important;
 
   &:hover {
-    .overlay {
-      opacity: 1;
-    }
+    scale: 1.01;
+    border: 1px solid white;
   }
 
   @include dark-mode {
@@ -31,6 +29,12 @@
     border-radius: var(--border-radius-large);
     object-fit: cover;
     object-position: center;
+
+    &:hover {
+      .overlay {
+        opacity: 1;
+      }
+    }
   }
 
   .image {
@@ -49,8 +53,10 @@
     height: 100%;
     width: 100%;
     opacity: 0;
-    transition: 0.3s ease-in-out;
+    transition: 0.2s ease-in-out;
     background-color: #434343a7;
+    border-top-left-radius: var(--border-radius-large);
+    border-top-right-radius: var(--border-radius-large);
 
     .icons {
       height: 18px;
@@ -75,7 +81,7 @@
 
     @include dark-mode {
       background-color: var(--background-dark);
-      background-color: black;
+      // background-color: black;
     }
 
     .title {
@@ -83,15 +89,15 @@
       justify-content: flex-start;
       align-items: flex-start;
       min-height: 30px;
-      @include font-size-weight(16, 24, 600);
+      @include font-size-weight(17, 28, 450);
       @include line-clamp(1);
     }
 
     .description {
-      margin: 8px 0;
+      margin: 6px 0;
       display: flex;
       align-items: center;
-      line-height: 1.7;
+      @include font-size-weight(16, 26, 400);
       @include line-clamp(2);
 
       @include dark-mode {

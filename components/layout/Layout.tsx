@@ -2,6 +2,11 @@ import Navbar from '@components/Navbar';
 import User from '@components/User';
 import { useCreateCollection } from '@hooks/useCreateCollection';
 import { useFetchCollections } from '@hooks/useFetchCollections';
+import {
+  BsCaretDownFill,
+  BsCaretRightFill,
+  BsThreeDotsVertical,
+} from 'react-icons/bs';
 import { Button, Input, Text } from '@nextui-org/react';
 import dynamic from 'next/dynamic';
 const BookmarkModal = dynamic(() => import('../Modal'), {
@@ -187,9 +192,9 @@ const Layout = (props) => {
             >
               Collections
               {displayCollections ? (
-                <HiChevronUp className={styles.left} />
+                <BsCaretDownFill className={styles.left} />
               ) : (
-                <HiChevronDown className={styles.left} />
+                <BsCaretRightFill className={styles.left} />
               )}
             </p>
             <div className={styles.scrollableMenu}>

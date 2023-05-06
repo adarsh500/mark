@@ -11,7 +11,7 @@ import {
 
 import { HiBars3, HiOutlinePlusCircle } from 'react-icons/hi2';
 import styles from './Navbar.module.scss';
-import ThemeToggle from '@components/ThemeToggle';
+import { IoMdAdd } from 'react-icons/io';
 
 const Component = (props) => {
   const ref = useRef();
@@ -146,16 +146,16 @@ const Component = (props) => {
       </div>
 
       <div className={styles.right}>
-        {/* <ThemeToggle /> */}
         <div className={styles.new}>
           <Button
+            className={styles.newButton}
             color="primary"
             auto
             flat
             onClick={handler}
-            iconRight={<HiOutlinePlusCircle />}
+            iconRight={<IoMdAdd />}
           >
-            Create bookmark
+            Add bookmark
           </Button>
         </div>
       </div>

@@ -32,13 +32,13 @@
 
   .sidebar {
     padding: 2rem 1.2rem;
-    width: 25%;
+    width: 22%;
     background-color: var(--background-light);
-    border-right: 1px solid var(--border-light);
+    border-right: none;
 
     @include dark-mode {
       border-right: 1px solid var(--border-dark);
-
+      border-right: none;
       background-color: #111;
     }
 
@@ -334,7 +334,6 @@
   @include display-flex;
   justify-content: flex-start;
   cursor: pointer !important;
-
   margin: 4px 0;
   width: 100%;
   padding: 4px 8px;

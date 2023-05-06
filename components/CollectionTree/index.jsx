@@ -1,7 +1,6 @@
 import { Popover } from '@nextui-org/react';
-
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import {
   BsCaretDownFill,
   BsCaretRightFill,
@@ -9,19 +8,11 @@ import {
 } from 'react-icons/bs';
 import { CgAddR } from 'react-icons/cg';
 import { HiOutlineTrash } from 'react-icons/hi2';
-import styles from './Parent.module.scss';
+import styles from './CollectionTree.module.scss';
 
-const Parent = (props) => {
+const Component = (props) => {
   const [showNested, setShowNested] = useState({});
-  const {
-    collection,
-    path,
-    coll,
-    setVisibleCollection,
-    setParent,
-    deleteCollection,
-    preview,
-  } = props;
+  const { collection, path, coll, setVisibleCollection, setParent } = props;
 
   const toggleNested = (name) => {
     setShowNested({ ...showNested, [name]: !showNested[name] });
@@ -30,6 +21,15 @@ const Parent = (props) => {
   const handleCreateCollection = (parent) => {
     setParent(parent);
     setVisibleCollection(true);
+  };
+
+  const deleteCollection = async (_id) => {
+    await fetch(`api/collections/${_id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    refetchCollections();
+    toast.error('Deleted a collection');
   };
 
   return (
@@ -101,7 +101,7 @@ const Parent = (props) => {
               style={{ display: !showNested[collection?._id] && 'none' }}
             >
               {collection?.children && (
-                <Parent
+                <Component
                   collection={collection?.children}
                   path={path}
                   coll={coll}
@@ -118,4 +118,5 @@ const Parent = (props) => {
   );
 };
 
-export default Parent;
+const CollectionTree = memo(Component);
+export default CollectionTree;

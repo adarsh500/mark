@@ -13,9 +13,10 @@
   background-color: var(--background-light);
   border-bottom: 1px solid var(--border-light);
   display: flex;
-  padding: 1rem 2rem;
+  padding: 1.25rem 2rem;
   justify-content: space-between;
   align-items: center;
+  border-left: none;
 
   @include dark-mode {
     background-color: var(--background-dark);
@@ -154,15 +155,11 @@
 
   .right {
     display: flex;
-    .share {
+
+    .newButton {
       margin-right: 12px;
-    }
-
-    .input {
-      width: 300px;
-    }
-
-    .new {
+      @include font-size-weight(14, 20, 500);
+      border-radius: var(--border-radius-large);
     }
 
     @include mobile {

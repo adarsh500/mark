@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+import React from 'react';
 import Card from '@components/Card';
 import CardLoader from '@components/CardLoader';
 import { Button } from '@nextui-org/react';
@@ -10,6 +10,9 @@ import { useInView } from 'react-intersection-observer';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useFetchBookmarks } from '../hooks/useFetchBookmarks';
+import { getServerSession } from 'next-auth';
+import { authOptions } from 'pages/api/auth/[...nextauth]';
+import Layout from '../components/layout/Layout';
 
 export default function Home(props) {
   const { query } = props;
@@ -45,15 +48,6 @@ export default function Home(props) {
     }
   }, [inView]);
 
-  if (!session) {
-    return (
-      <main className={styles.main}>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </main>
-    );
-  }
-
   return (
     <>
       <Head>
@@ -68,6 +62,7 @@ export default function Home(props) {
               <div className={styles.loaderBlock}>
                 {[1, 2, 3, 4].map((item) => (
                   <CardLoader
+                    key={item}
                     style={{
                       width: 'calc(calc(100% - 96px) / 4)',
                     }}
@@ -77,6 +72,7 @@ export default function Home(props) {
               <div className={styles.loaderBlock}>
                 {[1, 2, 3, 4].map((item) => (
                   <CardLoader
+                    key={item}
                     style={{
                       width: 'calc(calc(100% - 96px) / 4)',
                     }}
@@ -119,6 +115,7 @@ export default function Home(props) {
                 <div className={styles.loaderBlock}>
                   {[1, 2, 3, 4].map((item) => (
                     <CardLoader
+                      key={item}
                       style={{
                         width: 'calc(calc(100% - 96px) / 4)',
                       }}
@@ -128,6 +125,7 @@ export default function Home(props) {
                 <div className={styles.loaderBlock}>
                   {[1, 2, 3, 4].map((item) => (
                     <CardLoader
+                      key={item}
                       style={{
                         width: 'calc(calc(100% - 96px) / 4)',
                       }}
@@ -143,7 +141,22 @@ export default function Home(props) {
   );
 }
 
+Home.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
+
 export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/auth/signin',
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {},
   };

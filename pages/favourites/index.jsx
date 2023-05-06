@@ -1,10 +1,14 @@
+import React from 'react';
 import Card from '@components/Card';
 import CardLoader from '@components/CardLoader';
 import { useFetchBookmarks } from '@hooks/useFetchBookmarks';
+import Layout from '../../components/layout/Layout';
 import { Button } from '@nextui-org/react';
 import styles from '@styles/Home.module.scss';
+import { getServerSession } from 'next-auth';
 import { signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Skeleton from 'react-loading-skeleton';
@@ -142,12 +146,25 @@ const Favourites = (props) => {
   );
 };
 
+Favourites.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
+
 export default Favourites;
 
 export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
   return {
-    props: {
-      cards: [],
-    },
+    props: {},
   };
 }

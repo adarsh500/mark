@@ -7,17 +7,13 @@
   max-width: 100%;
   min-height: 300px;
   margin: 12px;
-  position: relative;
+  transition: 0.3s ease-in-out;
   background-color: var(--background-light);
   color: var(--color-dark) !important;
 
   &:hover {
-    .overlay {
-      opacity: 1;
-      box-shadow: var(--shadow-elevation-medium);
-
-      border-radius: var(--border-radius-large);
-    }
+    scale: 1.01;
+    border: 1px solid white;
   }
 
   @include dark-mode {
@@ -26,8 +22,24 @@
     color: var(--color-dark-primary) !important;
   }
 
-  .image {
+  .imageContainer {
+    position: relative;
+    height: 180px;
+    width: 100%;
     border-radius: var(--border-radius-large);
+    object-fit: cover;
+    object-position: center;
+
+    &:hover {
+      .overlay {
+        opacity: 1;
+      }
+    }
+  }
+
+  .image {
+    border-top-left-radius: var(--border-radius-large);
+    border-top-right-radius: var(--border-radius-large);
   }
 
   .overlay {
@@ -41,17 +53,20 @@
     height: 100%;
     width: 100%;
     opacity: 0;
-    transition: 0.3s ease;
+    transition: 0.2s ease-in-out;
     background-color: #434343a7;
+    border-top-left-radius: var(--border-radius-large);
+    border-top-right-radius: var(--border-radius-large);
 
     .icons {
-      height: 22px;
-      width: 22px;
+      height: 18px;
+      width: 18px;
       // padding: 6px 0;
     }
 
     .button {
       margin: 6px;
+      border-radius: var(--border-radius-large);
     }
   }
 
@@ -62,9 +77,11 @@
     justify-content: space-between;
     padding: 16px 12px;
     background-color: var(--background-light);
+    border-radius: var(--border-radius-large);
 
     @include dark-mode {
       background-color: var(--background-dark);
+      // background-color: black;
     }
 
     .title {
@@ -72,15 +89,15 @@
       justify-content: flex-start;
       align-items: flex-start;
       min-height: 30px;
-      @include font-size-weight(16, 24, 600);
+      @include font-size-weight(17, 28, 450);
       @include line-clamp(1);
     }
 
     .description {
-      margin: 8px 0;
+      margin: 6px 0;
       display: flex;
       align-items: center;
-      line-height: 1.7;
+      @include font-size-weight(16, 26, 400);
       @include line-clamp(2);
 
       @include dark-mode {

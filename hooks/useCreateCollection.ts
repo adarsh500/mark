@@ -1,7 +1,13 @@
 import axios from 'axios';
 import { useMutation } from 'react-query';
 
-const createCollection = async (inputs) => {
+type CreateCollectionInputs = {
+  email: string;
+  collection: string;
+  parent?: string;
+};
+
+const createCollection = async (inputs: CreateCollectionInputs) => {
   const { email, collection, parent = '' } = inputs;
   const response = await axios.post('api/collections', {
     email,
@@ -14,7 +20,7 @@ const createCollection = async (inputs) => {
 const useCreateCollection = (inputs) => {
   const { configs = [] } = inputs;
   return useMutation(
-    (input) =>
+    (input: CreateCollectionInputs) =>
       createCollection({
         ...input,
       }),

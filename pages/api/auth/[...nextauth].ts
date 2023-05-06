@@ -22,12 +22,14 @@ export const authOptions = {
           image: profile.picture,
         };
       },
-      authorization: GOOGLE_AUTHORIZATION_URL,
     }),
   ],
+  pages: {
+    signIn: '/auth/signin',
+  },
   callbacks: {
     async session({ session, user, token }) {
-      session.user.id = token.id;
+      session.user.id = token.sub;
       return session;
     },
     async jwt({ token, user, account, profile, isNewUser }) {

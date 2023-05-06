@@ -1,12 +1,21 @@
-import CollectionModal from '@components/CollectionModal';
-import BookmarkModal from '@components/Modal';
 import Navbar from '@components/Navbar';
 import User from '@components/User';
 import { useCreateCollection } from '@hooks/useCreateCollection';
 import { useFetchCollections } from '@hooks/useFetchCollections';
+import {
+  BsCaretDownFill,
+  BsCaretRightFill,
+  BsThreeDotsVertical,
+} from 'react-icons/bs';
 import { Button, Input, Text } from '@nextui-org/react';
-
-import Parent from '@components/Parent';
+import dynamic from 'next/dynamic';
+const BookmarkModal = dynamic(() => import('../Modal'), {
+  ssr: false,
+});
+const CollectionModal = dynamic(() => import('../CollectionModal'), {
+  ssr: false,
+});
+import CollectionTree from '@components/CollectionTree';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -18,7 +27,7 @@ import {
   HiOutlineArrowDownOnSquare,
   HiOutlineGlobeAlt,
   HiOutlineHeart,
-  HiPlus
+  HiPlus,
 } from 'react-icons/hi2';
 import { toast, Toaster } from 'sonner';
 import styles from './Layout.module.scss';
@@ -78,15 +87,6 @@ const Layout = (props) => {
     }
   };
 
-  const deleteCollection = async (_id) => {
-    const res = await fetch(`api/collections/${_id}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-    });
-    refetchCollections();
-    toast.error('Deleted a collection');
-  };
-
   const { data: collectionsList, refetch: refetchCollections } =
     useFetchCollections({
       email: session?.user?.email,
@@ -134,7 +134,7 @@ const Layout = (props) => {
     // Checking isValidElement is the safe way and avoids a TS error too.
     if (isValidElement(child)) {
       // Pass additional props here
-      return cloneElement(child, { lmao: true, query: query });
+      return cloneElement(child, { query: query });
     }
 
     return child;
@@ -192,27 +192,27 @@ const Layout = (props) => {
             >
               Collections
               {displayCollections ? (
-                <HiChevronUp className={styles.left} />
+                <BsCaretDownFill className={styles.left} />
               ) : (
-                <HiChevronDown className={styles.left} />
+                <BsCaretRightFill className={styles.left} />
               )}
             </p>
             <div className={styles.scrollableMenu}>
               {displayCollections && !!collectionsList?.data?.length ? (
-                <Parent
+                <CollectionTree
                   collection={collectionsList?.data}
                   path={router?.asPath}
                   coll={coll}
                   setVisibleCollection={setVisibleCollection}
                   setParent={setParent}
-                  deleteCollection={deleteCollection}
+                  refetchCollections={refetchCollections}
                 />
               ) : null}
             </div>
 
             <Text className={styles.text}>Add a new collection</Text>
             <Input
-              clearable="true"
+              clearable={true}
               contentRightStyling={false}
               fullWidth
               bordered
@@ -228,7 +228,6 @@ const Layout = (props) => {
               <div className={styles.upload}>
                 <input
                   type="file"
-                  clearable="true"
                   name="myImage"
                   onChange={uploadToClient}
                   className={styles.inputFile}

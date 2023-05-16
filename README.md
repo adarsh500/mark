@@ -2,10 +2,6 @@
 
 # Mark3
 
-Youtube link: https://youtu.be/FkNB8NnAzI8
-
-Try it out here: https://mark3.vercel.app
-
 # What is mark3?
 
 Mark helps you streamline your productivity by organizing your bookmarks for you. We noticed that there is no easy way to store good articles, blogs, podcasts, or other useful resources that you come across while surfing the web. Mark is a one-stop solution for you to manage your knowledge base in a simple and efficient manner.

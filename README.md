@@ -1,8 +1,8 @@
 ![pika-1678357198604-1x](https://user-images.githubusercontent.com/73278151/224000294-63f915d0-ff04-4604-9327-775135e5a72b.png)
 
-# Mark3
+# Mark
 
-# What is mark3?
+# What is mark?
 
 Mark helps you streamline your productivity by organizing your bookmarks for you. We noticed that there is no easy way to store good articles, blogs, podcasts, or other useful resources that you come across while surfing the web. Mark is a one-stop solution for you to manage your knowledge base in a simple and efficient manner.
 

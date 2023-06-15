@@ -15,6 +15,12 @@
   cursor: pointer;
 }
 
+.menuIcon {
+  height: 16px !important;
+  width: 16px !important;
+  cursor: pointer;
+}
+
 .children {
   margin-left: 18px;
 }
@@ -37,8 +43,6 @@
     }
 
     @include mobile {
-      // display: flex;
-      // flex-direction: column-reverse;
       width: 0;
       padding: 0;
       position: absolute;
@@ -98,11 +102,9 @@
 
     .menu {
       padding: 1rem 0;
-      // height: 100%;
 
       .scrollableMenu {
-        height: 59vh;
-        overflow: scroll;
+        overflow: hidden;
         margin-bottom: 14px;
         -ms-overflow-style: none; /* Internet Explorer 10+ */
         scrollbar-width: none; /* Firefox */
@@ -203,6 +205,7 @@
 .noStyle {
   background-color: transparent;
   border: none;
+  padding: 0;
   cursor: pointer !important;
 
   &:hover {
@@ -212,6 +215,7 @@
     border-radius: var(--border-radius-medium);
     color: var(--color-dark);
   }
+
   &:active {
     color: #0072f5;
     background-color: #cee4fe;
@@ -271,7 +275,7 @@
 
 .collection {
   margin: 4px 2px;
-  // margin-right: 6px;
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -316,6 +320,7 @@
   }
 
   &Active {
+    cursor: pointer;
     width: 100%;
     margin: 4px 2px;
     display: flex;

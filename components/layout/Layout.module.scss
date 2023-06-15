@@ -2,10 +2,14 @@
 
 .left {
   margin-left: 6px;
+  height: 16px !important;
+  weight: 14px !important;
+  transition: all 0.3s ease-in-out;
 }
 
 .sidebarClose {
   background-color: var(--background-light);
+  transition: all 0.2s ease-in-out;
 
   @include dark-mode {
     background-color: var(--background-dark);
@@ -23,7 +27,7 @@
   margin-left: 18px;
 }
 .right {
-  margin-right: 6px;
+  margin-right: 12px;
 }
 
 .home {
@@ -31,10 +35,14 @@
   min-height: 100vh;
 
   .sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     padding: 2rem 1.2rem;
-    width: 22%;
+    width: 21%;
     background-color: var(--background-light);
     border-right: none;
+    transition: all 0.2s ease-in-out;
 
     @include dark-mode {
       border-right: 1px solid var(--border-dark);
@@ -114,38 +122,49 @@
           display: none; /* Safari and Chrome */
         }
       }
+    }
 
-      .upload {
-        display: flex;
-        margin: 8px 0 18px 0;
-        justify-content: center;
-        align-items: center;
+    .input {
+      border-radius: 6px !important;
+    }
 
-        &Section {
-          margin: 14px 0;
-        }
+    .upload {
+      display: flex;
+      margin: 8px 0 18px 0;
+      justify-content: center;
+      align-items: center;
 
-        input::file-selector-button {
-          color: #0072f5;
-          background-color: #cde4fe;
-          padding: 10px 14px;
-          border: 0;
-          border-radius: 8px;
+      &Section {
+        margin: 14px 0;
+      }
 
-          @include dark-mode {
-            background-color: #10253e;
-          }
+      input::file-selector-button {
+        color: #0072f5;
+        background-color: #cde4fe;
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 6px;
+        margin-right: 4px;
+
+        @include dark-mode {
+          background-color: #10253e;
         }
       }
     }
 
+    .send {
+      padding: 8px;
+      border-radius: 6px;
+    }
+
     .coll {
       margin-top: 6px;
-
+      cursor: pointer;
       display: flex;
       justify-content: space-between;
       color: var(--color-dark);
       padding: 6px 6px;
+      transition: all 0.3s ease-in-out;
 
       &:hover {
         transition: all 0.2s ease-in-out;
@@ -165,6 +184,8 @@
       }
 
       &Active {
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
         margin-top: 6px;
         display: flex;
         justify-content: space-between;
@@ -191,13 +212,13 @@
 
     .collection {
       margin: 4px 0;
-      // margin-right: 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
       color: var(--color-dark);
       padding: 6px 6px;
+      transition: all 0.3s ease-in-out;
 
       &Info {
         display: flex;
@@ -231,7 +252,6 @@
       &Active {
         width: 100%;
         margin: 4px 0;
-        // margin-right: 6px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -240,6 +260,7 @@
         background-color: #cee4fe;
         border-radius: var(--border-radius-medium);
         padding: 6px 6px;
+        transition: all 0.3s ease-in-out;
       }
     }
 
@@ -283,8 +304,8 @@
 }
 
 .text {
-  margin-bottom: 16px;
-  @include font-size-weight(16, 12, 500);
+  margin-bottom: 12px;
+  @include font-size-weight(16, 22, 500);
 }
 
 .flex {

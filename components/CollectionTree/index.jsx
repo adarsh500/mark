@@ -1,6 +1,6 @@
 import { Popover } from '@nextui-org/react';
 import Link from 'next/link';
-import { useState, memo } from 'react';
+import { memo, useCallback, useState } from 'react';
 import {
   BsCaretDownFill,
   BsCaretRightFill,
@@ -14,14 +14,14 @@ const Component = (props) => {
   const [showNested, setShowNested] = useState({});
   const { collection, path, coll, setVisibleCollection, setParent } = props;
 
-  const toggleNested = (name) => {
+  const toggleNested = useCallback((name) => {
     setShowNested({ ...showNested, [name]: !showNested[name] });
-  };
+  }, []);
 
-  const handleCreateCollection = (parent) => {
+  const handleCreateCollection = useCallback((parent) => {
     setParent(parent);
     setVisibleCollection(true);
-  };
+  }, []);
 
   const deleteCollection = async (_id) => {
     await fetch(`api/collections/${_id}`, {
@@ -71,7 +71,7 @@ const Component = (props) => {
                 <Popover>
                   <Popover.Trigger>
                     <button className={styles.noStyle}>
-                      <BsThreeDotsVertical />
+                      <BsThreeDotsVertical className={styles.menuIcon} />
                     </button>
                   </Popover.Trigger>
                   <Popover.Content className={styles.popover}>

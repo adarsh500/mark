@@ -1,36 +1,34 @@
+import CollectionTree from '@components/CollectionTree';
 import Navbar from '@components/Navbar';
 import User from '@components/User';
 import { useCreateCollection } from '@hooks/useCreateCollection';
 import { useFetchCollections } from '@hooks/useFetchCollections';
-import {
-  BsCaretDownFill,
-  BsCaretRightFill,
-  BsThreeDotsVertical,
-} from 'react-icons/bs';
-import { Button, Input, Text } from '@nextui-org/react';
+import { Button, Input } from '@nextui-org/react';
+import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, {
+  cloneElement,
+  isValidElement,
+  useCallback,
+  useState,
+} from 'react';
+import { BsCaretDownFill, BsCaretRightFill } from 'react-icons/bs';
+import {
+  HiBars3,
+  HiOutlineArrowDownOnSquare,
+  HiOutlineGlobeAlt,
+  HiPlus,
+} from 'react-icons/hi2';
+import { Toaster, toast } from 'sonner';
+import styles from './Layout.module.scss';
 const BookmarkModal = dynamic(() => import('../Modal'), {
   ssr: false,
 });
 const CollectionModal = dynamic(() => import('../CollectionModal'), {
   ssr: false,
 });
-import CollectionTree from '@components/CollectionTree';
-import { useSession } from 'next-auth/react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React, { cloneElement, isValidElement, useState } from 'react';
-import {
-  HiBars3,
-  HiChevronDown,
-  HiChevronUp,
-  HiOutlineArrowDownOnSquare,
-  HiOutlineGlobeAlt,
-  HiOutlineHeart,
-  HiPlus,
-} from 'react-icons/hi2';
-import { toast, Toaster } from 'sonner';
-import styles from './Layout.module.scss';
 
 const Layout = (props) => {
   const { children } = props;
@@ -79,13 +77,13 @@ const Layout = (props) => {
     });
   };
 
-  const uploadToClient = (event) => {
+  const uploadToClient = useCallback((event) => {
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0];
       setFile(i);
       setCreateObjectURL(URL.createObjectURL(i));
     }
-  };
+  }, []);
 
   const { data: collectionsList, refetch: refetchCollections } =
     useFetchCollections({
@@ -98,7 +96,7 @@ const Layout = (props) => {
       ],
     });
 
-  const createCollection = () => {
+  const createCollection = useCallback(() => {
     if (newCollection === '') {
       toast.error('Collection name cannot be empty');
       return;
@@ -109,7 +107,7 @@ const Layout = (props) => {
       parent: '',
     });
     setNewCollection('');
-  };
+  }, []);
 
   const handler = () => setVisible(true);
 
@@ -129,11 +127,8 @@ const Layout = (props) => {
     });
   }
 
-  // Add props to all child elements.
   const childrenWithProps = recursiveMap(children, (child) => {
-    // Checking isValidElement is the safe way and avoids a TS error too.
     if (isValidElement(child)) {
-      // Pass additional props here
       return cloneElement(child, { query: query });
     }
 
@@ -158,33 +153,25 @@ const Layout = (props) => {
           <div className={styles.hamburger}></div>
 
           <menu className={styles.menu}>
-            <span
-              className={
-                '/' === router.pathname ? styles.collActive : styles.coll
-              }
-            >
-              <Link href={`/`}>
-                <div className={styles.collectionInfo}>
-                  <HiOutlineGlobeAlt className={styles.right} />
-                  <p className={styles.collectionName}>All</p>
-                </div>
-              </Link>
-            </span>
-
-            <span
-              className={
-                '/favourites' === router.pathname
-                  ? styles.collActive
-                  : styles.coll
-              }
-            >
-              <Link href={`/favourites`}>
-                <div className={styles.collectionInfo}>
-                  <HiOutlineHeart className={styles.right} />
-                  <p className={styles.collectionName}>Favourites</p>
-                </div>
-              </Link>
-            </span>
+            {[
+              { path: '/', label: 'All' },
+              { path: '/favourites', label: 'Favourites' },
+            ].map((route) => (
+              <span
+                className={
+                  route.path === router.pathname
+                    ? styles.collActive
+                    : styles.coll
+                }
+              >
+                <Link href={route.path}>
+                  <div className={styles.collectionInfo}>
+                    <HiOutlineGlobeAlt className={styles.right} />
+                    <p className={styles.collectionName}>{route.label}</p>
+                  </div>
+                </Link>
+              </span>
+            ))}
 
             <p
               className={styles.subMenu}
@@ -209,42 +196,40 @@ const Layout = (props) => {
                 />
               ) : null}
             </div>
-
-            <Text className={styles.text}>Add a new collection</Text>
-            <Input
-              clearable={true}
-              contentRightStyling={false}
-              fullWidth
-              bordered
-              contentRight={
-                <HiPlus onClick={createCollection} className={styles.right} />
-              }
-              value={newCollection}
-              onChange={(e) => setNewCollection(e.target.value)}
-            />
-
-            <div className={styles.uploadSection}>
-              <Text className={styles.text}>Import bookmarks </Text>
-              <div className={styles.upload}>
-                <input
-                  type="file"
-                  name="myImage"
-                  onChange={uploadToClient}
-                  className={styles.inputFile}
-                />
-
-                <Button
-                  className={styles.send}
-                  auto
-                  flat
-                  type="submit"
-                  color="success"
-                  onClick={uploadToServer}
-                  icon={<HiOutlineArrowDownOnSquare />}
-                ></Button>
-              </div>
-            </div>
           </menu>
+          <p className={styles.text}>Add a new collection</p>
+          <Input
+            clearable={true}
+            contentRightStyling={false}
+            className={styles.input}
+            contentRight={
+              <HiPlus onClick={createCollection} className={styles.right} />
+            }
+            value={newCollection}
+            onChange={(e) => setNewCollection(e.target.value)}
+          />
+
+          <div className={styles.uploadSection}>
+            <p className={styles.text}>Import bookmarks</p>
+            <div className={styles.upload}>
+              <input
+                type="file"
+                name="myImage"
+                onChange={uploadToClient}
+                className={styles.inputFile}
+              />
+
+              <Button
+                className={styles.send}
+                auto
+                flat
+                type="submit"
+                color="success"
+                onClick={uploadToServer}
+                icon={<HiOutlineArrowDownOnSquare />}
+              ></Button>
+            </div>
+          </div>
         </aside>
 
         <div className={styles.mainContent}>

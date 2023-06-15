@@ -9,9 +9,9 @@ import {
   HiOutlineSearch,
 } from 'react-icons/hi';
 
-import { HiBars3, HiOutlinePlusCircle } from 'react-icons/hi2';
-import styles from './Navbar.module.scss';
+import { HiBars3 } from 'react-icons/hi2';
 import { IoMdAdd } from 'react-icons/io';
+import styles from './Navbar.module.scss';
 
 const Component = (props) => {
   const ref = useRef();
@@ -23,18 +23,21 @@ const Component = (props) => {
 
   const closeDropdown = useCallback(() => {
     setIsDropdownOpen(false);
+    setFocus(false);
   }, []);
 
+  const keyDownHandler = useCallback((event) => {
+    console.log('User pressed: ', event.key);
+
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeDropdown();
+    }
+  }, []);
+
+  console.log(isDropdownOpen, hasFocus, query);
+
   useEffect(() => {
-    const keyDownHandler = (event) => {
-      console.log('User pressed: ', event.key);
-
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        closeDropdown();
-      }
-    };
-
     document.addEventListener('keydown', keyDownHandler);
 
     return () => {
@@ -49,8 +52,8 @@ const Component = (props) => {
       icon: <HiHeart className={styles.right} />,
       action: () => {
         setQuery('fav:');
-        ref.current.focus();
-        setIsDropdownOpen(false);
+        // ref.current.focus();
+        // setIsDropdownOpen(false);
       },
     },
     {
@@ -60,7 +63,7 @@ const Component = (props) => {
       action: () => {
         setQuery('tag:');
         ref.current.focus();
-        setIsDropdownOpen(false);
+        // setIsDropdownOpen(false);
       },
     },
     {
@@ -108,9 +111,13 @@ const Component = (props) => {
 
       <div
         className={styles.searchContainer}
+        onFocus={() => {
+          setFocus(true);
+          setIsDropdownOpen(true);
+        }}
         onBlur={() => {
           setFocus(false);
-          setIsDropdownOpen(false);
+          // setIsDropdownOpen(false);
         }}
       >
         <div className={styles.search}>
@@ -127,7 +134,7 @@ const Component = (props) => {
             className={styles.searchBox}
           />
         </div>
-        {isDropdownOpen ? (
+        {hasFocus ? (
           <div className={styles.searchDropdown}>
             <ul>
               {actions.map((action) => (

@@ -56,13 +56,14 @@ export async function DELETE(request: NextRequest) {
   const client = await clientPromise;
   const db = client.db(DEVELOPMENT);
   const collection = db.collection(COLLECTION);
-  const { _id, user_id } = await request.json();
+  const { id, user_id } = await request.json();
+
   const collections = await collection.find({ user_id }).toArray();
 
-  const child = [...findChildren(collections, _id), new ObjectId(_id)];
+  const children = [...findChildren(collections, id), new ObjectId(id)];
 
   const result = await collection.deleteMany({
-    _id: { $in: child },
+    _id: { $in: children },
   });
 
   return Response.json(result, {

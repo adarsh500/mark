@@ -1,4 +1,4 @@
-import { authOptions } from '@/app/api/[...nextauth]/route';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { Toaster } from '@/components/ui/toaster';
 import Layout from '@/components/core/Layout';
 import Provider from '@/components/providers/SessionProvider';
@@ -21,6 +21,19 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return (
+      <html lang="en">
+        <body className={`${inter.className} min-h-screen flex`}>
+          <Provider session={session}>
+            <TanstackProvider>{children}</TanstackProvider>
+          </Provider>
+          <Toaster />
+        </body>
+      </html>
+    );
+  }
 
   return (
     <html lang="en">

@@ -1,7 +1,6 @@
-import { authOptions } from '@/app/api/[...nextauth]/route';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth/next';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import React from 'react';
 import { HiOutlineGlobeAlt } from 'react-icons/hi';
 import { MdFavoriteBorder } from 'react-icons/md';

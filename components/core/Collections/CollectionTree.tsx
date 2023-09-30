@@ -6,28 +6,34 @@ import { useMutation } from '@tanstack/react-query';
 import { useToast } from '@/components/ui/use-toast';
 
 const CollectionTree = (props: any) => {
-  const { collections, refetchCollections } = props;
+  const { collections, refetchCollections, userId } = props;
   const [showNested, setShowNested] = useState<any>({});
   const { toast } = useToast();
 
   const { mutate } = useMutation(
-    (id: string) => fetch(`/api/collections/${id}`, { method: 'DELETE' }),
+    (id: string) =>
+      fetch(`/api/collections`, {
+        method: 'DELETE',
+        body: JSON.stringify({ id, user_id: 0 }),
+      }),
     {
       onSuccess: () => {
-        refetchCollections();
         toast({ description: 'Collection deleted successfully' });
+        refetchCollections();
       },
       onError: (err) => {
+        console.log(err);
         toast({
           variant: 'destructive',
           title: 'Something went wrong',
-          description: err as string,
+          description: 'shit',
         });
       },
     }
   );
 
-  const deleteCollection = useCallback((id: string) => {
+  const deleteCollection = useCallback((e: Event, id: string) => {
+    e.preventDefault();
     mutate(id);
   }, []);
 
@@ -41,27 +47,37 @@ const CollectionTree = (props: any) => {
   return (
     <>
       {collections?.map((collection: any) => {
-        const { collection_name, children, _id } = collection;
+        const { collection_name = '', children = [], _id = '' } = collection;
         const isParent = !!children.length;
         return (
           <div key={_id}>
             <Collection
+              id={_id}
               label={collection_name}
               href={`/collections/${_id}`}
               icon={
                 isParent ? (
-                  !!showNested[_id] ? (
-                    <HiChevronDown onClick={(e) => toggleNested(e, _id)} />
+                  !!showNested?.[_id] ? (
+                    <HiChevronDown
+                      onClick={(e: Event) => toggleNested(e, _id)}
+                    />
                   ) : (
-                    <HiChevronRight onClick={(e) => toggleNested(e, _id)} />
+                    <HiChevronRight
+                      onClick={(e: Event) => toggleNested(e, _id)}
+                    />
                   )
                 ) : null
               }
               hasActions
+              deleteCollection={deleteCollection}
             />
-            {showNested[_id] && isParent && (
+            {showNested?.[_id] && isParent && (
               <div className="ml-4">
-                <CollectionTree collections={children} />
+                <CollectionTree
+                  collections={children}
+                  refetchCollections={refetchCollections}
+                  userId={userId}
+                />
               </div>
             )}
           </div>

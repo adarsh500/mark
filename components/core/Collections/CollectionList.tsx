@@ -2,18 +2,16 @@
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
 import CollectionTree from './CollectionTree';
 
 const CollectionsList = (props: any) => {
-  const { id, path } = props;
-  const [showNested, setShowNested] = useState<any>({});
+  const { id } = props;
 
   const {
     data: collections,
     isLoading,
     isError,
-    refetch,
+    refetch: refetchCollections,
   } = useQuery({
     queryKey: ['collections'],
     queryFn: () => fetch(`/api/collections/${id}`).then((res) => res.json()),
@@ -33,9 +31,9 @@ const CollectionsList = (props: any) => {
   return (
     <div className="mt-5">
       <CollectionTree
+        userId={id}
         collections={collections}
-        path={path}
-        refetchCollections={refetch}
+        refetchCollections={refetchCollections}
       />
     </div>
   );

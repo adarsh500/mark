@@ -4,27 +4,34 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
-import {
-  HiOutlineDotsHorizontal,
-  HiPlus
-} from 'react-icons/hi';
+import { HiOutlineDotsHorizontal, HiPlus } from 'react-icons/hi';
 
 type CollectionProps = {
+  id?: string;
   label: string;
   href: string;
   icon?: React.ReactNode;
   hasActions?: boolean;
+  deleteCollection?: (e: any, id: string) => void;
 };
 
 const Collection = (props: CollectionProps) => {
-  const { label = '', href = '', icon = null, hasActions = false } = props;
   const pathname = usePathname();
+
+  const {
+    id = '',
+    label = '',
+    href = '',
+    icon = null,
+    hasActions = false,
+    deleteCollection = () => {},
+  } = props;
 
   return (
     <div
@@ -47,7 +54,10 @@ const Collection = (props: CollectionProps) => {
               <HiPlus />
               Create Collection
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2">
+            <DropdownMenuItem
+              className="flex items-center gap-2"
+              onClick={(e) => deleteCollection(e, id)}
+            >
               <PiXCircle />
               Delete Collection
             </DropdownMenuItem>

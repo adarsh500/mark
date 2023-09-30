@@ -3,8 +3,10 @@ import { Input } from '@/components/ui/input';
 
 const Navbar = () => {
   return (
-    <div>
-      <Input />
+    <div className="border border-solid border-border px-4 py-4 border-l-0">
+      <div className="w-64">
+        <Input placeholder="Search for bookmarks" />
+      </div>
     </div>
   );
 };

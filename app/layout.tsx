@@ -1,10 +1,12 @@
 import { authOptions } from '@/app/api/[...nextauth]/route';
+import { Toaster } from '@/components/ui/toaster';
 import Layout from '@/components/core/Layout';
-import Provider from '@/context/clientContext';
+import Provider from '@/components/providers/SessionProvider';
 import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import TanstackProvider from '@/components/providers/TanstackProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,8 +26,11 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${inter.className} min-h-screen flex`}>
         <Provider session={session}>
-          <Layout>{children}</Layout>
+          <TanstackProvider>
+            <Layout>{children}</Layout>
+          </TanstackProvider>
         </Provider>
+        <Toaster />
       </body>
     </html>
   );

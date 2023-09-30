@@ -34,7 +34,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "components/core/Collection.tsx"  ],
+, "components/core/Collections/Collection.tsx"  ],
   "exclude": [
     "node_modules"
   ]

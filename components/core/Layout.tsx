@@ -1,13 +1,14 @@
-import React from 'react';
-import Navbar from './Navbar';
-import Collection from './Collection';
-import { HiOutlineGlobeAlt } from 'react-icons/hi';
-import { MdFavoriteBorder } from 'react-icons/md';
 import { authOptions } from '@/app/api/[...nextauth]/route';
 import { getServerSession } from 'next-auth/next';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import React from 'react';
+import { HiOutlineGlobeAlt } from 'react-icons/hi';
+import { MdFavoriteBorder } from 'react-icons/md';
 import { Button } from '../ui/button';
-import CollectionTree from './CollectionTree';
+import Collection from './Collections/Collection';
+import CollectionsList from './Collections/CollectionList';
+import Navbar from './Navbar';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -16,6 +17,7 @@ type LayoutProps = {
 const Layout = async (props: LayoutProps) => {
   const { children } = props;
   const session = await getServerSession(authOptions);
+  const { image = '', name = '', id = '' } = session?.user;
 
   return (
     <div className="w-full flex flex-row flex-1">
@@ -43,7 +45,7 @@ const Layout = async (props: LayoutProps) => {
             <div className="mt-6">
               <b>Collections</b>
               <div>
-                <CollectionTree />
+                <CollectionsList id={id} />
               </div>
             </div>
           </div>

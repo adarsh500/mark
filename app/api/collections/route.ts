@@ -2,8 +2,10 @@ import { COLLECTION } from './../../../db/constants';
 //@ts-ignore
 import clientPromise from '@/db/clientPromise';
 import { DEVELOPMENT } from '@/db/constants';
+import { ObjectId } from 'mongodb';
+import { NextRequest } from 'next/server';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   //@ts-ignore
   const client = await clientPromise;
   const db = client.db(DEVELOPMENT);
@@ -39,6 +41,7 @@ export async function POST(request: Request) {
     user_id,
     collection_name,
     parent_id,
+    children: [],
   });
 
   console.log(result);
@@ -47,3 +50,34 @@ export async function POST(request: Request) {
     status: 200,
   });
 }
+
+export async function DELETE(request: NextRequest) {
+  //@ts-ignore
+  const client = await clientPromise;
+  const db = client.db(DEVELOPMENT);
+  const collection = db.collection(COLLECTION);
+  const { _id, user_id } = await request.json();
+  const collections = await collection.find({ user_id }).toArray();
+
+  const child = [...findChildren(collections, _id), new ObjectId(_id)];
+
+  const result = await collection.deleteMany({
+    _id: { $in: child },
+  });
+
+  return Response.json(result, {
+    status: 200,
+  });
+}
+
+const findChildren: any = (arr: Array<any>, id: string) => {
+  let children: any[] = [];
+  arr.filter((item) => {
+    if (item.parent_id == id) {
+      children.push(item._id);
+      const child = findChildren(arr, item._id);
+      children = [...children, ...child];
+    }
+  });
+  return children;
+};

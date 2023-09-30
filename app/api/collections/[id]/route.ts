@@ -2,7 +2,6 @@ import { COLLECTION, DEVELOPMENT } from '@/db/constants';
 import { NextRequest } from 'next/server';
 //@ts-ignore
 import clientPromise from '@/db/clientPromise';
-import { log } from 'console';
 
 export async function GET(request: NextRequest, context: { params: any }) {
   //@ts-ignore
@@ -14,21 +13,22 @@ export async function GET(request: NextRequest, context: { params: any }) {
   const collections = await collection.find({ user_id }).toArray();
 
   const collectionsTree: any[] = [];
-  const flattenedCollections = collections?.map((coll) => ({
-    ...coll,
-    children: [],
-  }));
-  flattenedCollections
-    ?.filter((coll) => coll?.parent_id == '')
-    ?.forEach((coll) => {
-      collectionsTree?.push(coll);
-      flattenedCollections?.splice(flattenedCollections?.indexOf(coll), 1);
-    });
+  const flattenedCollections = [...collections];
+  const rootCollections = flattenedCollections?.filter(
+    (coll) => coll?.parent_id == ''
+  );
 
-  while (flattenedCollections?.length !== 0) {
-    flattenedCollections?.forEach((coll, i) => {
-      findParent(collectionsTree, coll?.parent_id)?.children?.push(coll);
-      flattenedCollections?.splice(i, 1);
+  rootCollections.forEach((coll) => {
+    collectionsTree.push(coll);
+    flattenedCollections.splice(flattenedCollections.indexOf(coll), 1);
+  });
+
+  while (flattenedCollections.length !== 0) {
+    flattenedCollections.forEach((coll, i) => {
+      let parent = findParent(collectionsTree, coll?.parent_id);
+      if (!parent) return;
+      parent.children.push(coll);
+      flattenedCollections.splice(i, 1);
     });
   }
 
@@ -38,11 +38,11 @@ export async function GET(request: NextRequest, context: { params: any }) {
 }
 
 const findParent: any = (arr: Array<any>, id: string) => {
-  for (let item of arr) {
-    if (item?._id == id) {
+  for (var item of arr) {
+    if (item._id == id) {
       return item;
     }
-    let p = findParent(item?.children, id);
+    var p = findParent(item?.children, id);
     if (p) {
       return p;
     }

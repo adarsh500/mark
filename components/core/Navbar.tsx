@@ -1,7 +1,12 @@
 import React from 'react';
+import { Input } from '@/components/ui/input';
 
 const Navbar = () => {
-  return <div>Navbar</div>;
+  return (
+    <div>
+      <Input />
+    </div>
+  );
 };
 
 export default Navbar;

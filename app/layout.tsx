@@ -1,9 +1,10 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { authOptions } from '@/app/api/[...nextauth]/route';
+import Layout from '@/components/core/Layout';
 import Provider from '@/context/clientContext';
+import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { Inter } from 'next/font/google';
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,7 +23,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Provider session={session}>{children}</Provider>
+        <Provider session={session}>
+          <Layout>{children}</Layout>
+        </Provider>
       </body>
     </html>
   );

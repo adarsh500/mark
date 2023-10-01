@@ -25,7 +25,7 @@ export default async function RootLayout({
   if (!session) {
     return (
       <html lang="en">
-        <body className={`${inter.className} min-h-screen flex`}>
+        <body className={`${inter.className} h-screen flex`}>
           <Provider session={session}>
             <TanstackProvider>{children}</TanstackProvider>
           </Provider>
@@ -37,7 +37,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${inter.className} min-h-screen flex`}>
+      <body className={`${inter.className} h-screen flex`}>
         <Provider session={session}>
           <TanstackProvider>
             <Layout>{children}</Layout>

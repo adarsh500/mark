@@ -36,11 +36,15 @@ const Collection = (props: CollectionProps) => {
   return (
     <div
       className={clsx(
-        'flex items-center px-3 py-2 hover:bg-secondary rounded-md select-none justify-between',
+        'flex items-center px-3 py-2 hover:bg-secondary rounded-md select-none justify-between mb-1.5 transition-all ease-linear',
         { 'bg-secondary': pathname === href }
       )}
     >
-      <div className="flex items-center gap-2">
+      <div
+        className={clsx('flex items-center gap-2', {
+          'ml-1': pathname === href,
+        })}
+      >
         {icon}
         <Link href={href}>{label}</Link>
       </div>

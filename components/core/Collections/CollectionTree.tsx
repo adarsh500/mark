@@ -45,7 +45,7 @@ const CollectionTree = (props: any) => {
   }, []);
 
   return (
-    <>
+    <div className="overflow-scroll flex-1 relative">
       {collections?.map((collection: any) => {
         const { collection_name = '', children = [], _id = '' } = collection;
         const isParent = !!children.length;
@@ -54,7 +54,7 @@ const CollectionTree = (props: any) => {
             <Collection
               id={_id}
               label={collection_name}
-              href={`/collections/${_id}`}
+              href={`/collection/${_id}`}
               icon={
                 isParent ? (
                   !!showNested?.[_id] ? (
@@ -83,7 +83,7 @@ const CollectionTree = (props: any) => {
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
 

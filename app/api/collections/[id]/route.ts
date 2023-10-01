@@ -12,6 +12,12 @@ export async function GET(request: NextRequest, context: { params: any }) {
 
   const collections = await collection.find({ user_id }).toArray();
 
+  if (!collections) {
+    return Response.json([], {
+      status: 200,
+    });
+  }
+
   const collectionsTree: any[] = [];
   const flattenedCollections = [...collections];
   const rootCollections = flattenedCollections?.filter(

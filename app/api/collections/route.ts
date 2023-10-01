@@ -18,6 +18,22 @@ export async function POST(request: NextRequest) {
     user_id,
     collection_name,
   });
+  let parentExists = true;
+
+  if (parent_id !== '') {
+    parentExists = await collection.findOne({
+      _id: new ObjectId(parent_id),
+    });
+  }
+
+  if (!parentExists) {
+    return Response.json(
+      { message: 'Parent collection does not exist', status: 400 },
+      {
+        status: 400,
+      }
+    );
+  }
 
   const restricted = [
     'All',
@@ -60,10 +76,10 @@ export async function DELETE(request: NextRequest) {
 
   const collections = await collection.find({ user_id }).toArray();
 
-  const children = [...findChildren(collections, id), new ObjectId(id)];
+  const child = [...findChildren(collections, id), new ObjectId(id)];
 
   const result = await collection.deleteMany({
-    _id: { $in: children },
+    _id: { $in: child },
   });
 
   return Response.json(result, {

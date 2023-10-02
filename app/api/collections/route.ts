@@ -12,7 +12,6 @@ export async function POST(request: NextRequest) {
   const collection = db.collection(COLLECTION);
 
   const { user_id, collection_name, parent_id = '' } = await request.json();
-  console.log(user_id, collection_name, parent_id);
 
   const exist = await collection.findOne({
     user_id,
@@ -59,8 +58,6 @@ export async function POST(request: NextRequest) {
     parent_id,
     children: [],
   });
-
-  console.log(result);
 
   return Response.json(result, {
     status: 200,

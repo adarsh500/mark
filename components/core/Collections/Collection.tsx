@@ -1,5 +1,4 @@
 'use client';
-import { PiXCircle } from 'react-icons/pi';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,8 +8,9 @@ import {
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
+import React, { memo } from 'react';
 import { HiOutlineDotsHorizontal, HiPlus } from 'react-icons/hi';
+import { PiXCircle } from 'react-icons/pi';
 
 type CollectionProps = {
   id?: string;
@@ -19,6 +19,7 @@ type CollectionProps = {
   icon?: React.ReactNode;
   hasActions?: boolean;
   deleteCollection?: (e: any, id: string) => void;
+  createCollection?: (e: any, id: string) => void;
 };
 
 const Collection = (props: CollectionProps) => {
@@ -31,13 +32,14 @@ const Collection = (props: CollectionProps) => {
     icon = null,
     hasActions = false,
     deleteCollection = () => {},
+    createCollection = () => {},
   } = props;
 
   return (
     <div
       className={clsx(
-        'flex items-center px-3 py-2 hover:bg-secondary rounded-md select-none justify-between mb-1.5 transition-all ease-linear',
-        { 'bg-secondary': pathname === href }
+        'flex items-center px-3 py-2 hover:bg-primary hover:text-primary-foreground rounded-md select-none justify-between mb-1.5 transition-all ease-linear cursor-pointer active:bg-primary text-base active:text-primary-foreground',
+        { 'bg-primary text-primary-foreground': pathname === href }
       )}
     >
       <div
@@ -51,16 +53,21 @@ const Collection = (props: CollectionProps) => {
       {hasActions && (
         <DropdownMenu>
           <DropdownMenuTrigger>
+            {/* <Button variant="ghost" className="p-0 m-0"> */}
             <HiOutlineDotsHorizontal />
+            {/* </Button> */}
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem className="flex items-center gap-2">
+          <DropdownMenuContent hideWhenDetached>
+            <DropdownMenuItem
+              className="flex items-center gap-2"
+              onSelect={(e) => createCollection(null, id)}
+            >
               <HiPlus />
               Create Collection
             </DropdownMenuItem>
             <DropdownMenuItem
               className="flex items-center gap-2"
-              onClick={(e) => deleteCollection(e, id)}
+              onSelect={(e) => deleteCollection(e, id)}
             >
               <PiXCircle />
               Delete Collection
@@ -72,4 +79,4 @@ const Collection = (props: CollectionProps) => {
   );
 };
 
-export default Collection;
+export default memo(Collection);

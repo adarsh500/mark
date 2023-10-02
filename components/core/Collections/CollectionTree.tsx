@@ -2,35 +2,15 @@
 import { memo, useCallback, useState } from 'react';
 import { HiChevronDown, HiChevronRight } from 'react-icons/hi';
 import Collection from './Collection';
-import { useMutation } from '@tanstack/react-query';
-import { useToast } from '@/components/ui/use-toast';
 
 const CollectionTree = (props: any) => {
-  const { collections, refetchCollections, userId } = props;
+  const {
+    collections,
+    deleteCollection: mutate,
+    createCollection,
+    userId,
+  } = props;
   const [showNested, setShowNested] = useState<any>({});
-  const { toast } = useToast();
-
-  const { mutate } = useMutation(
-    (id: string) =>
-      fetch(`/api/collections`, {
-        method: 'DELETE',
-        body: JSON.stringify({ id, user_id: 0 }),
-      }),
-    {
-      onSuccess: () => {
-        toast({ description: 'Collection deleted successfully' });
-        refetchCollections();
-      },
-      onError: (err) => {
-        console.log(err);
-        toast({
-          variant: 'destructive',
-          title: 'Something went wrong',
-          description: 'shit',
-        });
-      },
-    }
-  );
 
   const deleteCollection = useCallback((e: Event, id: string) => {
     e.preventDefault();
@@ -70,13 +50,15 @@ const CollectionTree = (props: any) => {
               }
               hasActions
               deleteCollection={deleteCollection}
+              createCollection={createCollection}
             />
             {showNested?.[_id] && isParent && (
               <div className="ml-4">
                 <CollectionTree
                   collections={children}
-                  refetchCollections={refetchCollections}
+                  deleteCollection={mutate}
                   userId={userId}
+                  createCollection={createCollection}
                 />
               </div>
             )}

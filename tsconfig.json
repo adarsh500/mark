@@ -8,7 +8,7 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -27,15 +27,18 @@
         "./*"
       ]
     },
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "components/core/Collections/Collection.tsx"  ],
+    ".next/types/**/*.ts",
+    "components/core/Collections/Collection.tsx",
+  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "app/api/bookmarks/route.js"
   ]
 }

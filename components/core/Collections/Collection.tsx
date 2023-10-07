@@ -38,7 +38,7 @@ const Collection = (props: CollectionProps) => {
   return (
     <div
       className={clsx(
-        'flex items-center px-3 py-2 hover:bg-primary hover:text-primary-foreground rounded-md select-none justify-between mb-1.5 transition-all ease-linear cursor-pointer active:bg-primary text-base active:text-primary-foreground',
+        'flex items-center p-2 hover:bg-primary hover:text-primary-foreground rounded-md select-none justify-between mb-1 transition-all ease-linear cursor-pointer active:bg-primary text-base active:text-primary-foreground',
         { 'bg-primary text-primary-foreground': pathname === href }
       )}
     >
@@ -53,9 +53,7 @@ const Collection = (props: CollectionProps) => {
       {hasActions && (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            {/* <Button variant="ghost" className="p-0 m-0"> */}
             <HiOutlineDotsHorizontal />
-            {/* </Button> */}
           </DropdownMenuTrigger>
           <DropdownMenuContent hideWhenDetached>
             <DropdownMenuItem

@@ -2,6 +2,7 @@
 import { useFetchBookmarks } from '@/hooks/useFetchBookmarks';
 import { useInView } from 'react-intersection-observer';
 import React, { useEffect, useState } from 'react';
+import Card from '../Card';
 
 const BookmarkContainer = (props) => {
   const { query, session } = props;
@@ -39,7 +40,24 @@ const BookmarkContainer = (props) => {
     }
   }, [inView]);
 
-  return <div>BookmarkContainer</div>;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className='flex flex-wrap'>
+      {data &&
+        data?.pages?.map((page) => {
+          return (
+            Object.keys(page?.data)
+              .filter((key) => key !== 'currentPage')
+              .map((key) => {
+                return <Card key={page?.data[key]?._id} {...page?.data[key]} />;
+              })
+          );
+        })}
+    </div>
+  );
 };
 
 export default BookmarkContainer;

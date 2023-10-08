@@ -129,7 +129,7 @@ const Component = (props) => {
         </div>
 
         <div className={styles.info}>
-          <p className={styles.site}>{extractSourceName(url)}</p>
+          {/* <p className={styles.site}>{extractSourceName(url)}</p> */}
           <p className={styles.date}>{date}</p>
         </div>
       </div>

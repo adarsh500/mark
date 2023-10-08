@@ -2,6 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background-dark: #111;
+  --background-light: #f2f3f5;
+  --primary-alternate: rgb(0, 198, 255) --primary: hwb(212 0% 5%);
+  --color-light: #7e7e7e;
+  --color-dark: #484848;
+  --border-light: #dedede;
+  --border-dark: #444;
+  --error: rgb(216, 96, 96);
+
+  --color-dark-primary: #E5E5E5;
+  --color-dark-secondary: #A3A3A3;
+
+  --light-primary: #ECEFF1;
+  --light-secondary: #8899A8;
+
+  --dark-background-blue: #10253E;
+
+
+  --border-small: 4px;
+  --border-medium: 6px;
+  --border-large: 8px;
+  --border-radius-small: 4px;
+  --border-radius-medium: 6px;
+  --border-radius-large: 8px;
+  --primary-gradient: linear-gradient(to right, #007fff, #0059b2);
+
+  --shadow-color: 0deg 0% 61%;
+  --shadow-elevation-low: 0px 0.3px 0.3px hsl(var(--shadow-color) / 0.35),
+    0px 0.5px 0.6px -1.2px hsl(var(--shadow-color) / 0.35),
+    0px 1.2px 1.3px -2.5px hsl(var(--shadow-color) / 0.35);
+  --shadow-elevation-medium: 0px 0.3px 0.3px hsl(var(--shadow-color) / 0.3),
+    0px 0.8px 0.9px -0.6px hsl(var(--shadow-color) / 0.3),
+    0px 1.6px 1.8px -1.2px hsl(var(--shadow-color) / 0.3),
+    -0.1px 3.2px 3.6px -1.9px hsl(var(--shadow-color) / 0.3),
+    -0.1px 6.1px 6.9px -2.5px hsl(var(--shadow-color) / 0.3);
+  --shadow-elevation-high: 0px 0.3px 0.3px hsl(var(--shadow-color) / 0.28),
+    0px 1.5px 1.7px -0.3px hsl(var(--shadow-color) / 0.28),
+    -0.1px 2.6px 2.9px -0.6px hsl(var(--shadow-color) / 0.28),
+    -0.1px 4px 4.5px -0.8px hsl(var(--shadow-color) / 0.28),
+    -0.1px 5.9px 6.6px -1.1px hsl(var(--shadow-color) / 0.28),
+    -0.2px 8.4px 9.5px -1.4px hsl(var(--shadow-color) / 0.28),
+    -0.3px 12px 13.5px -1.7px hsl(var(--shadow-color) / 0.28),
+    -0.4px 16.8px 18.9px -1.9px hsl(var(--shadow-color) / 0.28),
+    -0.6px 23.1px 26px -2.2px hsl(var(--shadow-color) / 0.28),
+    -0.7px 31.1px 35px -2.5px hsl(var(--shadow-color) / 0.28);
+}
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -66,9 +66,9 @@ const Layout = async (props: LayoutProps) => {
           ></BookmarksModal>
         </div>
       </aside>
-      <div className="w-full">
+      <div className="w-full flex flex-col">
         <Navbar />
-        <main className="p-6">{children}</main>
+        <main className="p-6 flex-1 overflow-scroll">{children}</main>
       </div>
     </div>
   );

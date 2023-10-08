@@ -47,9 +47,12 @@ const BookmarksModal = (props: any) => {
     },
   });
 
+  const { handleSubmit, reset } = form;
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
     // onOpenChange(false);
+    // reset();
   };
 
   return (
@@ -63,7 +66,7 @@ const BookmarksModal = (props: any) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="url"

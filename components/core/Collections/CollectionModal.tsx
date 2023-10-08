@@ -42,12 +42,15 @@ const Modal = (props: any) => {
     },
   });
 
+  const { handleSubmit, reset } = form;
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     createCollection({
       collection_name: values.collection,
       parent_id: parentId,
     });
     onOpenChange(false);
+    reset();
   };
 
   return (
@@ -61,7 +64,7 @@ const Modal = (props: any) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="collection"

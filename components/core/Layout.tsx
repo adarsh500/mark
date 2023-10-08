@@ -31,6 +31,7 @@ const Layout = async (props: LayoutProps) => {
   return (
     <div className="w-full h-full flex flex-row">
       <aside className="min-w-[200px] w-[25%] max-w-[300px] dark:bg-background border border-solid border-border flex flex-col flex-shrink-0 overflow-hidden bg-secondary">
+        
         <div className="flex gap-3 items-center mb-3 p-4 mt-2 flex-shrink-0">
           <Image
             className="rounded-full"
@@ -55,9 +56,7 @@ const Layout = async (props: LayoutProps) => {
 
           <BookmarksModal
             trigger={
-              <Button
-                className="w-full flex-shrink-0 mt-4 flex items-center gap-2 py-6"
-              >
+              <Button className="w-full flex-shrink-0 mt-4 flex items-center gap-2 py-6">
                 <div>
                   <HiPlus />
                 </div>

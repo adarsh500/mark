@@ -24,7 +24,7 @@ const queryClient = new QueryClient({
 
 const Component = (props) => {
   const { toast } = useToast();
-  const { _id, image, title, description, url, date, tags, favourite } = props;
+  const { _id, image, title, description, url, created_at, tags, favourite } = props;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(url);
@@ -72,10 +72,10 @@ const Component = (props) => {
   };
 
   return (
-    <div className={styles.card}>
-      <div className={styles.imageContainer}>
+    <div className="border border-solid border-secondary rounded-md w-[calc(calc(100%-102px)/4)] max-w-full min-h-[300px] m-3 transition-all ease-linear bg-primary-foreground hover:scale-[101%]">
+      <div className="relative h-[180px] w-full object-cover object-center">
         <Image
-          className={styles.image}
+          className="rounded-t-md"
           src={
             image ??
             'https://og-image.vercel.app/mark3.vercel.app.png?theme=dark&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fvercel-triangle-white.svg'
@@ -88,30 +88,36 @@ const Component = (props) => {
           loading="lazy"
         />
 
-        <div className={styles.overlay}>
-          <Button className={styles.button} onClick={deleteBookmark}>
-            {<HiOutlineTrash className={styles.icons} />}
+        <div className="flex justify-end absolute top-0 bottom-0 left-0 right-0 h-full w-full opacity-0 transition ease-linear bg-[#434343a7]">
+          <Button onClick={deleteBookmark}>
+            {<HiOutlineTrash className="h-[18px] w-[18px]" />}
           </Button>
 
-          <Button className={styles.button} onClick={addToFavourite}>
+          <Button onClick={addToFavourite}>
             {!favourite ? (
-              <HiOutlineHeart className={styles.icons} />
+              <HiOutlineHeart className="h-[18px] w-[18px]" />
             ) : (
-              <HiHeart className={styles.icons} />
+              <HiHeart className="h-[18px] w-[18px]" />
             )}
           </Button>
 
-          <Button className={styles.button} onClick={copyToClipboard}>
-            {<AiOutlineLink className={styles.icons} />}
+          <Button onClick={copyToClipboard}>
+            {<AiOutlineLink className="h-[18px] w-[18px]" />}
           </Button>
         </div>
       </div>
 
-      <div className={styles.subContent}>
-        <a href={url} className={styles.title} target="_blank">
+      <div className="min-h-[180px] flex flex-col justify-between py-4 px-3">
+        <a
+          href={url}
+          className="justify-start items-start min-h-[30px] text-base line-clamp-1 font-medium"
+          target="_blank"
+        >
           {title}
         </a>
-        <p className={styles.description}>{description}</p>
+        <p className="my-2.5 items-center text-base line-clamp-2">
+          {description}
+        </p>
 
         <div className={styles.tags}>
           {tags?.map((tag, index) => (
@@ -128,9 +134,9 @@ const Component = (props) => {
           ))}
         </div>
 
-        <div className={styles.info}>
-          {/* <p className={styles.site}>{extractSourceName(url)}</p> */}
-          <p className={styles.date}>{date}</p>
+        <div className="flex justify-between items-center">
+          <p className="line-clamp-1">{extractSourceName(url)}</p>
+          <p>{created_at}</p>
         </div>
       </div>
     </div>

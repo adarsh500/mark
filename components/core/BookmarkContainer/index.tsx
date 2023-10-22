@@ -45,7 +45,7 @@ const BookmarkContainer = (props) => {
   }
 
   return (
-    <div className='flex flex-wrap'>
+    <div className='flex flex-wrap columns-4'>
       {data &&
         data?.pages?.map((page) => {
           return (

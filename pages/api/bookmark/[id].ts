@@ -26,7 +26,6 @@ export default async function handler(
       collection_id = '',
       query = '',
     }: Partial<SearchQuery> = req.query;
-    console.log(req.query);
     const [key, value] = query?.split(':') ?? [null, null];
 
     let findObj: any = { user_id: id };

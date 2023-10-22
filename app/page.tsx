@@ -1,5 +1,6 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import BookmarkContainer from '@/components/core/BookmarkContainer';
+import Counter from '@/components/counter';
 import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
 
@@ -21,6 +22,7 @@ export default async function Home() {
           Sign in
         </a>
       )}
+      <Counter />
       <BookmarkContainer session={session} />
     </>
   );

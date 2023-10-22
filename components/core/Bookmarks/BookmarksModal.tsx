@@ -21,7 +21,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { memo } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-
+import { useToast } from '@/components/ui/use-toast';
+import { useMutation } from '@tanstack/react-query';
 const formSchema = z.object({
   collection: z.string().optional(),
   url: z.string().url({
@@ -30,7 +31,36 @@ const formSchema = z.object({
 });
 
 const BookmarksModal = (props: any) => {
-  const { trigger, open, onOpenChange, parentId, createCollection } = props;
+  const { toast } = useToast();
+  const { trigger, userId } = props;
+
+  const { mutate: createBookmark } = useMutation(
+    (inputs: any) => {
+      const { collection = '', url = '' } = inputs;
+      return fetch('/api/bookmarks', {
+        method: 'POST',
+        body: JSON.stringify({
+          user_id: userId,
+          collection_id: collection,
+          url,
+        }),
+      });
+    },
+    {
+      onSuccess: () => {
+        toast({ description: 'Bookmark created successfully' });
+        // refetchCollections();
+      },
+      onError: (err) => {
+        console.log(err);
+        toast({
+          variant: 'destructive',
+          title: 'Failed to create bookmark',
+          description: 'shit',
+        });
+      },
+    }
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,13 +73,13 @@ const BookmarksModal = (props: any) => {
   const { handleSubmit, reset } = form;
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    createBookmark(values);
     // onOpenChange(false);
     // reset();
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

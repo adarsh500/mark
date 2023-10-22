@@ -31,7 +31,6 @@ const Layout = async (props: LayoutProps) => {
   return (
     <div className="w-full h-full flex flex-row">
       <aside className="min-w-[200px] w-[25%] max-w-[300px] dark:bg-background border border-solid border-border flex flex-col flex-shrink-0 overflow-hidden bg-secondary">
-        
         <div className="flex gap-3 items-center mb-3 p-4 mt-2 flex-shrink-0">
           <Image
             className="rounded-full"
@@ -63,6 +62,7 @@ const Layout = async (props: LayoutProps) => {
                 Add Bookmark
               </Button>
             }
+            userId={id}
           ></BookmarksModal>
         </div>
       </aside>

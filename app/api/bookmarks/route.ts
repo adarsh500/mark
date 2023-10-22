@@ -11,8 +11,6 @@ export async function POST(request) {
   const res = await request.json();
   const { url, collection_id = '', user_id = '' } = res;
 
-  console.log(res);
-
   if (!url) {
     return Response.json(
       { message: 'URL not provided', status: 400 },

@@ -77,7 +77,7 @@ const Component = (props) => {
         <Image
           className={styles.image}
           src={
-            image ||
+            image ??
             'https://og-image.vercel.app/mark3.vercel.app.png?theme=dark&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fvercel-triangle-white.svg'
           }
           layout="fill"
@@ -86,7 +86,7 @@ const Component = (props) => {
           alt="Link og:image"
           objectFit="cover"
           loading="lazy"
-        ></Image>
+        />
 
         <div className={styles.overlay}>
           <Button className={styles.button} onClick={deleteBookmark}>
@@ -114,7 +114,7 @@ const Component = (props) => {
         <p className={styles.description}>{description}</p>
 
         <div className={styles.tags}>
-          {/* {tags?.map((tag, index) => (
+          {tags?.map((tag, index) => (
             <Badge
               isSquared
               className={styles.badge}
@@ -125,7 +125,7 @@ const Component = (props) => {
             >
               # {tag}
             </Badge>
-          ))} */}
+          ))}
         </div>
 
         <div className={styles.info}>

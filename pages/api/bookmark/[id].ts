@@ -158,13 +158,12 @@ export default async function handler(
         res.status(200).json({ ...bookmark, currentPage: page });
         return;
       }
-      console.log('trlk', findObj);
       const bookmark = await collection
         .find(findObj)
         .skip(parseInt(limit) * parseInt(page))
         .limit(parseInt(limit))
         .toArray();
-      console.log(bookmark);
+
       res.status(200).json({ ...bookmark, currentPage: page });
       return;
     }

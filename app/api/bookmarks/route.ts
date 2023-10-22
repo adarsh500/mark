@@ -3,7 +3,7 @@ import { BOOKMARK } from '@/db/constants';
 import clientPromise from '@/db/clientPromise';
 import { DEVELOPMENT } from '@/db/constants';
 
-export async function POST(request) {
+export async function POST(request, response) {
   //@ts-ignore
   const client = await clientPromise;
   const db = client.db(DEVELOPMENT);
@@ -13,7 +13,7 @@ export async function POST(request) {
 
   if (!url) {
     return Response.json(
-      { message: 'URL not provided', status: 400 },
+      { error: 'URL not provided', status: 400 },
       {
         status: 400,
       }
@@ -22,7 +22,7 @@ export async function POST(request) {
 
   if (!user_id) {
     return Response.json(
-      { message: 'User ID not provided', status: 400 },
+      { error: 'User ID not provided', status: 400 },
       {
         status: 400,
       }
@@ -37,26 +37,35 @@ export async function POST(request) {
 
   if (exists) {
     return Response.json(
-      { message: 'Bookmark already exists', status: 400 },
+      { error: 'Bookmark already exists', status: 500 },
       {
-        status: 400,
+        status: 500,
       }
     );
   }
 
-  const metadata = await fetch(
-    `https://mark3.vercel.app/api/bookmark/meta?url=${url}`
-  );
-  const { data = {} } = await metadata.json();
+  try {
+    const metadata = await fetch(
+      `https://mark3.vercel.app/api/bookmark/meta?url=${url}`
+    );
+    const { data = {} } = await metadata.json();
 
-  const result = await collection.insertOne({
-    ...data,
-    url,
-    favourite: false,
-    collection_id,
-    user_id,
-    created_at: new Date().getTime(),
-  });
+    const result = await collection.insertOne({
+      ...data,
+      url,
+      favourite: false,
+      collection_id,
+      user_id,
+      created_at: new Date().getTime(),
+    });
 
-  return Response.json({ result, status: 200 }, { status: 200 });
+    return Response.json({ result, status: 200 }, { status: 200 });
+  } catch (err) {
+    return Response.json(
+      { error: err, status: 500 },
+      {
+        status: 500,
+      }
+    );
+  }
 }

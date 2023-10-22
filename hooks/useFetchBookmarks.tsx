@@ -5,7 +5,7 @@ const fetchBookmarks = async (param) => {
   const { user_id = '', collection_id, query } = param?.queryKey?.[1];
 
   const res = await axios.get(
-    `api/bookmarks/${user_id}?page=${param?.pageParam ?? 0}&limit=${28}${
+    `api/bookmark/${user_id}?page=${param?.pageParam ?? 0}&limit=${28}${
       collection_id ? `&collection_id=${collection_id}` : ''
     }${query ? `&query=${query}` : ''}`
   );

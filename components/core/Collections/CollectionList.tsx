@@ -26,16 +26,25 @@ const CollectionsList = (props: any) => {
   });
 
   const { mutate: create } = useMutation(
-    (inputs: any) => {
+    async (inputs: any) => {
       const { collection_name = '', parent_id = '' } = inputs;
-      return fetch('/api/collections', {
-        method: 'POST',
-        body: JSON.stringify({
-          user_id: id,
-          collection_name,
-          parent_id,
-        }),
-      });
+      try {
+        const data = await fetch('/api/collections', {
+          method: 'POST',
+          body: JSON.stringify({
+            user_id: id,
+            collection_name,
+            parent_id,
+          }),
+        });
+        if (data.ok) {
+          return data.json();
+        } else {
+          throw new Error();
+        }
+      } catch (error) {
+        throw error.response;
+      }
     },
     {
       onSuccess: () => {

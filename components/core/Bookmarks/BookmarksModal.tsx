@@ -35,16 +35,25 @@ const BookmarksModal = (props: any) => {
   const { trigger, userId } = props;
 
   const { mutate: createBookmark } = useMutation(
-    (inputs: any) => {
+    async (inputs: any) => {
       const { collection = '', url = '' } = inputs;
-      return fetch('/api/bookmarks', {
-        method: 'POST',
-        body: JSON.stringify({
-          user_id: userId,
-          collection_id: collection,
-          url,
-        }),
-      });
+      try {
+        const data = await fetch('/api/bookmarks', {
+          method: 'POST',
+          body: JSON.stringify({
+            user_id: userId,
+            collection_id: collection,
+            url,
+          }),
+        });
+        if (data.ok) {
+          return data.json();
+        } else {
+          throw new Error();
+        }
+      } catch (err) {
+        throw err.response;
+      }
     },
     {
       onSuccess: () => {

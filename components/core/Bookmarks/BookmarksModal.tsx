@@ -23,14 +23,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 const formSchema = z.object({
-  collection: z
-    .string()
-    .min(3, {
-      message: 'Collection name must be at least 2 characters.',
-    })
-    .max(100, {
-      message: 'Collection name must be less than 100 characters.',
-    }),
+  collection: z.string().optional(),
   url: z.string().url({
     message: 'Please enter a valid URL.',
   }),

@@ -78,8 +78,6 @@ const Component = (props) => {
   );
 
   const { mutateAsync } = useMutation(async (inputs: any) => {
-    const { favourite, tags, collection_id } = inputs;
-
     try {
       const data = await fetch(`/api/bookmarks/${_id}`, {
         method: 'PUT',

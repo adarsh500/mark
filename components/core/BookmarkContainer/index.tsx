@@ -7,7 +7,7 @@ import Card from '../Card';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const BookmarkContainer = (props) => {
-  const { query, session, favourite, collectionId } = props;
+  const { session, favourite, collectionId, searchParams } = props;
   const { ref, inView } = useInView();
   const [page, setPage] = useState(0);
 
@@ -15,7 +15,7 @@ const BookmarkContainer = (props) => {
     useFetchBookmarks({
       page,
       user_id: session?.user?.id,
-      query,
+      query: searchParams?.q ?? '',
       favourite,
       collection_id: collectionId,
       configs: [

@@ -3,12 +3,12 @@ import BookmarkContainer from '@/components/core/BookmarkContainer';
 import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
 
-export default async function Home() {
+export default async function Home(props) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
     redirect('/api/auth/signin');
   }
 
-  return <BookmarkContainer session={session} />;
+  return <BookmarkContainer session={session} {...props} />;
 }

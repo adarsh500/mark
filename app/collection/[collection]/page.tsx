@@ -3,7 +3,7 @@ import BookmarkContainer from '@/components/core/BookmarkContainer';
 import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
 
-const Collection = async ({ params }) => {
+const Collection = async (props) => {
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -11,7 +11,11 @@ const Collection = async ({ params }) => {
   }
 
   return (
-    <BookmarkContainer session={session} collectionId={params.collection} />
+    <BookmarkContainer
+      session={session}
+      collectionId={props.params.collection}
+      {...props}
+    />
   );
 };
 

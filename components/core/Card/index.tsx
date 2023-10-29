@@ -6,18 +6,12 @@ import { AiOutlineLink } from 'react-icons/ai';
 import { HiHeart, HiOutlineHeart, HiOutlineTrash } from 'react-icons/hi';
 
 import { extractSourceName } from '@/lib/utils';
-import { QueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: Infinity,
-    },
-  },
-});
-
 const Component = (props) => {
+  const queryClient = useQueryClient();
+
   const { toast } = useToast();
   const {
     _id,
@@ -30,21 +24,17 @@ const Component = (props) => {
     favourite,
     provider,
     icon,
+    user_id,
   } = props;
-
-  console.log('props', props);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(url);
     toast({ title: 'Copied to clipboard' });
   };
 
-  const deleteBookmark = async () => {
+  const deleteBookmarkHandler = async () => {
     try {
-      const res = await fetch(`api/bookmarks/${_id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      await deleteBookmark({ _id });
       await queryClient.refetchQueries({
         queryKey: ['bookmarks'],
       });
@@ -55,18 +45,63 @@ const Component = (props) => {
     }
   };
 
-  const addToFavourite = async () => {
+  const { mutateAsync: deleteBookmark } = useMutation(
+    async (inputs: any) => {
+      const { _id } = inputs;
+      try {
+        const res = await fetch(`/api/bookmarks/${_id}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error();
+        }
+      } catch (e) {
+        toast({ title: 'Something went wrong', variant: 'destructive' });
+        console.log(e);
+      }
+    },
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries({
+          queryKey: ['bookmarks'],
+        });
+        toast({ title: 'Deleted a bookmark' });
+      },
+      onError: (e) => {
+        toast({ title: 'Something went wrong', variant: 'destructive' });
+        console.log(e);
+      },
+    }
+  );
+
+  const { mutateAsync } = useMutation(async (inputs: any) => {
+    const { favourite, tags, collection_id } = inputs;
+
     try {
-      await fetch(`api/bookmarks/${_id}`, {
+      const data = await fetch(`/api/bookmarks/${_id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          favourite: !favourite,
+          ...inputs,
         }),
       });
+      if (data.ok) {
+        return data.json();
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
+      throw err.response;
+    }
+  });
+
+  const addToFavourite = async () => {
+    try {
+      await mutateAsync({ user_id, favourite: !favourite });
       await queryClient.refetchQueries({
         queryKey: ['bookmarks'],
-        type: 'active',
       });
       if (!favourite) {
         toast({ title: 'Added to favourites' });
@@ -80,7 +115,7 @@ const Component = (props) => {
   };
 
   return (
-    <div className="border border-solid border-secondary rounded-md w-[calc(calc(100%-102px)/4)] max-w-full min-h-[300px] m-3 transition-all ease-linear bg-primary-foreground hover:scale-[101%]">
+    <div className="border border-solid border-secondary rounded-md w-[calc(calc(100%-102px)/4)] max-w-full min-h-[290px] m-3 transition-all ease-linear bg-primary-foreground hover:scale-[101%]">
       <div className="group relative h-[180px] w-full object-cover object-center">
         <Image
           className="rounded-t-md"
@@ -98,7 +133,7 @@ const Component = (props) => {
         />
 
         <div className="flex justify-end gap-2 p-2 absolute top-0 bottom-0 left-0 right-0 h-full w-full opacity-0 transition ease-linear bg-[#434343a7] group-hover:opacity-100">
-          <Button onClick={deleteBookmark}>
+          <Button onClick={deleteBookmarkHandler}>
             {<HiOutlineTrash className="h-[18px] w-[18px]" />}
           </Button>
 
@@ -117,21 +152,35 @@ const Component = (props) => {
       </div>
 
       <div className="min-h-[180px] flex flex-col justify-between py-4 px-3">
-        <a
-          href={url}
-          className="justify-start items-start min-h-[30px] text-base line-clamp-1 font-medium"
-          target="_blank"
-        >
-          {title}
-        </a>
-        <p className="my-2.5 items-center text-sm line-clamp-2">
-          {description}
-        </p>
+        <div>
+          <div className="flex items-center justify-start gap-2">
+            {!!icon && (
+              <Image
+                src={icon}
+                width={24}
+                height={24}
+                alt="Link icon"
+                className="bg-gray-200 p-1 rounded-sm"
+              />
+            )}
+            <a
+              href={url}
+              className="justify-start items-start text-base line-clamp-1 font-medium"
+              target="_blank"
+            >
+              {title}
+            </a>
+          </div>
+
+          <p className="my-2 items-center text-sm line-clamp-2">
+            {description}
+          </p>
+        </div>
 
         {!!tags?.length && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mb-0.5">
             {tags.map((tag, index) => (
-              <Badge key={index} className="gap-1">
+              <Badge key={index} className="gap-1 py-0.5 px-1">
                 <p className="text-xs font-light"># {tag}</p>
               </Badge>
             ))}
@@ -142,7 +191,7 @@ const Component = (props) => {
           <p className="line-clamp-1 text-xs">
             {provider || extractSourceName(url)}
           </p>
-          {/* <p>{created_at}</p> */}
+          {/* <p className="line-clamp-1 text-xs">{created_at}</p> */}
         </div>
       </div>
     </div>

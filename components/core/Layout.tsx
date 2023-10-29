@@ -13,6 +13,7 @@ import { HiPlus } from 'react-icons/hi';
 const BookmarksModal = dynamic(() => import('./Bookmarks/BookmarksModal'), {
   ssr: false,
 });
+
 import Loading from '@/app/loading';
 import dynamic from 'next/dynamic';
 

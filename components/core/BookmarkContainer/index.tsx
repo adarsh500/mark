@@ -4,6 +4,7 @@ import { useFetchBookmarks } from '@/hooks/useFetchBookmarks';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Card from '../Card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const BookmarkContainer = (props) => {
   const { query, session, favourite, collectionId } = props;
@@ -40,6 +41,19 @@ const BookmarkContainer = (props) => {
       fetchNextPage();
     }
   }, [inView]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-wrap">
+        {[0, 1, 2, 3, 4, 5, 6, 7].map((_, index) => (
+          <Skeleton
+            className="border border-solid border-transparent rounded-md w-[calc(calc(100%-102px)/4)] max-w-full min-h-[300px] m-3 transition-all ease-linear"
+            key={index}
+          />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-wrap columns-4">

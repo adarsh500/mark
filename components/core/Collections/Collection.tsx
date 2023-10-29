@@ -52,7 +52,7 @@ const Collection = (props: CollectionProps) => {
       </div>
       {hasActions && (
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger className='p-1'>
             <HiOutlineDotsHorizontal />
           </DropdownMenuTrigger>
           <DropdownMenuContent hideWhenDetached>

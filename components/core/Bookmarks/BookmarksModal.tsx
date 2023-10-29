@@ -33,6 +33,10 @@ import { useForm } from 'react-hook-form';
 import { HiXMark } from 'react-icons/hi2';
 import * as z from 'zod';
 
+//TODO:
+// 1. add fav option to bookmark
+// 2. add import option
+
 const formSchema = z.object({
   collection: z.string().optional(),
   url: z.string().url({
@@ -48,10 +52,9 @@ const BookmarksModal = (props: any) => {
   const [input, setInput] = useState('');
   const [isKeyReleased, setIsKeyReleased] = useState(false);
 
-  const { mutate: createBookmark } = useMutation(
+  const { mutate: createBookmark, isLoading } = useMutation(
     async (inputs: any) => {
       const { collection = '', url = '' } = inputs;
-      console.log('inputs', inputs);
 
       try {
         const data = await fetch('/api/bookmarks', {
@@ -206,20 +209,22 @@ const BookmarksModal = (props: any) => {
                   <FormItem>
                     <FormLabel>Tags</FormLabel>
 
-                   {!!tags.length && <div className='flex flex-wrap gap-2'>
-                      {tags?.map((tag, index) => (
-                        <Badge
-                          key={index}
-                          onClick={() => deleteTag(index)}
-                          className="gap-2"
-                        >
-                          # {tag}
-                          <HiXMark />
-                        </Badge>
-                      ))}
-                    </div>}
+                    {!!tags.length && (
+                      <div className="flex flex-wrap gap-2">
+                        {tags?.map((tag, index) => (
+                          <Badge
+                            key={index}
+                            onClick={() => deleteTag(index)}
+                            className="gap-2"
+                          >
+                            # {tag}
+                            <HiXMark />
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
                     <Input
-                      className='mt-[-6px]'
+                      className="mt-[-6px]"
                       placeholder="comma seperated tags"
                       onKeyDown={onKeyDown}
                       onChange={onChange}
@@ -232,7 +237,9 @@ const BookmarksModal = (props: any) => {
               }}
             />
 
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={isLoading}>
+              Submit
+            </Button>
           </form>
         </Form>
       </DialogContent>

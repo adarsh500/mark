@@ -12,8 +12,6 @@ export async function GET(request: NextRequest, context: { params: any }) {
   const user_id = context.params.id; // '1'
   const type = searchParams.get('type');
 
-  console.log('par', context.params, type);
-
   const collections = await collection.find({ user_id }).toArray();
 
   if (!collections) {

@@ -7,6 +7,7 @@ import { HiHeart, HiOutlineHeart, HiOutlineTrash } from 'react-icons/hi';
 
 import { extractSourceName } from '@/lib/utils';
 import { QueryClient } from '@tanstack/react-query';
+import { Badge } from '@/components/ui/badge';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +31,8 @@ const Component = (props) => {
     provider,
     icon,
   } = props;
+
+  console.log('props', props);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(url);
@@ -78,7 +81,7 @@ const Component = (props) => {
 
   return (
     <div className="border border-solid border-secondary rounded-md w-[calc(calc(100%-102px)/4)] max-w-full min-h-[300px] m-3 transition-all ease-linear bg-primary-foreground hover:scale-[101%]">
-      <div className="relative h-[180px] w-full object-cover object-center">
+      <div className="group relative h-[180px] w-full object-cover object-center">
         <Image
           className="rounded-t-md"
           src={
@@ -94,7 +97,7 @@ const Component = (props) => {
           onError={(e) => {}}
         />
 
-        <div className="flex justify-end absolute top-0 bottom-0 left-0 right-0 h-full w-full opacity-0 transition ease-linear bg-[#434343a7]">
+        <div className="flex justify-end gap-2 p-2 absolute top-0 bottom-0 left-0 right-0 h-full w-full opacity-0 transition ease-linear bg-[#434343a7] group-hover:opacity-100">
           <Button onClick={deleteBookmark}>
             {<HiOutlineTrash className="h-[18px] w-[18px]" />}
           </Button>
@@ -125,20 +128,15 @@ const Component = (props) => {
           {description}
         </p>
 
-        {/* <div className={styles.tags}> */}
-        {/* {tags?.map((tag, index) => (
-            <Badge
-              isSquared
-              className={styles.badge}
-              color="warning"
-              variant="flat"
-              key={index}
-              disableOutline
-            >
-              # {tag}
-            </Badge>
-          ))} */}
-        {/* </div> */}
+        {!!tags?.length && (
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag, index) => (
+              <Badge key={index} className="gap-1">
+                <p className="text-xs font-light"># {tag}</p>
+              </Badge>
+            ))}
+          </div>
+        )}
 
         <div className="flex justify-between items-center">
           <p className="line-clamp-1 text-xs">

@@ -1,10 +1,7 @@
 'use client';
 import { Input } from '@/components/ui/input';
 import { createUrl } from '@/lib/utils';
-import {
-  useRouter,
-  useSearchParams
-} from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 import { HiSearch } from 'react-icons/hi';
 import { MdClear } from 'react-icons/md';
@@ -60,9 +57,11 @@ const Navbar = () => {
               // defaultValue={searchParams?.get('q') || ''}
               onChange={(e) => setSearch(e.target.value)}
             ></Input>
-            <Button variant="ghost" size="icon" onClick={clearSearch}>
-              <MdClear />
-            </Button>
+            {!!search.trim().length && (
+              <Button variant="ghost" size="icon" onClick={clearSearch}>
+                <MdClear />
+              </Button>
+            )}
           </div>
 
           <Button type="submit">

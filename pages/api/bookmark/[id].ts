@@ -8,6 +8,7 @@ type SearchQuery = {
   limit?: string;
   collection_id?: string;
   query?: string;
+  favourite?: string;
 };
 
 export default async function handler(
@@ -25,7 +26,9 @@ export default async function handler(
       limit = '28',
       collection_id = '',
       query = '',
+      favourite,
     }: Partial<SearchQuery> = req.query;
+
     const [key, value] = query?.split(':') ?? [null, null];
 
     let findObj: any = { user_id: id };
@@ -94,7 +97,7 @@ export default async function handler(
       }
     }
 
-    if (collection_id == 'favourites') {
+    if (favourite === 'true') {
       aggregateObj = [
         ...aggregateObj,
         { $match: { user_id: id, favourite: true } },
@@ -106,7 +109,7 @@ export default async function handler(
       ];
     }
 
-    if (collection_id === 'favourites') {
+    if (favourite === 'true') {
       if (isAggregate) {
         const bookmark = await collection
           .aggregate(aggregateObj)

@@ -3,13 +3,13 @@ import { BOOKMARK } from '@/db/constants';
 import clientPromise from '@/db/clientPromise';
 import { DEVELOPMENT } from '@/db/constants';
 
-export async function POST(request, response) {
+export async function POST(request) {
   //@ts-ignore
   const client = await clientPromise;
   const db = client.db(DEVELOPMENT);
   const collection = db.collection(BOOKMARK);
   const res = await request.json();
-  const { url, collection_id = '', user_id = '' } = res;
+  const { url, collection_id = '', user_id = '', tags } = res;
 
   if (!url) {
     return Response.json(
@@ -56,6 +56,7 @@ export async function POST(request, response) {
       favourite: false,
       collection_id,
       user_id,
+      tags,
       created_at: new Date().getTime(),
     });
 

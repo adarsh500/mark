@@ -10,14 +10,5 @@ export default async function Home() {
     redirect('/api/auth/signin');
   }
 
-  return (
-    <>
-      {session == null && (
-        <a className="btn btn-primary" href="api/auth/signin">
-          Sign in
-        </a>
-      )}
-      <BookmarkContainer session={session} />
-    </>
-  );
+  return <BookmarkContainer session={session} />;
 }

@@ -1,12 +1,12 @@
 'use client';
-import { useFetchBookmarks } from '@/hooks/useFetchBookmarks';
-import { useInView } from 'react-intersection-observer';
-import React, { useEffect, useState } from 'react';
-import Card from '../Card';
 import { Button } from '@/components/ui/button';
+import { useFetchBookmarks } from '@/hooks/useFetchBookmarks';
+import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import Card from '../Card';
 
 const BookmarkContainer = (props) => {
-  const { query, session } = props;
+  const { query, session, favourite, collectionId } = props;
   const { ref, inView } = useInView();
   const [page, setPage] = useState(0);
 
@@ -21,6 +21,8 @@ const BookmarkContainer = (props) => {
     page,
     user_id: session?.user?.id,
     query,
+    favourite,
+    collection_id: collectionId,
     configs: [
       {
         enabled: !!session?.user?.id,
@@ -38,10 +40,6 @@ const BookmarkContainer = (props) => {
       fetchNextPage();
     }
   }, [inView]);
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <div className="flex flex-wrap columns-4">

@@ -23,6 +23,7 @@ const CollectionsList = (props: any) => {
     queryKey: ['collections'],
     queryFn: () => fetch(`/api/collections/${id}`).then((res) => res.json()),
     enabled: !!id,
+    refetchOnWindowFocus: false,
   });
 
   const { mutate: create } = useMutation(

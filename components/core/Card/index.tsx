@@ -1,18 +1,12 @@
 import { Button } from '@/components/ui/button';
-import { memo } from 'react';
-import Image from 'next/image';
-import styles from './Card.module.scss';
-import {
-  HiHeart,
-  HiOutlineClipboardCopy,
-  HiOutlineHeart,
-  HiOutlineTrash,
-} from 'react-icons/hi';
-import { AiOutlineLink } from 'react-icons/ai';
 import { useToast } from '@/components/ui/use-toast';
+import Image from 'next/image';
+import { memo } from 'react';
+import { AiOutlineLink } from 'react-icons/ai';
+import { HiHeart, HiOutlineHeart, HiOutlineTrash } from 'react-icons/hi';
 
-import { QueryClient } from '@tanstack/react-query';
 import { extractSourceName } from '@/lib/utils';
+import { QueryClient } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +18,18 @@ const queryClient = new QueryClient({
 
 const Component = (props) => {
   const { toast } = useToast();
-  const { _id, image, title, description, url, created_at, tags, favourite } = props;
+  const {
+    _id,
+    image,
+    title,
+    description,
+    url,
+    created_at,
+    tags,
+    favourite,
+    provider,
+    icon,
+  } = props;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(url);
@@ -86,6 +91,7 @@ const Component = (props) => {
           alt="Link og:image"
           objectFit="cover"
           loading="lazy"
+          onError={(e) => {}}
         />
 
         <div className="flex justify-end absolute top-0 bottom-0 left-0 right-0 h-full w-full opacity-0 transition ease-linear bg-[#434343a7]">
@@ -115,12 +121,12 @@ const Component = (props) => {
         >
           {title}
         </a>
-        <p className="my-2.5 items-center text-base line-clamp-2">
+        <p className="my-2.5 items-center text-sm line-clamp-2">
           {description}
         </p>
 
-        <div className={styles.tags}>
-          {tags?.map((tag, index) => (
+        {/* <div className={styles.tags}> */}
+        {/* {tags?.map((tag, index) => (
             <Badge
               isSquared
               className={styles.badge}
@@ -131,12 +137,14 @@ const Component = (props) => {
             >
               # {tag}
             </Badge>
-          ))}
-        </div>
+          ))} */}
+        {/* </div> */}
 
         <div className="flex justify-between items-center">
-          <p className="line-clamp-1">{extractSourceName(url)}</p>
-          <p>{created_at}</p>
+          <p className="line-clamp-1 text-xs">
+            {provider || extractSourceName(url)}
+          </p>
+          {/* <p>{created_at}</p> */}
         </div>
       </div>
     </div>

@@ -22,7 +22,15 @@ import { memo } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useToast } from '@/components/ui/use-toast';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
 const formSchema = z.object({
   collection: z.string().optional(),
   url: z.string().url({
@@ -37,6 +45,8 @@ const BookmarksModal = (props: any) => {
   const { mutate: createBookmark } = useMutation(
     async (inputs: any) => {
       const { collection = '', url = '' } = inputs;
+      console.log('inputs', inputs);
+
       try {
         const data = await fetch('/api/bookmarks', {
           method: 'POST',
@@ -71,20 +81,22 @@ const BookmarksModal = (props: any) => {
     }
   );
 
+  const { data } = useQuery({
+    queryKey: ['collections-flatlist'],
+    queryFn: () =>
+      fetch(`/api/collections/${userId}?type=flat`).then((res) => res.json()),
+    enabled: !!userId,
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      collection: '',
-      url: '',
-    },
   });
 
   const { handleSubmit, reset } = form;
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     createBookmark(values);
-    // onOpenChange(false);
-    // reset();
+    reset();
   };
 
   return (
@@ -112,18 +124,36 @@ const BookmarksModal = (props: any) => {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="collection"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Collection Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Devtools" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Collection Name</FormLabel>
+
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Devtools" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent {...field}>
+                        {data?.map((collection: any) => (
+                          <SelectItem value={collection._id}>
+                            {collection.collection_name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
             <Button type="submit">Submit</Button>
           </form>

@@ -37,9 +37,6 @@ const Modal = (props: any) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      collection: '',
-    },
   });
 
   const { handleSubmit, reset } = form;

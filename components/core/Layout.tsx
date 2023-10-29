@@ -1,7 +1,7 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth/next';
 import Image from 'next/image';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { HiOutlineGlobeAlt } from 'react-icons/hi';
 import { MdFavoriteBorder } from 'react-icons/md';
 import { Button } from '../ui/button';
@@ -9,7 +9,12 @@ import Collection from './Collections/Collection';
 import CollectionsList from './Collections/CollectionList';
 import Navbar from './Navbar';
 import { HiPlus } from 'react-icons/hi';
-import BookmarksModal from './Bookmarks/BookmarksModal';
+
+const BookmarksModal = dynamic(() => import('./Bookmarks/BookmarksModal'), {
+  ssr: false,
+});
+import Loading from '@/app/loading';
+import dynamic from 'next/dynamic';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -30,7 +35,7 @@ const Layout = async (props: LayoutProps) => {
 
   return (
     <div className="w-full h-full flex flex-row">
-      <aside className="min-w-[200px] w-[30%] max-w-[340px] dark:bg-background border border-solid border-border flex flex-col flex-shrink-0 overflow-hidden bg-secondary">
+      <aside className="min-w-[200px] w-[25%] max-w-[320px] dark:bg-background border border-solid border-border flex flex-col flex-shrink-0 overflow-hidden bg-secondary">
         <div className="flex gap-3 items-center mb-3 p-4 mt-2 flex-shrink-0">
           <Image
             className="rounded-full"
@@ -63,12 +68,14 @@ const Layout = async (props: LayoutProps) => {
               </Button>
             }
             userId={id}
-          ></BookmarksModal>
+          />
         </div>
       </aside>
       <div className="w-full flex flex-col">
         <Navbar />
-        <main className="p-6 flex-1 overflow-scroll">{children}</main>
+        <main className="p-6 flex-1 overflow-scroll">
+          <Suspense fallback={<Loading />}>{children}</Suspense>
+        </main>
       </div>
     </div>
   );

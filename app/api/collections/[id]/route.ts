@@ -6,14 +6,24 @@ import clientPromise from '@/db/clientPromise';
 export async function GET(request: NextRequest, context: { params: any }) {
   //@ts-ignore
   const client = await clientPromise;
+  const searchParams = request.nextUrl.searchParams;
   const db = client.db(DEVELOPMENT);
   const collection = db.collection(COLLECTION);
   const user_id = context.params.id; // '1'
+  const type = searchParams.get('type');
+
+  console.log('par', context.params, type);
 
   const collections = await collection.find({ user_id }).toArray();
 
   if (!collections) {
     return Response.json([], {
+      status: 200,
+    });
+  }
+
+  if (type === 'flat') {
+    return Response.json(collections, {
       status: 200,
     });
   }

@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { createUrl } from '@/lib/utils';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useRef, useState } from 'react';
 import { HiOutlineHashtag, HiOutlineMenuAlt2, HiSearch } from 'react-icons/hi';
 import { MdClear } from 'react-icons/md';
@@ -22,11 +22,14 @@ import {
 
 const Navbar = () => {
   const router = useRouter();
+  const pathName = usePathname();
   const { setTheme } = useTheme();
   const ref = useRef(null);
   const searchParams = useSearchParams();
   const [search, setSearch] = React.useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  console.log(pathName);
 
   const actions = [
     {
@@ -53,6 +56,7 @@ const Navbar = () => {
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    console.log('run');
 
     const val = e.target as HTMLFormElement;
     const search = val.search as HTMLInputElement;
@@ -66,21 +70,15 @@ const Navbar = () => {
       newParams.delete('q');
     }
 
-    router.push(createUrl('', newParams));
+    router.push(createUrl(pathName as string, newParams));
   }
 
   const clearSearch = () => {
+    console.log('trig');
     setSearch('');
     const newParams = new URLSearchParams(searchParams.toString());
     newParams.delete('q');
-    console.log('first', newParams.toString());
     router.push('/');
-  };
-
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-
-    setIsDropdownOpen(true);
   };
 
   return (
@@ -108,8 +106,11 @@ const Navbar = () => {
                   value={search}
                   autoComplete="off"
                   ref={ref}
-                  onChange={(e) => setSearch(e.target.value)}
-                ></Input>
+                  onChange={(e) => {
+                    setIsDropdownOpen(false)
+                    setSearch(e.target.value);
+                  }}
+                />
                 {!!search.trim().length && (
                   <Button variant="ghost" size="icon" onClick={clearSearch}>
                     <MdClear />

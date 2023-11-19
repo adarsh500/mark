@@ -29,139 +29,55 @@ export default async function handler(
       favourite,
     }: Partial<SearchQuery> = req.query;
 
-    const [key, value] = query?.split(':') ?? [null, null];
+    let [key, value] = query?.trim()?.split(':') ?? [query, query];
+    value = query?.trim();
 
     let findObj: any = { user_id: id };
     let aggregateObj: any = [];
     let isAggregate = false;
 
+    const aggregateQuery = [
+      {
+        $search: {
+          index: 'Bookmark',
+          text: {
+            query: value,
+            path: {
+              wildcard: '*',
+            },
+          },
+        },
+      },
+      { $match: { user_id: id } },
+    ];
+
     if (!!key && !!value) {
       switch (key) {
-        case 'fav':
-          findObj = { ...findObj, favourite: true };
-          isAggregate = true;
-          aggregateObj = [
-            {
-              $search: {
-                index: 'bookmarks',
-                text: {
-                  query: value,
-                  path: {
-                    wildcard: '*',
-                  },
-                },
-              },
-            },
-            { $match: { user_id: id, favourite: true } },
-          ];
-          break;
-
         case 'tag':
           findObj = { ...findObj, tags: { $in: [value] } };
           break;
-        case 'raw':
-          isAggregate = true;
-          aggregateObj = [
-            {
-              $search: {
-                index: 'bookmarks',
-                text: {
-                  query: value,
-                  path: {
-                    wildcard: '*',
-                  },
-                },
-              },
-            },
-            { $match: { user_id: id } },
-          ];
-          break;
 
+        case 'raw':
         default:
           isAggregate = true;
-          aggregateObj = [
-            {
-              $search: {
-                index: 'bookmarks',
-                text: {
-                  query: value,
-                  path: {
-                    wildcard: '*',
-                  },
-                },
-              },
-            },
-            { $match: { user_id: id } },
-          ];
+          aggregateObj = aggregateQuery;
           break;
       }
     }
 
     if (favourite === 'true') {
-      aggregateObj = [
-        ...aggregateObj,
-        { $match: { user_id: id, favourite: true } },
-      ];
+      findObj = { ...findObj, favourite: true };
     } else if (collection_id) {
+      isAggregate = true;
       aggregateObj = [
         ...aggregateObj,
         { $match: { user_id: id, collection_id: collection_id } },
       ];
     }
 
-    if (favourite === 'true') {
-      if (isAggregate) {
-        const bookmark = await collection
-          .aggregate(aggregateObj)
-          .skip(parseInt(limit) * parseInt(page))
-          .limit(parseInt(limit))
-          .toArray();
-
-        res.status(200).json({ ...bookmark, currentPage: page });
-        return;
-      }
+    if (isAggregate) {
       const bookmark = await collection
-        .find({
-          ...findObj,
-          favourite: true,
-        })
-        .skip(parseInt(limit) * parseInt(page))
-        .limit(parseInt(limit))
-        .toArray();
-      res.status(200).json({ ...bookmark, currentPage: page });
-      return;
-    } else if (collection_id) {
-      if (isAggregate) {
-        const bookmark = await collection
-          .aggregate(aggregateObj)
-          .skip(parseInt(limit) * parseInt(page))
-          .limit(parseInt(limit))
-          .toArray();
-        res.status(200).json({ ...bookmark, currentPage: page });
-        return;
-      }
-      const bookmark = await collection
-        .find({
-          ...findObj,
-          collection_id,
-        })
-        .skip(parseInt(limit) * parseInt(page))
-        .limit(parseInt(limit))
-        .toArray();
-      res.status(200).json({ ...bookmark, currentPage: page });
-      return;
-    } else {
-      if (isAggregate) {
-        const bookmark = await collection
-          .aggregate(aggregateObj)
-          .skip(parseInt(limit) * parseInt(page))
-          .limit(parseInt(limit))
-          .toArray();
-        res.status(200).json({ ...bookmark, currentPage: page });
-        return;
-      }
-      const bookmark = await collection
-        .find(findObj)
+        .aggregate(aggregateObj)
         .skip(parseInt(limit) * parseInt(page))
         .limit(parseInt(limit))
         .toArray();
@@ -169,6 +85,17 @@ export default async function handler(
       res.status(200).json({ ...bookmark, currentPage: page });
       return;
     }
+
+    const bookmark = await collection
+      .find({
+        ...findObj,
+      })
+      .skip(parseInt(limit) * parseInt(page))
+      .limit(parseInt(limit))
+      .toArray();
+
+    res.status(200).json({ ...bookmark, currentPage: page });
+    return;
   } else {
     res.status(405).json({ message: 'Method not allowed' });
   }

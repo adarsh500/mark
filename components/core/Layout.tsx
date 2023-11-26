@@ -16,6 +16,7 @@ const BookmarksModal = dynamic(() => import('./Bookmarks/BookmarksModal'), {
 
 import Loading from '@/app/loading';
 import dynamic from 'next/dynamic';
+import Profile from '../Profile';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -37,16 +38,7 @@ const Layout = async (props: LayoutProps) => {
   return (
     <div className="w-full h-full flex flex-row">
       <aside className="min-w-[200px] w-[25%] max-w-[320px] dark:bg-background border border-solid border-border flex flex-col flex-shrink-0 overflow-hidden bg-secondary">
-        <div className="flex gap-3 items-center mb-3 p-4 mt-2 flex-shrink-0">
-          <Image
-            className="rounded-full"
-            src={session?.user.image as string}
-            alt="Profile picture"
-            width={32}
-            height={32}
-          />
-          <b>{session?.user?.name}</b>
-        </div>
+        <Profile user={session?.user} />
         <div className="p-2 flex flex-col justify-between flex-1 overflow-hidden">
           <div className="flex flex-col overflow-scroll">
             <Collection label="Home" href="/" icon={<HiOutlineGlobeAlt />} />

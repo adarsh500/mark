@@ -1,3 +1,4 @@
+'use client';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import Image from 'next/image';
@@ -8,6 +9,7 @@ import { HiHeart, HiOutlineHeart, HiOutlineTrash } from 'react-icons/hi';
 import { extractSourceName } from '@/lib/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
+import BlurImage from '@/components/BlurImage';
 
 const Component = (props) => {
   const queryClient = useQueryClient();
@@ -115,8 +117,8 @@ const Component = (props) => {
   return (
     <div className="border border-solid border-secondary rounded-md w-[calc(calc(100%-102px)/4)] max-w-full min-h-[290px] m-3 transition-all ease-linear bg-primary-foreground hover:scale-[101%]">
       <div className="group relative h-[180px] w-full object-cover object-center">
-        <Image
-          className="rounded-t-md"
+        <BlurImage
+          className="rounded-t-md rounded-b-none"
           src={
             image ??
             'https://og-image.vercel.app/mark3.vercel.app.png?theme=dark&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fvercel-triangle-white.svg'
@@ -179,14 +181,14 @@ const Component = (props) => {
           <div className="flex flex-wrap gap-2 mb-0.5">
             {tags.map((tag, index) => (
               <Badge key={index} className="gap-1 py-0.5 px-1">
-                <p className="text-xs font-light"># {tag}</p>
+                <p className="text-xs font-light">{tag}</p>
               </Badge>
             ))}
           </div>
         )}
 
         <div className="flex justify-between items-center">
-          <p className="line-clamp-1 text-xs">
+          <p className="line-clamp-1 text-xs max-w-[50%]">
             {provider || extractSourceName(url)}
           </p>
           {/* <p className="line-clamp-1 text-xs">{created_at}</p> */}

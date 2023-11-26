@@ -13,8 +13,6 @@ export async function PUT(request, context) {
   const { id } = context.params;
   const { collection_id = '', user_id = '', tags, favourite } = res;
 
-  console.log(context.params, res);
-
   if (!user_id) {
     return Response.json(
       { error: 'User ID not provided', status: 400 },

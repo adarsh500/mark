@@ -29,8 +29,6 @@ const Navbar = () => {
   const [search, setSearch] = React.useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  console.log(pathName);
-
   const actions = [
     {
       key: 'tag',
@@ -56,14 +54,10 @@ const Navbar = () => {
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log('run');
-
     const val = e.target as HTMLFormElement;
     const search = val.search as HTMLInputElement;
-
     const newParams = new URLSearchParams(searchParams.toString());
 
-    console.log('search', search.value);
     if (search) {
       newParams.set('q', search.value);
     } else {
@@ -74,7 +68,6 @@ const Navbar = () => {
   }
 
   const clearSearch = () => {
-    console.log('trig');
     setSearch('');
     const newParams = new URLSearchParams(searchParams.toString());
     newParams.delete('q');
@@ -82,7 +75,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="border border-solid border-border px-4 py-4 border-l-0 flex items-center justify-between">
+    <div className="border border-solid border-border px-4 py-4 border-l-0 flex items-center justify-between dark:bg-background bg-secondary">
       <form
         onSubmit={onSubmit}
         className="w-max-[550px] relative w-full lg:w-80 xl:w-full"
@@ -107,7 +100,7 @@ const Navbar = () => {
                   autoComplete="off"
                   ref={ref}
                   onChange={(e) => {
-                    setIsDropdownOpen(false)
+                    setIsDropdownOpen(false);
                     setSearch(e.target.value);
                   }}
                 />

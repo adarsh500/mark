@@ -18,7 +18,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -167,8 +166,6 @@ const BookmarksModal = (props: any) => {
     }
   };
 
-  console.log('file', file);
-
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -228,7 +225,10 @@ const BookmarksModal = (props: any) => {
                             </FormControl>
                             <SelectContent {...field}>
                               {data?.map((collection: any) => (
-                                <SelectItem value={collection._id}>
+                                <SelectItem
+                                  value={collection._id}
+                                  key={collection?._id}
+                                >
                                   {collection.collection_name}
                                 </SelectItem>
                               ))}
@@ -300,7 +300,7 @@ const BookmarksModal = (props: any) => {
                   id="picture"
                   type="file"
                   onChange={(e) => {
-                    console.log('tar', e.target)
+                    console.log('tar', e.target);
                     setFile(e.target.files?.[0]);
                   }}
                 />

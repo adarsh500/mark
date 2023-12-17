@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { memo } from 'react';
 import { AiOutlineLink } from 'react-icons/ai';
 import { HiHeart, HiOutlineHeart, HiOutlineTrash } from 'react-icons/hi';
@@ -129,15 +129,17 @@ const Component = (props) => {
           alt="Link og:image"
           objectFit="cover"
           loading="lazy"
-          onError={(e) => {}}
+          onError={(e) => {
+            console.error('failed to fetch image', e);
+          }}
         />
 
         <div className="flex justify-end gap-2 p-2 absolute top-0 bottom-0 left-0 right-0 h-full w-full opacity-0 transition ease-linear bg-[#434343a7] group-hover:opacity-100">
-          <Button onClick={deleteBookmarkHandler}>
+          <Button onClick={deleteBookmarkHandler} variant="secondary" size="sm">
             {<HiOutlineTrash className="h-[18px] w-[18px]" />}
           </Button>
 
-          <Button onClick={addToFavourite}>
+          <Button onClick={addToFavourite} variant="secondary" size="sm">
             {!favourite ? (
               <HiOutlineHeart className="h-[18px] w-[18px]" />
             ) : (
@@ -145,7 +147,7 @@ const Component = (props) => {
             )}
           </Button>
 
-          <Button onClick={copyToClipboard}>
+          <Button onClick={copyToClipboard} variant="secondary" size="sm">
             {<AiOutlineLink className="h-[18px] w-[18px]" />}
           </Button>
         </div>
@@ -154,25 +156,16 @@ const Component = (props) => {
       <div className="min-h-[180px] flex flex-col justify-between py-4 px-3">
         <div>
           <div className="flex items-center justify-start gap-2">
-            {!!icon && (
-              <Image
-                src={icon}
-                width={24}
-                height={24}
-                alt="Link icon"
-                className="bg-gray-200 p-1 rounded-sm"
-              />
-            )}
             <a
               href={url}
-              className="justify-start items-start text-base line-clamp-1 font-medium"
+              className="justify-start items-start text-sm line-clamp-1 font-medium"
               target="_blank"
             >
               {title}
             </a>
           </div>
 
-          <p className="my-2 items-center text-sm line-clamp-2">
+          <p className="my-2 items-center text-xs line-clamp-2">
             {description}
           </p>
         </div>
@@ -181,16 +174,27 @@ const Component = (props) => {
           <div className="flex flex-wrap gap-2 mb-0.5">
             {tags.map((tag, index) => (
               <Badge key={index} className="gap-1 py-0.5 px-1">
-                <p className="text-xs font-light">{tag}</p>
+                <p className="text-2xs font-light">{tag}</p>
               </Badge>
             ))}
           </div>
         )}
 
         <div className="flex justify-between items-center">
-          <p className="line-clamp-1 text-xs max-w-[50%]">
-            {provider || extractSourceName(url)}
-          </p>
+          <div className="flex justify-start gap-1.5 items-center">
+            {!!icon && (
+              <Image
+                src={icon}
+                width={18}
+                height={18}
+                alt="Link icon"
+                className="bg-gray-200 dark:bg-gray-700 p-0.5 rounded-sm"
+              />
+            )}
+            <p className="line-clamp-1 text-xs max-w-[80%]">
+              {provider || extractSourceName(url)}
+            </p>
+          </div>
           {/* <p className="line-clamp-1 text-xs">{created_at}</p> */}
         </div>
       </div>

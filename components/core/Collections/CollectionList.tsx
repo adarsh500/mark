@@ -97,7 +97,7 @@ const CollectionsList = (props: any) => {
           Collections
         </span>
         <div className="flex flex-col gap-2">
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+          {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
             <Skeleton className="w-full h-[42px]" key={i} />
           ))}
         </div>

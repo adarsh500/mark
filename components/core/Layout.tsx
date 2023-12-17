@@ -1,17 +1,15 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth/next';
-import Image from 'next/image';
 import React, { Suspense } from 'react';
-import { HiOutlineGlobeAlt } from 'react-icons/hi';
+import { HiOutlineGlobeAlt, HiPlus } from 'react-icons/hi';
 import { MdFavoriteBorder } from 'react-icons/md';
 import { Button } from '../ui/button';
 import Collection from './Collections/Collection';
 import CollectionsList from './Collections/CollectionList';
 import Navbar from './Navbar';
-import { HiPlus } from 'react-icons/hi';
 
 const BookmarksModal = dynamic(() => import('./Bookmarks/BookmarksModal'), {
-  ssr: false,
+  ssr: true,
 });
 
 import Loading from '@/app/loading';
@@ -33,7 +31,7 @@ type Session = {
 const Layout = async (props: LayoutProps) => {
   const { children } = props;
   const session: Session = await getServerSession(authOptions);
-  const { image = '', name = '', id = '' } = session?.user;
+  const { id = '' } = session?.user;
 
   return (
     <div className="w-full h-full flex flex-row">
@@ -47,7 +45,6 @@ const Layout = async (props: LayoutProps) => {
               href="/favourites"
               icon={<MdFavoriteBorder />}
             />
-
             <CollectionsList id={id} />
           </div>
 

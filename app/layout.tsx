@@ -1,5 +1,4 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import Layout from '@/components/core/Layout';
 import Provider from '@/components/providers/SessionProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { GeistSans } from 'geist/font/sans';
@@ -12,11 +11,8 @@ export const metadata: Metadata = {
   description: 'A bookmark manager for developers',
 };
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout(props) {
+  const { children } = props;
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -33,9 +29,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${GeistSans.className} h-screen flex`}>
-        <Provider session={session}>
-          <Layout>{children}</Layout>
-        </Provider>
+        <Provider session={session}>{children}</Provider>
         <Toaster />
       </body>
     </html>

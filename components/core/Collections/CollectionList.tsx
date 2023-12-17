@@ -115,7 +115,7 @@ const CollectionsList = (props: any) => {
           onOpenChange={handleShowModal}
           createCollection={create}
           trigger={
-            <div className="hover:bg-accent p-1 rounded-sm">
+            <div className="hover:bg-accent p-1 rounded-sm dark:bg-gray-800 bg-gray-200 hover:bg-gray-300 dark:hover:bg-gray-900">
               <HiPlus />
             </div>
           }

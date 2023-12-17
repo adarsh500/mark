@@ -35,8 +35,10 @@ const Layout = async (props: LayoutProps) => {
 
   return (
     <div className="w-full h-full flex flex-row">
-      <aside className="min-w-[200px] w-[25%] max-w-[320px] dark:bg-background border border-solid border-border flex flex-col flex-shrink-0 overflow-hidden bg-secondary">
-        <Profile user={session?.user} />
+      <aside className="min-w-[200px] w-[25%] max-w-[320px] dark:bg-background border border-solid border-border flex flex-col flex-shrink-0 overflow-hidden bg-secondary p-1 border-l-0 border-t-0">
+        <div className="p-3 m-2 my-3 hover:bg-secondary flex items-center rounded-lg">
+          <Profile user={session?.user} />
+        </div>
         <div className="p-2 flex flex-col justify-between flex-1 overflow-hidden">
           <div className="flex flex-col overflow-scroll">
             <Collection label="Home" href="/" icon={<HiOutlineGlobeAlt />} />
@@ -63,7 +65,7 @@ const Layout = async (props: LayoutProps) => {
       </aside>
       <div className="w-full flex flex-col">
         <Navbar />
-        <main className="p-6 flex-1 overflow-scroll">
+        <main className="p-4 flex-1 overflow-scroll pt-2">
           <Suspense fallback={<Loading />}>{children}</Suspense>
         </main>
       </div>

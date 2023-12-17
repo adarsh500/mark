@@ -1,10 +1,18 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useFetchBookmarks } from '@/hooks/useFetchBookmarks';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Card from '../Card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Label } from '@/components/ui/label';
 
 const BookmarkContainer = (props) => {
   const { session, favourite, collectionId, searchParams } = props;
@@ -52,6 +60,34 @@ const BookmarkContainer = (props) => {
 
   return (
     <div className="overflow-hidden">
+      <div className="px-4">
+        <div className="flex items-end gap-7 my-3 justify-end">
+          <div className="flex items-center gap-2">
+            <Label>Sort by</Label>
+            <Select defaultValue="created_at">
+              <SelectTrigger className="w-[130px]">
+                <SelectValue placeholder="Order" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="title">Title</SelectItem>
+                <SelectItem value="created_at">Created at</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center gap-3">
+            <Label>Order by</Label>
+            <Select defaultValue="descending">
+              <SelectTrigger className="w-[130px]">
+                <SelectValue placeholder="Order" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ascending">Ascending</SelectItem>
+                <SelectItem value="descending">Descending</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </div>
       <div className="flex flex-wrap columns-4">
         {data &&
           data?.pages?.map((page) => {

@@ -14,6 +14,8 @@ import React, { useRef, useState } from 'react';
 import { HiOutlineHashtag, HiOutlineMenuAlt2, HiSearch } from 'react-icons/hi';
 import { IoShareOutline } from 'react-icons/io5';
 import { Button } from '../ui/button';
+import { CiImport } from 'react-icons/ci';
+
 import {
   Popover,
   PopoverContent,
@@ -132,6 +134,11 @@ const Navbar = () => {
         <Button variant="outline" className="flex items-center gap-2">
           <IoShareOutline />
           <p className="text-xs font-normal">Share</p>
+        </Button>
+
+        <Button variant="outline" className="flex items-center gap-2">
+          <CiImport />
+          <p className="text-xs font-normal w-min">Import</p>
         </Button>
 
         <DropdownMenu>

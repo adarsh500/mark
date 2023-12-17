@@ -32,6 +32,7 @@ import { memo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { HiXMark } from 'react-icons/hi2';
 import * as z from 'zod';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 //TODO:
 // 1. add fav option to bookmark
@@ -147,101 +148,120 @@ const BookmarksModal = (props: any) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Add a new bookmark</DialogTitle>
-          <DialogDescription>
-            Create a new bookmark or import an existing one.
-          </DialogDescription>
-        </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://github.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="collection"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Collection</FormLabel>
-
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Devtools" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent {...field}>
-                        {data?.map((collection: any) => (
-                          <SelectItem value={collection._id}>
-                            {collection.collection_name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-
-            <FormField
-              control={form.control}
-              name="tags"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Tags</FormLabel>
-
-                    {!!tags.length && (
-                      <div className="flex flex-wrap gap-2">
-                        {tags?.map((tag, index) => (
-                          <Badge
-                            key={index}
-                            onClick={() => deleteTag(index)}
-                            className="gap-2"
-                          >
-                            # {tag}
-                            <HiXMark />
-                          </Badge>
-                        ))}
-                      </div>
+      <DialogContent className="sm:max-w-[450px]">
+        <Tabs defaultValue="account">
+          <TabsList className="w-full mt-2">
+            <TabsTrigger value="account" className="w-full">
+              Create
+            </TabsTrigger>
+            <TabsTrigger value="password" className="w-full">
+              Import
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="account">
+            <>
+              {' '}
+              <DialogHeader>
+                <DialogTitle>Add a new bookmark</DialogTitle>
+                <DialogDescription>
+                  Create a new bookmark or import an existing one.
+                </DialogDescription>
+              </DialogHeader>
+              <Form {...form}>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-2">
+                  <FormField
+                    control={form.control}
+                    name="url"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>URL</FormLabel>
+                        <FormControl>
+                          <Input placeholder="https://github.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
-                    <Input
-                      className="mt-[-6px]"
-                      placeholder="comma seperated tags"
-                      onKeyDown={onKeyDown}
-                      onChange={onChange}
-                      onKeyUp={onKeyUp}
-                      value={input}
-                    />
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
+                  />
 
-            <Button type="submit" disabled={isLoading}>
-              Submit
-            </Button>
-          </form>
-        </Form>
+                  <FormField
+                    control={form.control}
+                    name="collection"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Collection</FormLabel>
+
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Devtools" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent {...field}>
+                              {data?.map((collection: any) => (
+                                <SelectItem value={collection._id}>
+                                  {collection.collection_name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="tags"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Tags</FormLabel>
+
+                          {!!tags.length && (
+                            <div className="flex flex-wrap gap-2">
+                              {tags?.map((tag, index) => (
+                                <Badge
+                                  key={index}
+                                  onClick={() => deleteTag(index)}
+                                  className="gap-2"
+                                >
+                                  # {tag}
+                                  <HiXMark />
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                          <Input
+                            className="mt-[-6px]"
+                            placeholder="comma seperated tags"
+                            onKeyDown={onKeyDown}
+                            onChange={onChange}
+                            onKeyUp={onKeyUp}
+                            value={input}
+                          />
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+
+                  <div className="flex justify-start gap-3">
+                    <Button type="submit" disabled={isLoading}>
+                      Submit
+                    </Button>
+                    <Button variant="secondary">Cancel</Button>
+                  </div>
+                </form>
+              </Form>
+            </>
+          </TabsContent>
+          <TabsContent value="password">Change your password here.</TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );

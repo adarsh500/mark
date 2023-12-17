@@ -33,7 +33,7 @@ type Session = {
 const Layout = async (props: LayoutProps) => {
   const { children } = props;
   const session: Session = await getServerSession(authOptions);
-  const { image = '', name = '', id = '' } = session?.user;
+  const { id = '' } = session?.user;
 
   return (
     <div className="w-full h-full flex flex-row">

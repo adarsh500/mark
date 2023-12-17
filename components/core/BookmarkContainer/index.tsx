@@ -17,11 +17,12 @@ import { Label } from '@/components/ui/label';
 const BookmarkContainer = (props) => {
   const { session, favourite, collectionId, searchParams } = props;
   const { ref, inView } = useInView();
-  const [page, setPage] = useState(0);
+  const [sortBy, setSortBy] = useState('created_at');
+  const [orderBy, setOrderBy] = useState('desc');
 
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useFetchBookmarks({
-      page,
+      page: 0,
       user_id: session?.user?.id,
       query: searchParams?.q ?? '',
       favourite,
@@ -64,7 +65,12 @@ const BookmarkContainer = (props) => {
         <div className="flex items-end gap-7 my-3 justify-end">
           <div className="flex items-center gap-2">
             <Label>Sort by</Label>
-            <Select defaultValue="created_at">
+            <Select
+              defaultValue={sortBy}
+              onValueChange={(value) => {
+                setSortBy(value);
+              }}
+            >
               <SelectTrigger className="w-[130px]">
                 <SelectValue placeholder="Order" />
               </SelectTrigger>
@@ -76,13 +82,18 @@ const BookmarkContainer = (props) => {
           </div>
           <div className="flex items-center gap-3">
             <Label>Order by</Label>
-            <Select defaultValue="descending">
+            <Select
+              defaultValue={orderBy}
+              onValueChange={(value) => {
+                setOrderBy(value);
+              }}
+            >
               <SelectTrigger className="w-[130px]">
                 <SelectValue placeholder="Order" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="ascending">Ascending</SelectItem>
-                <SelectItem value="descending">Descending</SelectItem>
+                <SelectItem value="asc">Ascending</SelectItem>
+                <SelectItem value="desc">Descending</SelectItem>
               </SelectContent>
             </Select>
           </div>

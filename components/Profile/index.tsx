@@ -37,19 +37,22 @@ const Profile = (props) => {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="min-w-[200px] mt-4 p-2">
-        <DropdownMenuItem className="p-2 gap-3 m-0.5">
+        <DropdownMenuItem className="p-2 gap-3 m-0.5 cursor-pointer">
           <LuUser2 />
           Profile
         </DropdownMenuItem>
-        <DropdownMenuItem className="p-2 gap-3 m-0.5">
+        <DropdownMenuItem className="p-2 gap-3 m-0.5 cursor-pointer">
           <MdOutlinePayment />
           Billing
         </DropdownMenuItem>
-        <DropdownMenuItem className="p-2 gap-3 m-0.5">
+        <DropdownMenuItem className="p-2 gap-3 m-0.5 cursor-pointer">
           <IoPeopleOutline />
           Team
         </DropdownMenuItem>
-        <DropdownMenuItem className="p-2 gap-3 m-0.5 cursor-pointer" onClick={() => signOut()}>
+        <DropdownMenuItem
+          className="p-2 gap-3 m-0.5 cursor-pointer"
+          onClick={() => signOut()}
+        >
           <TbLogout2 />
           Logout
         </DropdownMenuItem>

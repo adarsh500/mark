@@ -130,7 +130,7 @@ const Component = (props) => {
           objectFit="cover"
           loading="lazy"
           onError={(e) => {
-            console.error('failed to fetch image', e);
+            console.log('failed to fetch image', e);
           }}
         />
 

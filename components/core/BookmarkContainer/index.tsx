@@ -53,14 +53,14 @@ const BookmarkContainer = (props) => {
   return (
     <div className="overflow-hidden">
       <div className="flex flex-wrap columns-4">
-        {/* {data &&
+        {data &&
           data?.pages?.map((page) => {
             return Object.keys(page?.data)
               .filter((key) => key !== 'currentPage')
               .map((key) => {
                 return <Card key={page?.data[key]?._id} {...page?.data[key]} />;
               });
-          })} */}
+          })}
         {hasNextPage ? (
           <Button
             onClick={() => fetchNextPage()}

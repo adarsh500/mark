@@ -11,7 +11,7 @@ import Navbar from './Navbar';
 import { HiPlus } from 'react-icons/hi';
 
 const BookmarksModal = dynamic(() => import('./Bookmarks/BookmarksModal'), {
-  ssr: false,
+  ssr: true,
 });
 
 import Loading from '@/app/loading';

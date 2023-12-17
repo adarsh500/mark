@@ -104,11 +104,6 @@ const Navbar = () => {
                     setSearch(e.target.value);
                   }}
                 />
-                {!!search.trim().length && (
-                  <Button variant="ghost" size="icon" onClick={clearSearch}>
-                    <MdClear />
-                  </Button>
-                )}
               </div>
             </PopoverTrigger>
             <PopoverContent className="flex flex-col justify-start w-[350px] p-2">

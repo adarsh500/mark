@@ -1,6 +1,6 @@
 'use client';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -25,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/components/ui/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -51,6 +53,7 @@ const BookmarksModal = (props: any) => {
   const [tags, setTags] = useState([]);
   const [input, setInput] = useState('');
   const [isKeyReleased, setIsKeyReleased] = useState(false);
+  const [file, setFile] = useState<File>();
 
   const { mutate: createBookmark, isLoading } = useMutation(
     async (inputs: any) => {
@@ -144,104 +147,177 @@ const BookmarksModal = (props: any) => {
     reset();
   };
 
+  const uploadFile = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (!file) return;
+
+    try {
+      const data = new FormData();
+      data.set('file', file);
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: data,
+      });
+      // handle the error
+      if (!res.ok) throw new Error(await res.text());
+    } catch (e: any) {
+      // Handle errors here
+      console.error(e);
+    }
+  };
+
+  console.log('file', file);
+
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Add a new bookmark</DialogTitle>
-          <DialogDescription>
-            Create a new bookmark or import an existing one.
-          </DialogDescription>
-        </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://github.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="collection"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Collection</FormLabel>
-
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Devtools" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent {...field}>
-                        {data?.map((collection: any) => (
-                          <SelectItem value={collection._id}>
-                            {collection.collection_name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-
-            <FormField
-              control={form.control}
-              name="tags"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Tags</FormLabel>
-
-                    {!!tags.length && (
-                      <div className="flex flex-wrap gap-2">
-                        {tags?.map((tag, index) => (
-                          <Badge
-                            key={index}
-                            onClick={() => deleteTag(index)}
-                            className="gap-2"
-                          >
-                            # {tag}
-                            <HiXMark />
-                          </Badge>
-                        ))}
-                      </div>
+      <DialogContent className="sm:max-w-[450px]">
+        <Tabs defaultValue="account">
+          <TabsList className="w-full mt-2">
+            <TabsTrigger value="account" className="w-full">
+              Create
+            </TabsTrigger>
+            <TabsTrigger value="password" className="w-full">
+              Import
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="account">
+            <>
+              <DialogHeader className="mt-4">
+                <DialogTitle>Add a new bookmark</DialogTitle>
+                <DialogDescription>
+                  Create a new bookmark or import an existing one.
+                </DialogDescription>
+              </DialogHeader>
+              <Form {...form}>
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="space-y-6 mt-4"
+                >
+                  <FormField
+                    control={form.control}
+                    name="url"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>URL</FormLabel>
+                        <FormControl>
+                          <Input placeholder="https://github.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
-                    <Input
-                      className="mt-[-6px]"
-                      placeholder="comma seperated tags"
-                      onKeyDown={onKeyDown}
-                      onChange={onChange}
-                      onKeyUp={onKeyUp}
-                      value={input}
-                    />
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
+                  />
 
-            <Button type="submit" disabled={isLoading}>
-              Submit
-            </Button>
-          </form>
-        </Form>
+                  <FormField
+                    control={form.control}
+                    name="collection"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Collection</FormLabel>
+
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Devtools" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent {...field}>
+                              {data?.map((collection: any) => (
+                                <SelectItem value={collection._id}>
+                                  {collection.collection_name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="tags"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Tags</FormLabel>
+
+                          {!!tags.length && (
+                            <div className="flex flex-wrap gap-2">
+                              {tags?.map((tag, index) => (
+                                <Badge
+                                  key={index}
+                                  onClick={() => deleteTag(index)}
+                                  className="gap-2"
+                                >
+                                  # {tag}
+                                  <HiXMark />
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                          <Input
+                            className="mt-[-6px]"
+                            placeholder="comma seperated tags"
+                            onKeyDown={onKeyDown}
+                            onChange={onChange}
+                            onKeyUp={onKeyUp}
+                            value={input}
+                          />
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+
+                  <div className="flex justify-start gap-3">
+                    <Button type="submit" disabled={isLoading}>
+                      Submit
+                    </Button>
+                    <Button variant="secondary">Cancel</Button>
+                  </div>
+                </form>
+              </Form>
+            </>
+          </TabsContent>
+          <TabsContent value="password">
+            {' '}
+            <>
+              <DialogHeader className="mt-4">
+                <DialogTitle>Import your bookmark</DialogTitle>
+                <DialogDescription>
+                  Import bookmarks from your browser.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid w-full max-w-sm items-center gap-1.5 mt-6">
+                <Input
+                  id="picture"
+                  type="file"
+                  onChange={(e) => {
+                    console.log('tar', e.target)
+                    setFile(e.target.files?.[0]);
+                  }}
+                />
+              </div>
+              <div className="flex justify-start gap-3 mt-6">
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  onClick={(e) => uploadFile(e)}
+                >
+                  Submit
+                </Button>
+                <Button variant="secondary">Cancel</Button>
+              </div>
+            </>
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );

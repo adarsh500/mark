@@ -61,44 +61,47 @@ const BookmarkContainer = (props) => {
 
   return (
     <div className="overflow-hidden">
-      <div className="px-4">
-        <div className="flex items-end gap-7 my-3 justify-end">
-          <div className="flex items-center gap-2">
-            <Label>Sort by</Label>
-            <Select
-              defaultValue={sortBy}
-              onValueChange={(value) => {
-                setSortBy(value);
-              }}
-            >
-              <SelectTrigger className="w-[130px]">
-                <SelectValue placeholder="Order" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="title">Title</SelectItem>
-                <SelectItem value="created_at">Created at</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex items-center gap-3">
-            <Label>Order by</Label>
-            <Select
-              defaultValue={orderBy}
-              onValueChange={(value) => {
-                setOrderBy(value);
-              }}
-            >
-              <SelectTrigger className="w-[130px]">
-                <SelectValue placeholder="Order" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="asc">Ascending</SelectItem>
-                <SelectItem value="desc">Descending</SelectItem>
-              </SelectContent>
-            </Select>
+      {!!data && !!data.pages.length && (
+        <div className="px-4">
+          <div className="flex items-end gap-7 my-3 justify-end">
+            <div className="flex items-center gap-2">
+              <Label>Sort by</Label>
+              <Select
+                defaultValue={sortBy}
+                onValueChange={(value) => {
+                  setSortBy(value);
+                }}
+              >
+                <SelectTrigger className="w-[130px]">
+                  <SelectValue placeholder="Order" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="title">Title</SelectItem>
+                  <SelectItem value="created_at">Created at</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-center gap-3">
+              <Label>Order by</Label>
+              <Select
+                defaultValue={orderBy}
+                onValueChange={(value) => {
+                  setOrderBy(value);
+                }}
+              >
+                <SelectTrigger className="w-[130px]">
+                  <SelectValue placeholder="Order" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="asc">Ascending</SelectItem>
+                  <SelectItem value="desc">Descending</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
       <div className="flex flex-wrap columns-4">
         {data &&
           data?.pages?.map((page) => {

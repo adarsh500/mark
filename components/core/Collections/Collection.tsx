@@ -39,7 +39,7 @@ const Collection = (props: CollectionProps) => {
     <div
       className={clsx(
         'flex items-center p-2 hover:bg-primary hover:text-secondary dark:hover:bg-secondary dark:hover:text-primary rounded-md select-none justify-between mb-1 transition-all ease-linear duration-200 cursor-pointer active:bg-primary text-sm active:text-primary-foreground',
-        { 'bg-secondary text-primary': pathname === href }
+        { 'bg-primary text-secondary': pathname === href }
       )}
     >
       <div

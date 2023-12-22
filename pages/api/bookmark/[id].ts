@@ -29,9 +29,7 @@ export default async function handler(
       favourite,
     }: Partial<SearchQuery> = req.query;
 
-    let [key, value] = query?.trim()?.split(':') ?? [query, query];
-    value = query?.trim();
-
+    let [key, value] = query?.trim()?.split(':') || [query, query];
     let findObj: any = { user_id: id };
     let aggregateObj: any = [];
     let isAggregate = false;

@@ -77,7 +77,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="border border-solid border-border px-4 py-4 border-l-0 flex items-center justify-between dark:bg-background bg-secondary">
+    <div className="border border-solid border-border px-4 py-4 border-l-0 flex items-center justify-between dark:bg-background bg-white ">
       <form
         onSubmit={onSubmit}
         className="w-max-[550px] relative w-full lg:w-80 xl:w-full"

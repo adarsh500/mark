@@ -65,9 +65,7 @@ const Layout = async (props: LayoutProps) => {
       </aside>
       <div className="w-full flex flex-col">
         <Navbar />
-        <main className="p-4 flex-1 overflow-scroll pt-2">
-          <Suspense fallback={<Loading />}>{children}</Suspense>
-        </main>
+        <Suspense fallback={<Loading />}>{children}</Suspense>
       </div>
     </div>
   );

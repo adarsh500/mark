@@ -83,6 +83,7 @@ export default async function handler(
     if (isAggregate) {
       const bookmark = await collection
         .aggregate(aggregateObj)
+        .sort({ [sort_by]: order === 'asc' ? 1 : -1 })
         .skip(parseInt(limit) * parseInt(page))
         .limit(parseInt(limit))
         .toArray();
@@ -95,6 +96,7 @@ export default async function handler(
       .find({
         ...findObj,
       })
+      .sort({ [sort_by]: order === 'asc' ? 1 : -1 })
       .skip(parseInt(limit) * parseInt(page))
       .limit(parseInt(limit))
       .toArray();

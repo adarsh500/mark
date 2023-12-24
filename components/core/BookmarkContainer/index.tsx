@@ -28,6 +28,8 @@ const BookmarkContainer = (props) => {
       query: searchParams?.q ?? '',
       favourite,
       collection_id: collectionId,
+      sort_by: sortBy,
+      order: orderBy,
       configs: [
         {
           enabled: !!session?.user?.id,

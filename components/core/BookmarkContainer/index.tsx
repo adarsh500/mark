@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Card from '../Card';
 import { Label } from '@/components/ui/label';
-import Spinner from '@/components/Spineer';
+import Spinner from '@/components/Spinner';
 
 const BookmarkContainer = (props) => {
   const { session, favourite, collectionId, searchParams } = props;

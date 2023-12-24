@@ -10,7 +10,7 @@ import { createUrl } from '@/lib/utils';
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import { useTheme } from 'next-themes';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { useRef, useState } from 'react';
+import React, { MutableRefObject, useRef, useState } from 'react';
 import { HiOutlineHashtag, HiOutlineMenuAlt2, HiSearch } from 'react-icons/hi';
 import { IoShareOutline } from 'react-icons/io5';
 import { Button } from '../ui/button';
@@ -26,7 +26,7 @@ const Navbar = () => {
   const router = useRouter();
   const pathName = usePathname();
   const { setTheme } = useTheme();
-  const ref = useRef(null);
+  const ref = useRef() as MutableRefObject<HTMLInputElement>;
   const searchParams = useSearchParams();
   const [search, setSearch] = React.useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -69,12 +69,12 @@ const Navbar = () => {
     router.push(createUrl(pathName as string, newParams));
   }
 
-  const clearSearch = () => {
-    setSearch('');
-    const newParams = new URLSearchParams(searchParams.toString());
-    newParams.delete('q');
-    router.push('/');
-  };
+  // const clearSearch = () => {
+  //   setSearch('');
+  //   const newParams = new URLSearchParams(searchParams.toString());
+  //   newParams.delete('q');
+  //   router.push('/');
+  // };
 
   return (
     <div className="border border-solid border-border px-4 py-4 border-l-0 flex items-center justify-between dark:bg-background bg-white ">

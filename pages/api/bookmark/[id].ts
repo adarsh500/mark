@@ -2,6 +2,9 @@ import clientPromise from '@/db/clientPromise';
 import { BOOKMARK, DEVELOPMENT } from '@/db/constants';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+type SortType = 'created_at' | 'updated_at' | 'title';
+type OrderType = 'asc' | 'desc';
+
 type SearchQuery = {
   id: string;
   page?: string;
@@ -9,6 +12,8 @@ type SearchQuery = {
   collection_id?: string;
   query?: string;
   favourite?: string;
+  sort_by?: SortType;
+  order?: OrderType;
 };
 
 export default async function handler(
@@ -27,6 +32,8 @@ export default async function handler(
       collection_id = '',
       query = '',
       favourite,
+      sort_by = 'created_at',
+      order = 'desc',
     }: Partial<SearchQuery> = req.query;
 
     let [key, value] = query?.trim()?.split(':') || [query, query];

@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { UserAuthForm } from './user-auth-form';
+import { UserAuthForm } from './AuthForm';
 
 const Signin = async () => {
   const session = await getServerSession(authOptions);

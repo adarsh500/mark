@@ -1,7 +1,9 @@
 import { BOOKMARK } from '@/db/constants';
+import { DEVELOPMENT } from '@/db/constants';
+import crossImport from 'cross-import';
+
 //@ts-ignore
 import clientPromise from '@/db/clientPromise';
-import { DEVELOPMENT } from '@/db/constants';
 
 export async function POST(request) {
   //@ts-ignore
@@ -45,13 +47,11 @@ export async function POST(request) {
   }
 
   try {
-    const metadata = await fetch(
-      `https://mark3.vercel.app/api/bookmark/meta?url=${url}`
-    );
-    const { data = {} } = await metadata.json();
+    const getMetaData = crossImport('metadata-scraper');
+    const metadata = await getMetaData(url);
 
     const result = await collection.insertOne({
-      ...data,
+      ...metadata,
       url,
       favourite: false,
       collection_id,

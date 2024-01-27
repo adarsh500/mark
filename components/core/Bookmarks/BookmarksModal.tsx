@@ -36,7 +36,6 @@ import * as z from 'zod';
 
 //TODO:
 // 1. add fav option to bookmark
-// 2. add import option
 
 const formSchema = z.object({
   collection: z.string().optional(),

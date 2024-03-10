@@ -1,22 +1,8 @@
 /** @type {import('next').NextConfig} */
-
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
-
 const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  reactStrictMode: false,
   images: {
-    domains: [
-      'www.gravatar.com',
-      'lh3.googleusercontent.com',
-      'localhost',
-      'og-image.vercel.app',
-    ],
+    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -24,6 +10,9 @@ const nextConfig = {
       },
     ],
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = nextConfig;

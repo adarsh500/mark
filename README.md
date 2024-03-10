@@ -35,7 +35,7 @@ Authorized redirect URIs - (the same URL as used above with /api/auth/callback/g
 create a `.env.local` file and add these to it
 ```bash
 NEXTAUTH_URL = http:localhost:3000
-MONGO_URI = mongodb+srv://<your_username>:<your_password>@cluster0.mms8yge.mongodb.net/?retryWrites=true&w=majority
+MONGO_URI = <your_mongo_uri>
 NEXTAUTH_SECRET=<anything_that_you_want_to_add>
 GOOGLE_CLIENT_SECRET=
 GOOGLE_CLIENT_ID=

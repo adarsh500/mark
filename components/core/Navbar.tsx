@@ -131,7 +131,7 @@ const Navbar = () => {
       </form>
 
       <div className="flex justify-end gap-4">
-        <Button variant="secondary" className="flex items-center gap-2">
+        {/* <Button variant="secondary" className="flex items-center gap-2">
           <IoShareOutline />
           <p className="text-xs font-normal">Share</p>
         </Button>
@@ -139,7 +139,7 @@ const Navbar = () => {
         <Button variant="secondary" className="flex items-center gap-2">
           <CiImport />
           <p className="text-xs font-normal w-min">Import</p>
-        </Button>
+        </Button> */}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

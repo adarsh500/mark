@@ -152,6 +152,7 @@ const BookmarksModal = (props: any) => {
     try {
       const data = new FormData();
       data.set('file', file);
+      data.set('uid', userId);
       console.log('file', file);
       const res = await fetch('/api/upload', {
         method: 'POST',
